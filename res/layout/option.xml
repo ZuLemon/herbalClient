@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="30dp"
+                  android:layout_marginBottom="10dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:layout_marginRight="10dp"
+                  android:text="@string/option_server"/>
+        <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:id="@+id/option_server_editText"
+                android:inputType="textAutoComplete"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="30dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:layout_marginRight="10dp"
+                  android:text="@string/option_state"/>
+
+        <CheckBox android:id="@+id/option_state_check"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  style="@style/CustomCheckboxTheme"
+                  android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_horizontal">
+        <Button style="@style/CustomButtonTheme"
+                android:text="@string/login_option"
+                android:id="@+id/option_server_button"/>
+        <Button style="@style/CustomButtonTheme"
+                android:text="朗读"
+                android:id="@+id/option_speech_button"/>
+    </LinearLayout>
+
+</LinearLayout>

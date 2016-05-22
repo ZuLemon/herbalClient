@@ -1,0 +1,244 @@
+package net.andy.boiling;
+
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.WifiManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import net.andy.boiling.ui.UpdateUI;
+import net.andy.com.*;
+import net.andy.dispensing.domain.StationDomain;
+import net.andy.dispensing.util.RuleUtil;
+import net.andy.dispensing.util.StationUtil;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * 登陆窗口
+ */
+public class Login extends Activity {
+    private EditText userId;
+    private EditText password;
+    AppOption appOption = new AppOption();
+    Message message = new Message();
+    public static Login instance = null;
+    private PendingIntent pendingIntent;
+    String deviceid;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        instance = this;
+        UpdateUI manager = new UpdateUI(Login.this);
+        //默认地址
+        if("".equals(appOption.getOption(AppOption.APP_OPTION_SERVER)))
+        appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
+        // 检查软件更新
+        manager.checkUpdate();
+        setContentView(R.layout.login);
+        userId = (EditText) this.findViewById(R.id.login_userId_editText);
+        password = (EditText) this.findViewById(R.id.login_password_editText);
+        Button option = (Button) this.findViewById(R.id.login_option_button);
+        Button submit = (Button) this.findViewById(R.id.login_submit_button);
+        if (appOption.getOption(AppOption.APP_OPTION_STATE).equals("YES")) {
+            userId.setText(appOption.getOption(AppOption.APP_OPTION_USER));
+            password.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
+        }
+//        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+//        deviceid= tm.getDeviceId();
+//        if(deviceid == null || deviceid.length()==0){
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            deviceid = wifiManager.getConnectionInfo().getMacAddress();
+        }
+        System.out.println(">>" + deviceid);
+//        }
+        //设备号
+        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
+//        appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
+        if ("".equals(appOption.getOption(AppOption.APP_OPTION_WAITTIME)))
+            appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
+//        appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
+
+        appOption.setOption(AppOption.APP_OPTION_STATE,"YES");
+//        tag_code_editText.setText(deviceid);
+        submit.setOnClickListener(new SubmitOnclick());
+        //设置
+//        option.setOnClickListener(new OptionOnClick());
+//        try {
+//            nfc = new NFC(this);
+//        } catch (Exception e) {
+//            new CoolToast(getBaseContext()).show(e.getMessage());
+//            finish();
+//            return;
+//        }
+
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
+                getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+    }
+
+    public boolean isNumeric(String str){
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if( !isNum.matches() ){
+            return false;
+        }
+        return true;
+    }
+
+    public class SubmitOnclick implements Button.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            StationThread();
+            if (appOption.getOption(AppOption.APP_OPTION_SERVER).equals("")) {
+                new CoolToast(getBaseContext()).show("没有设置服务器地址,不能登陆");
+                return;
+            }
+            //管理员修改服务器地址
+            if("admin".equals(userId.getText().toString())&&"wlbgs".equals(password.getText().toString())){
+                userId.setText(appOption.getOption(AppOption.APP_OPTION_USER));
+                password.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
+                Intent intent = new Intent(Login.this, Option.class);
+                startActivity(intent);
+                return;
+            }
+            if(!isNumeric(userId.getText().toString())){
+                new CoolToast(getBaseContext()).show("用户编号错误");
+                return;
+            }
+            final Handler handler = new Handler() {
+                public void handleMessage(Message msg) {
+                    new CoolToast(getBaseContext()).show((String) msg.obj);
+                }
+            };
+            new Thread() {
+                @Override
+                public void run() {
+                    List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+                    pairs.add(new BasicNameValuePair("id", userId.getText().toString()));
+                    pairs.add(new BasicNameValuePair("password", password.getText().toString()));
+                    pairs.add(new BasicNameValuePair("browser", "HttpClient"));
+                    pairs.add(new BasicNameValuePair("version", "mobile"));
+                    try {
+                        String info = (String) ((Map) (new Http().post("login1.do", pairs, Map.class))).get("info");
+                        if (info.equals("success")) {
+                            appOption.setOption(AppOption.APP_OPTION_USER, userId.getText().toString());
+                            appOption.setOption(AppOption.APP_OPTION_PASSWORD, password.getText().toString());
+
+                            //获取登录用户详细信息
+                            new LogUserInfo().setLogUsers();
+
+                            //检查推送服务是否运行
+                            checkService();
+
+                            //结束当前
+                            Login.this.finish();
+                            Intent intent = new Intent(Login.this, Main.class);
+                            startActivity(intent);
+
+                        } else {
+                            message.obj = info;
+                            handler.sendMessage(message);
+                        }
+                    } catch (Exception e) {
+                        if(handler.obtainMessage(message.what, message.obj) != null){
+                            Message _msg = new Message();
+                            _msg.what = message.what;
+                            _msg.obj= e.getMessage();
+                            message = _msg;
+                        }else{
+                            message.obj=e.getMessage();
+                        }
+                        handler.sendMessage(message);
+                    }
+                }
+            }.start();
+        }
+    }
+    private void StationThread() {
+        final Message message = new Message();
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case -1:
+                        new CoolToast(getBaseContext()).show((String) msg.obj);
+                        break;
+                    case 0:
+                        new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(msg.obj));
+                        break;
+                }
+            }
+        };
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    StationDomain st = new StationUtil().getStationByDevice();
+                    message.obj = new RuleUtil().getRules(st.getRulesId()).getName();
+                    message.what = 0;
+                    handler.sendMessage(message);
+                } catch (Exception e) {
+                    message.what = -1;
+                    message.obj = e.getMessage();
+                    handler.sendMessage(message);
+                }
+            }
+        }.start();
+    }
+    public class OptionOnClick implements Button.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Login.this, Option.class);
+            startActivity(intent);
+        }
+    }
+
+    public void checkService() {
+        boolean isRun = false;
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("net.andy.com.MqttService".equals(service.service.getClassName())) {
+                isRun = true;
+            }
+        }
+        if (isRun) {
+            MqttService.disconnect();
+            MqttService.connect();
+        } else {
+            //启动推送服务
+            startService(new Intent(Application.getContext(), MqttService.class));
+        }
+    }
+}

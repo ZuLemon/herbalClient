@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#EECFA1" android:weightSum="1">
+        <fragment android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:name="net.andy.boiling.ui.MessageFragment"
+                  android:id="@+id/messagefragment"
+                  tools:layout="@layout/messagefragement"/>
+        <!--一级-->
+        <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      style="@style/Custom25TextViewTheme"
+                      android:text="中药调剂信息系统"
+                      android:textColor="#D2691E"
+                      android:id="@+id/dispensing_sysinfo_textView"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="45dp"
+                          android:id="@+id/dispensing_grid_linearLayout">
+                <TextView android:layout_width="80dp"
+                          android:layout_height="match_parent"
+                          android:layout_marginLeft="5dp"
+                          android:layout_marginRight="5dp"
+                          android:textColor="#FFFFFF"
+                          android:layout_gravity="center"
+                          android:background="@drawable/holoblue2_circular"
+                          android:text="口服"
+                          style="@style/Custom35TextViewTheme"
+                          android:id="@+id/dispensing_way_textView"
+                          android:gravity="center_vertical|center_horizontal"/>
+                <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:id="@+id/dispensing_image_gridView"
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="center"
+                          android:listSelector="#00000000"
+                          android:numColumns="5">
+                </GridView>
+            </LinearLayout>
+
+            <!--<ImageView android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:layout_marginRight="3dp"-->
+            <!--android:background="@drawable/zhuyuan"-->
+            <!--android:id="@+id/dispensing_category_imageView"-->
+            <!--/>-->
+
+            <!--<ImageView android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:layout_marginRight="3dp"-->
+            <!--android:background="@drawable/yinpian"-->
+            <!--android:id="@+id/dispensing_classification_imageView"/>-->
+
+            <!--<ImageView android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:layout_marginRight="3dp"-->
+            <!--android:background="@drawable/daijian"-->
+            <!--android:id="@+id/dispensing_process_imageView"/>-->
+            <!--<ImageView android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:background="@drawable/xiyao"-->
+            <!--android:id="@+id/dispensing_xiyao_imageView"/>-->
+            <!--<ImageView android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:layout_marginRight="3dp"-->
+            <!--android:background="@drawable/fuhe"-->
+            <!--android:id="@+id/dispensing_heshi_imageView"/>-->
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/dispensing_patientInfo_linearLayout"
+                android:background="@drawable/darkorg_circular"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:layout_gravity="right"
+                          android:text="住院号："
+                          android:id="@+id/dispensing_category_textView"/>
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:layout_gravity="right"
+                          android:text=" 科室："/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="wrap_content">
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:gravity="left"
+                          android:text=""
+                          android:id="@+id/dispensing_patientNo_textView"/>
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:gravity="left"
+                          android:id="@+id/dispensing_drugstoreName_textView"
+                          android:text=""/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:layout_weight="1"
+                          android:gravity="right"
+                          android:text="姓名："/>
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:layout_weight="1"
+                          android:gravity="right"
+                          android:text="医生："/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+            >
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:text=""
+                          android:id="@+id/dispensing_patientName_textView"
+                />
+                <TextView style="@style/Custom15TextViewTheme"
+                          android:id="@+id/dispensing_doctorName_textView"
+                          android:text=""/>
+            </LinearLayout>
+        </LinearLayout>
+        <!--&lt;!&ndash;二级&ndash;&gt;-->
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <!--</LinearLayout>-->
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/skyblue_circular"
+                android:id="@+id/dispensing_readNextMedicine_linearLayout"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:visibility="visible">
+            <Button android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/orange_button"
+                    android:id="@+id/dispensing_readNextMedicine_button"
+                    style="@style/AdjustOneButtonTheme"
+                    android:text="读取处方"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/orange_button"
+                android:id="@+id/dispensing_tagInfo_linearLayout"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      style="@style/Custom35TextViewTheme"
+                      android:text="已绑定标签"
+                      android:textColor="#ffffff"
+            />
+            <TextView android:layout_width="200dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginBottom="8dp"
+                      android:layout_gravity="center"
+                      android:id="@+id/dispensing_tagInfo_textView"
+                      style="@style/Custom50TextViewTheme"
+                      android:textColor="#000000"
+                      android:text="0000"/>
+        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/dispensing_taginfo_linearLayout"-->
+        <!--android:background="@drawable/dark_circular"-->
+        <!--android:visibility="gone"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_marginLeft="5dp"-->
+        <!--android:layout_marginRight="5dp">-->
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<TextView style="@style/Custom25TextViewTheme"-->
+        <!--android:text="绑定标签："-->
+        <!--/>-->
+        <!--<TextView style="@style/Custom25TextViewTheme"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:id="@+id/dispensing_tagId_textView"-->
+        <!--android:text="2016"-->
+        <!--/>-->
+        <!--</LinearLayout>-->
+        <!--<View-->
+        <!--android:background="@drawable/shape_line"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1.0px"/>-->
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<TextView style="@style/Custom25TextViewTheme"-->
+        <!--android:text="标签颜色："-->
+        <!--/>-->
+        <!--<TextView style="@style/Custom25TextViewTheme"-->
+        <!--android:id="@+id/dispensing_tagColor_textView"-->
+        <!--android:text="红色"-->
+        <!--/>-->
+        <!--</LinearLayout>-->
+        <!--</LinearLayout>-->
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:visibility="gone"
+                android:background="@drawable/skyblue_circular"
+                android:id="@+id/dispensing_banding_linearLayout"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:background="@drawable/orange_button"
+                      android:id="@+id/dispensing_banding_button"
+                      style="@style/AdjustOneButtonTheme"
+                      android:text="绑定标签"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/skyblue_circular"
+                android:id="@+id/dispensing_medicineInfo_linearLayout"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal">
+                <LinearLayout android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+
+                              android:background="@drawable/holoblue_circular">
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:id="@+id/dispensing_preNumber_textView"
+                              android:layout_gravity="bottom"
+                              android:gravity="right"
+                              android:textSize="60dp"
+                              android:textColor="#ffffff"
+                              android:text="1"
+                              android:layout_weight="0.77"/>
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_gravity="bottom"
+                              android:gravity="left"
+                              android:textSize="40dp"
+                              android:textColor="#ffffff"
+                              android:text="付"
+                              android:layout_weight="0.77"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:orientation="vertical"
+                              android:layout_weight="2">
+                    <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="8dp">
+                        <TextView style="@style/Custom20TextViewTheme"
+                                  android:layout_weight="1"
+                                  android:text="第22味 共32味 计2500g"
+                                  android:id="@+id/dispensing_nowCount_textView"/>
+                    </LinearLayout>
+                    <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:id="@+id/dispensing_warning_linearLayout"
+                            android:gravity="left"
+                            android:visibility="visible">
+                        <TextView android:layout_width="120dp"
+                                  android:layout_height="40dp"
+                                  android:textColor="#FFFFFF"
+                                  android:background="@drawable/holoblue1_circular"
+                                  android:text="先煎"
+                                  style="@style/Custom30TextViewTheme"
+                                  android:id="@+id/dispensing_special_textView"
+                                  android:gravity="center"
+                                  android:layout_gravity="center"/>
+                        <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                            <ImageView android:layout_width="35dp"
+                                       android:layout_height="35dp"
+                                       android:layout_marginLeft="10dp"
+                                       android:id="@+id/dispensing_warning_imageView"
+                                       android:background="@drawable/warning"/>
+                            <ImageView android:layout_width="35dp"
+                                       android:layout_height="35dp"
+                                       android:layout_marginLeft="10dp"
+                                       android:background="@drawable/stop"
+                                       android:id="@+id/dispensing_stop_imageView"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="right"
+                            android:id="@+id/dispensing_adjust_linearLayout"
+                            android:visibility="gone">
+                        <Button android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="按味调剂"
+                                android:background="@drawable/orange_button"
+                                android:textColor="@android:color/white"
+                                android:height="50dp"
+                                android:id="@+id/dispensing_adjust_button"
+                                android:textSize="20sp"
+                        />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:gravity="center">
+                <TextView style="@style/Custom50TextViewTheme"
+                          android:id="@+id/dispensing_presName_textView"
+                          android:text="当归 15g"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center"
+                    android:id="@+id/dispensing_herspecAndTotal_linearLayout"
+                    android:layout_marginTop="-5dp">
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="10g/袋"
+                          android:layout_weight="5"
+                          style="@style/Custom35TextViewTheme"
+                          android:id="@+id/dispensing_herbSpec_textView"/>
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="35袋"
+                          android:layout_weight="3"
+                          style="@style/Custom35TextViewTheme"
+                          android:id="@+id/dispensing_total_textView"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center">
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:text="下一味：当归"
+                          android:id="@+id/dispensing_nextMedicine_textView"
+                          android:layout_weight="10"
+                          style="@style/Custom25TextViewTheme"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginLeft="5dp"
+                      android:layout_marginTop="10dp"
+                      android:layout_marginRight="5dp"
+        >
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:layout_weight="5">
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/dispensing_noDispensing_textView"
+                          android:gravity="left"
+                          style="@style/Custom20TextViewTheme"
+                          android:text="待调："/>
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:gravity="left"
+                          android:id="@+id/dispensing_alreadyDispensing_textView"
+                          style="@style/Custom20TextViewTheme"
+                          android:text="完成："/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:orientation="vertical"
+                          android:layout_weight="1">
+                <TextView
+                        android:background="@drawable/timer_circular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_gravity="right"
+                        android:id="@+id/dispensing_timeText_textView"
+                        style="@style/Custom45TextViewTheme"
+                        android:text="00:00"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:orientation="vertical"
+                      android:id="@+id/dispensing_history_linearLayout"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:background="#EECFA1"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+            <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                      android:id="@+id/dispensing_history_gridView"
+                      android:layout_alignParentTop="true"
+                      android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:columnWidth="90dp"
+                      android:stretchMode="columnWidth"
+                      android:numColumns="auto_fit"
+                      android:horizontalSpacing="1dp"
+                      android:verticalSpacing="1dp"
+                      android:gravity="center"
+            >
+            </GridView>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="left"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:id="@+id/dispensing_otherButton_linearLayout">
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                android:layout_marginRight="5dp"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="上药"
+                android:id="@+id/dispensing_applyMedicine_button"/>
+        <!--<Button android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:background="@drawable/orangerred_circular"-->
+        <!--android:layout_weight="1"-->
+        <!--style="@style/AdjustThreeButtonTheme"-->
+        <!--android:text="查询"/>-->
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="回看"
+                android:id="@+id/dispensing_history_button"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="暂停"
+                android:id="@+id/dispensing_pause_button"/>
+    </LinearLayout>
+    <ImageButton android:layout_width="50dp" android:layout_height="50dp"
+                 android:background="@drawable/alterbutton"
+                 android:layout_above="@+id/dispensing_otherButton_linearLayout"
+                 android:id="@+id/dispensing_show_button"
+                 android:layout_alignParentEnd="true"/>
+</RelativeLayout>

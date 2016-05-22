@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/white"
+              android:padding="15dp"
+              android:gravity="center"
+              android:text="未接收"
+              android:textSize="18dp"
+              android:textColor="@android:color/background_dark"
+              android:id="@+id/replenish_title"
+    />
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:layout_marginTop="0.3dp"
+              android:layout_weight="1"
+              android:id="@+id/replenish_list"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="未接收"
+                android:id="@+id/replenish_new"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="已接收"
+                android:id="@+id/replenish_accept"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="已确认"
+                android:id="@+id/replenish_finish"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:background="#EEE9BF"
+              android:padding="5dp"
+              android:layout_width="match_parent"
+              android:layout_height="60dp">
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/disId"
+              android:visibility="gone"
+    />
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+                  android:layout_weight="1"
+    >
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+        >
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:text="7付"
+                      android:textColor="@android:color/background_dark"
+                      android:id="@+id/presNum"
+            />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:orientation="horizontal"
+        >
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:gravity="center_vertical"
+                      android:layout_weight="1"
+                      android:text="名称"
+                      android:textSize="20dp"
+                      android:textColor="@android:color/background_dark"
+                      android:id="@+id/patientName"
+            />
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:gravity="center"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                      android:text="门诊免煎 口服水冲"
+                      android:textSize="16dp"
+                      android:textColor="@android:color/background_dark"
+                      android:id="@+id/presInfo"
+            />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

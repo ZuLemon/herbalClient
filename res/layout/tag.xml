@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="30dp"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginLeft="20dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/tag_tagId"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:editable="false"
+                  android:id="@+id/tag_tagId_editText"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="5dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginLeft="5dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:layout_weight="2"
+                  android:gravity="center"
+                  android:id="@+id/tag_code_textView"
+                  android:text="@string/tag_code"/>
+        <EditText android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:layout_weight="7"
+                  android:id="@+id/tag_code_editText"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+        android:id="@+id/tag_code_button"
+        android:text="@string/tag_scan"/>
+    </LinearLayout>
+    <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:paddingLeft="25dip"
+            android:paddingRight="25dip"
+            android:gravity="center_vertical"
+            android:textColor="#FFF"
+            android:id="@+id/tag_color_spinner"/>
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tag_type_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_type1"
+                android:textSize="18sp"
+                android:checked="true"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_type1_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_type2"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_type2_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_type3"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_type3_radioButton"/>
+    </RadioGroup>
+
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tag_status_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_status2"
+                android:textSize="18sp"
+                android:checked="true"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_status1_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_status1"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_status2_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_status3"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_status3_radioButton"/>
+    </RadioGroup>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="50dp"
+                  android:layout_marginLeft="20dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/tag_bindId"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:id="@+id/tag_bindId_editText"/>
+    </LinearLayout>
+
+    <Button style="@style/CustomButtonTheme"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:text="@string/app_submit"
+            android:textSize="100sp"
+            android:id="@+id/tag_ok_button"/>
+</LinearLayout>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <fragment android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:name="net.andy.boiling.ui.MessageFragment"
+              android:id="@+id/messagefragment"/>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="20dp"
+              android:layout_marginBottom="20dp"
+              android:gravity="center"
+              android:textSize="24sp"
+              android:textColor="@android:color/black"
+              android:text="处方信息"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginLeft="10dp"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="50dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:text="编号"/>
+
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:id="@+id/soak_patientNO_textView"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="50dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:text="姓名"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:id="@+id/soak_patientName_textView"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginLeft="10dp"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="50dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:text="类别"/>
+
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:id="@+id/soak_category_textView"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="50dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:text="剂型"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:id="@+id/soak_classification_textView"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="20dp"
+                  android:orientation="horizontal">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginLeft="10dp"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="50dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:text="诊断"/>
+
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:id="@+id/soak_diagnosis_textView"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="50dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:text="付数"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/black"
+                      android:id="@+id/soak_presNumber_textView"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="#C0DEED">
+    <!--<LinearLayout android:layout_width="match_parent"-->
+                  <!--android:layout_height="wrap_content"-->
+                  <!--android:layout_weight="1"-->
+                  <!--android:layout_marginLeft="10dp"-->
+                  <!--android:orientation="horizontal">-->
+
+        <!--<RadioGroup android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:id="@+id/soak_equiptype1_radioGroup"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:layout_marginBottom="5dp"-->
+                    <!--android:layout_marginLeft="30dp">-->
+            <!--<RadioButton-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/equip_type1_one"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:id="@+id/soak1_equiptype1_radioButton"/>-->
+            <!--<RadioButton-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/equip_type1_two"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:textColor="@android:color/black"-->
+                    <!--android:id="@+id/soak2_equiptype1_radioButton"/>-->
+        <!--</RadioGroup>-->
+    <!--</LinearLayout>-->
+    </LinearLayout>
+
+
+
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="#77B3D4">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginBottom="10dp"
+                      android:layout_marginLeft="10dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="80dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:text="煎制方式"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/soak_method_textView"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginBottom="10dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="80dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:text="当前状态"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/soak_planStatus_textView"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="#77B3D4">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="10dp"
+                      android:layout_marginLeft="10dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="80dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:text="加液量"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/soak_waterQuantity1_textView"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="10dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="80dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:text="浸泡时间"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/soak_soakTime_textView"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="#77B3D4">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="20dp"
+                      android:layout_marginLeft="10dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="80dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:text="开始时间"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/soak_soakBeginTime_textView"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="20dp"
+                      android:layout_weight="1"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:width="80dp"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:text="结束时间"/>
+            <TextView android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="18sp"
+                      android:textColor="@android:color/white"
+                      android:id="@+id/soak_soakEndTime_textView"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            style="@style/CustomButtonTheme"
+            android:textSize="68sp"
+            android:text="开始浸泡"
+            android:id="@+id/soak_submit_button"/>
+</LinearLayout>

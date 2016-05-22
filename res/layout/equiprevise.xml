@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="30dp"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="5dp"
+                  android:layout_marginLeft="20dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/equip_tagId"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:editable="false"
+                  android:id="@+id/equip_tagId_editText"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="5dp"
+                  android:layout_marginLeft="20dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/equip_equipId"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:id="@+id/equip_equipId_editText"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="5dp"
+                  android:layout_marginLeft="20dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/equip_equipName"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:id="@+id/equip_equipName_editText"/>
+    </LinearLayout>
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/equip_type_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_type_one"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip1_type_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_type_two"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip2_type_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_type_three"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip3_type_radioButton"/>
+    </RadioGroup>
+
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/equip_type1_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_type1_one"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip1_type1_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_type1_two"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip2_type1_radioButton"/>
+    </RadioGroup>
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/equip_equipPurpose_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipPurpose_one"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip1_equipPurpose_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipPurpose_two"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip2_equipPurpose_radioButton"/>
+    </RadioGroup>
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/equip1_equipStatus_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp">
+
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipStatus_one"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip1_equipStatus_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipStatus_two"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip2_equipStatus_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipStatus_three"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip3_equipStatus_radioButton"/>
+</RadioGroup>
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/equip2_equipStatus_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="20dp">
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipStatus_four"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip4_equipStatus_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipStatus_five"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip5_equipStatus_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_equipStatus_six"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip6_equipStatus_radioButton"/>
+    </RadioGroup>
+    <Button style="@style/CustomButtonTheme"
+            android:layout_height="fill_parent"
+            android:layout_width="fill_parent"
+            android:text="@string/app_submit"
+            android:textSize="45sp"
+            android:id="@+id/equip_ok_button"/>
+</LinearLayout>

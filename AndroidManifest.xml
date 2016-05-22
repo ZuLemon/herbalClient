@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="net.andy.boiling"
+          android:versionCode="16"
+          android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="17" tools:ignore="UsesMinSdkAttributes"/>
+    <!-- 闪光灯权限 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <!-- 振动器权限 -->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!--自启动权限-->
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <!--屏幕常亮-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <application android:label="@string/app_name"
+                 android:icon="@drawable/ic_launcher2"
+                 android:allowBackup="true"
+                 android:name="net.andy.com.Application"
+                 android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+                 <!--android:theme="@android:style/Theme.NoTitleBar"-->
+        <activity android:name=".Login"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <service android:name="net.andy.com.MqttService"/>
+        <service android:name="net.andy.com.FloatViewService"/>
+        <activity android:name=".Option"/>
+        <activity android:name=".Main"/>
+        <activity android:name=".ui.SoakUI"/>
+        <activity android:name=".ui.EquipmentUI"/>
+        <activity android:name=".ui.TagUI"/>
+        <activity android:name=".ui.ExtractUI"/>
+        <activity android:name=".ui.TakeUI"/>
+        <activity android:name=".ui.EquipManUI"/>
+        <activity android:name=".ui.EquipReviseUI"/>
+        <activity android:name=".ui.TestUI"/>
+        <activity android:name=".ui.MidifyPassUI"/>
+        <activity android:name=".ui.MsgManUI"/>
+        <activity android:name="net.andy.dispensing.ui.DispensingUI"/>
+        <activity
+                android:name=".ui.MipcaActivityCapture"
+                android:configChanges="orientation|keyboardHidden"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity android:name=".ui.SettingUI"/>
+        <activity android:name="net.andy.dispensing.ui.StationRuleUI"/>
+        <activity android:name="net.andy.dispensing.ui.PatientInfoUI"
+                  android:theme="@style/TranslucentFullscreen"
+        />
+        <activity android:name="net.andy.dispensing.ui.ReplenishUI"/>
+        <activity android:name="net.andy.dispensing.ui.DisHistoryUI"
+                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.AckReplenishUI"
+                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.PausePresUI"
+                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name=".ui.SysAdminUI"/>
+        <activity android:name="net.andy.dispensing.ui.ExtractPresUI"/>
+        <activity android:name="net.andy.dispensing.ui.UrgentPresUI"/>
+        <activity android:name="net.andy.dispensing.ui.OnlineUI"/>
+        <!--<service android:name=".service.PollingService"/>-->
+        <!--<receiver android:name=".util.BootUtil">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.BOOT_COMPLETED"/>-->
+        <!--</intent-filter>-->
+        <!--</receiver>-->
+    </application>
+</manifest>

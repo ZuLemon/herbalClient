@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equip_equipId">设备ID</string>
+    <string name="equip_tagId">标签ID</string>
+    <string name="equip_equipName">设备名称</string>
+    <string name="equip_equipType">设备类型</string>
+    <string name="equip_equipType1">设备类型1</string>
+    <string name="equip_equipPurpose">设备用途</string>
+    <string name="equip_equipStatus">设备状态</string>
+    <string name="equip_type_one">加液机</string>
+    <string name="equip_type_two">煎药机</string>
+    <string name="equip_type_three">包装机</string>
+    <string name="equip_type1_one">电锅</string>
+    <string name="equip_type1_two">气锅</string>
+    <string name="equip_equipPurpose_one">内服</string>
+    <string name="equip_equipPurpose_two">外用</string>
+    <string name="equip_equipStatus_one">空闲</string>
+    <string name="equip_equipStatus_two">占用</string>
+    <string name="equip_equipStatus_three">使用</string>
+    <string name="equip_equipStatus_four">维修</string>
+    <string name="equip_equipStatus_five">停用</string>
+    <string name="equip_equipStatus_six">报废</string>
+</resources>

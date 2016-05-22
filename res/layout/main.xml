@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+>
+              <!--tools:context=".Main"-->
+              <!--android:weightSum="1"-->
+
+    <!--<TextView style="@style/LogUserInfoTextViewTheme"-->
+    <!--android:id="@+id/user_info_view"-->
+    <!--/>-->
+        <fragment android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:name="net.andy.boiling.ui.MessageFragment"
+                  android:id="@+id/messagefragment"/>
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/main_GridView"
+              android:layout_alignParentTop="true"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:columnWidth="90dp"
+              android:stretchMode="columnWidth"
+              android:background="@android:color/darker_gray"
+              android:listSelector="#AACCDD"
+              android:numColumns="auto_fit"
+              android:horizontalSpacing="1dp"
+              android:verticalSpacing="1dp"
+              android:gravity="center">
+    </GridView>
+</LinearLayout>
+

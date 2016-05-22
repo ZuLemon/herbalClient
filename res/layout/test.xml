@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <fragment android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:name="net.andy.boiling.ui.MessageFragment"
+              android:id="@+id/messagefragment"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="30dp"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginLeft="20dp">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/tag_tagId"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:editable="false"
+                  android:id="@+id/tag_tagId_editText"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="10dp"
+                  android:layout_marginLeft="20dp">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/tag_code"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:id="@+id/tag_code_editText"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginRight="20dp"
+                  android:layout_marginBottom="50dp"
+                  android:layout_marginLeft="20dp">
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:width="100dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:gravity="center"
+                  android:text="@string/tag_bindId"/>
+        <EditText android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:id="@+id/tag_bindId_editText"/>
+    </LinearLayout>
+    <Button style="@style/CustomButtonTheme"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:text="@string/app_submit"
+            android:textSize="50sp"
+            android:id="@+id/tag_ok_button"/>
+</LinearLayout>

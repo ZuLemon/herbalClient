@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tag_tagId">标签ID</string>
+    <string name="tag_code">标签号码</string>
+    <string name="tag_type1">处方</string>
+    <string name="tag_type2">煎药机</string>
+    <string name="tag_type3">加液机</string>
+    <string name="tag_status1">使用</string>
+    <string name="tag_status2">空闲</string>
+    <string name="tag_status3">废弃</string>
+    <string name="tag_bindId">绑定计划</string>
+    <string name="tag_scan">扫</string>
+</resources>

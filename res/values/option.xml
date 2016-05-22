@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="option_server">服务器地址</string>
+    <string name="option_state">保存编号和密码</string>
+    <string name="msg_count">无消息</string>
+</resources>

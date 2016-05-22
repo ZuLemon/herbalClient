@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentTop="true"
+              android:orientation="horizontal">
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="fill_parent"
+                  android:gravity="center"
+                  android:layout_weight="1"
+                  android:width="80dp"
+                  android:background="#FFFFFF"
+                  android:textSize="20sp"
+                  android:textColor="@android:color/black"
+                  android:text="7付"
+                  android:id="@+id/urgentPres_presNumber_textView"
+                 />
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="fill_parent"
+                  android:background="#FFFFFF"
+                  android:gravity="center"
+                  android:layout_weight="1"
+                  android:textSize="20sp"
+                  android:textColor="@android:color/black"
+                  android:text="免煎"
+                  android:id="@+id/urgentPres_classification_textView"
+                />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+    <TextView android:layout_width="match_parent"
+              android:layout_height="fill_parent"
+              android:layout_weight="1"
+              android:background="@android:color/white"
+              android:gravity="center_vertical"
+              android:textColor="@android:color/black"
+              android:textSize="20sp"
+              android:text="***"
+              android:id="@+id/urgentPres_patientName_textView"/>
+    <TextView android:layout_width="match_parent"
+              android:layout_height="fill_parent"
+              android:layout_weight="1"
+              android:background="@android:color/white"
+              android:gravity="center_vertical"
+              android:textColor="@android:color/black"
+              android:textSize="20sp"
+              android:text="门诊：000000"
+              android:id="@+id/urgentPres_category_textView"/>
+        </LinearLayout>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:visibility="gone"
+              android:id="@+id/urgentPres_id_textView"/>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:visibility="gone"
+              android:id="@+id/urgentPres_name_textView"/>
+</LinearLayout>
