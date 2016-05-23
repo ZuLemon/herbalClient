@@ -44,7 +44,7 @@ public class MessageFragment extends Fragment {
         public void run() {
             if (run) {
                 handler.postDelayed(this, 30000);
-                postService();
+//                postService();
             } else {
                 handler.removeCallbacks(this);
                 System.out.println(getActivity() + "停止");
@@ -67,22 +67,23 @@ public class MessageFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        run = false;
+//        run = false;
     }
 
     @Override
     public void onResume() {
         Log.i("onResume", "执行");
         super.onResume();
-        run = true;
-        handler.removeCallbacks(task);
-        handler.postDelayed(task, 10);
+        station_view.setText(new AppOption().getOption(AppOption.APP_OPTION_STATION));
+//        run = true;
+//        handler.removeCallbacks(task);
+//        handler.postDelayed(task, 10);
     }
     @Override
     public void onPause() {
         Log.i("onPause", "执行");
         super.onPause();
-        run = false;
+//        run = false;
     }
 
     @Override
@@ -93,8 +94,8 @@ public class MessageFragment extends Fragment {
         station_view=(TextView)v.findViewById(R.id.station_view);
         user_info_view.setText(Application.getUsers().getUname());
         station_view.setText(new AppOption().getOption(AppOption.APP_OPTION_STATION));
-        run=true;
-        handler.postDelayed(task, 10);
+//        run=true;
+//        handler.postDelayed(task, 10);
     }
     public void postService() {
         final Message message = new Message();
@@ -129,6 +130,6 @@ public class MessageFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        run = false;
+//        run = false;
     }
 }

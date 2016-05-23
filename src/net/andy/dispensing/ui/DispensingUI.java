@@ -693,7 +693,7 @@ private  void setGlobalView(){
                         isHer = false;
                         isFinish = false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
-                        dispensing_tagInfo_textView.setText(tagDomain.getCode());
+                        dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M",""));
                         dispensing_tagInfo_textView.setBackgroundColor(HextoColor(tagDomain.getColorValue()));
                     //自动隐藏标签绑定信息
 //                        showButtonTimer.start();
