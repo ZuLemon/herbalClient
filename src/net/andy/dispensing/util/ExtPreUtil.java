@@ -44,8 +44,9 @@ public class ExtPreUtil {
     /**
      设置处方时间
      */
-    public String setInterval(Integer interval) throws Exception {
+    public String setInterval(Integer id,Integer interval) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair( "id", String.valueOf(id ) ));
         pairs.add ( new BasicNameValuePair( "interval", String.valueOf(interval ) ));
         returnDomain = ( ReturnDomain ) new Http().post ( "interval/update.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {

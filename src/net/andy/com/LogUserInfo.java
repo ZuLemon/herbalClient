@@ -23,6 +23,7 @@ public class LogUserInfo {
             Log.i("LogUsers","空");
         } else {
             Application.setUsers(getUsersInfoById(userid));
+            Log.i("LogUsers","用户设置成功");
         }
     }
 

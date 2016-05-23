@@ -13,6 +13,8 @@ import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.OnlineUtil;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.Map;
 public class OnlineUI extends Activity{
     private ListView online_uname_listView;
     private Integer userId;
+    private SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private SimpleDateFormat sdf2= new SimpleDateFormat("d日 HH:mm");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,17 +70,25 @@ public class OnlineUI extends Activity{
             finish();
             return;
         }
+        int count=0;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for (Object obj : UserList) {
             Map<String, Object> map = new HashMap<String, Object>();
             map.put ( "online_id_textView", ( ( Map ) obj ).get ( "id" ));
-            map.put ( "online_uname_textView", ( ( Map ) obj ).get ( "name" ) );
+            map.put ( "online_count_textView", (++count));
+            map.put ( "online_uname_textView", (( Map ) obj ).get ( "name" ) );
+            map.put ( "online_ruleName_textView", ( ( Map ) obj ).get ( "ruleName" ));
+            try {
+                map.put ( "online_last_textView", sdf2.format(sdf1.parse(String.valueOf(((Map) obj ).get("last")))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             list.add ( map );
         }
         SimpleAdapter adapter = new SimpleAdapter ( this, list, R.layout.onlinelist,
-                new String[]{ "online_id_textView","online_uname_textView" },
-                new int[]{ R.id.online_id_textView,R.id.online_uname_textView} );
-                online_uname_listView.setAdapter ( adapter );
+                new String[]{ "online_id_textView","online_count_textView","online_uname_textView","online_ruleName_textView","online_last_textView" },
+                new int[]{ R.id.online_id_textView,R.id.online_count_textView,R.id.online_uname_textView,R.id.online_ruleName_textView,R.id.online_last_textView} );
+        online_uname_listView.setAdapter ( adapter );
     }
     private void onlineThread(int what) {
         final Message message = new Message ();

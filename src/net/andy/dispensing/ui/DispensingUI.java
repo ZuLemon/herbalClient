@@ -121,6 +121,7 @@ public class DispensingUI extends NFCActivity {
     private boolean hasDownTimer;
     private long serverTime;
     private boolean hasReady;
+    private int clickCount=0;
     private TagDomain tagDomain;
     private String settingHerbspec = new AppOption().getOption(AppOption.APP_OPTION_HERSPEC);
     private DecimalFormat df1 = new DecimalFormat("#.##");
@@ -182,17 +183,17 @@ public class DispensingUI extends NFCActivity {
             dispensing_medicineInfo_linearLayout.setClickable(true);
         }
     };
-    public boolean run;
+//    public boolean run;
     private final Handler handler = new Handler();
     private final Runnable task = new Runnable() {
         @Override
         public void run() {
-            if (run) {
-                handler.postDelayed(this, 30000);
-               herbalUtil(12);
-            } else {
-                handler.removeCallbacks(this);
-            }
+//            if (run) {
+//                handler.postDelayed(this, 30000);
+//               herbalUtil(12);
+//            } else {
+//                handler.removeCallbacks(this);
+//            }
         }
     };
     @Override
@@ -270,6 +271,7 @@ public class DispensingUI extends NFCActivity {
         dispensing_history_gridView.setAdapter(simpleAdapter);
         hasHistory=false;
         reset();
+        getReadyPre();
 //        setImage();
     }
 
@@ -277,20 +279,20 @@ public class DispensingUI extends NFCActivity {
     protected void onResume() {
         super.onResume();
         mWakeLock.acquire();
-        run = true;
+//        run = true;
         handler.removeCallbacks(task);
         handler.postDelayed(task, 10);
     }
     @Override
     public void onDestroy() {
         super.onDestroy();
-        run = false;
+//        run = false;
     }
     @Override
     public void onPause() {
         super.onPause();
         mWakeLock.release();
-        run = false;
+//        run = false;
     }
 
     @Override
@@ -299,7 +301,7 @@ public class DispensingUI extends NFCActivity {
 //        //启动FloatViewService
 //        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         super.onStart();
-        run=true;
+//        run=true;
         handler.postDelayed(task, 10);
     }
 
@@ -402,11 +404,22 @@ public class DispensingUI extends NFCActivity {
         dispensing_nextMedicine_textView.setVisibility(View.GONE);
     }
 
+    /**
+     * 刷新待调处方数
+     *
+     */
+    private void getReadyPre(){
+        clickCount++;
+        if(clickCount%3==0){
+            herbalUtil(12);
+        }
+    }
     class MyButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.dispensing_medicineInfo_linearLayout:
+                    getReadyPre();
                     dispensing_medicineInfo_linearLayout.setClickable(false);
                     Log.e("dis tagId", dispensingDomain.getTagId());
                     if (hasReady) {
@@ -542,6 +555,7 @@ public class DispensingUI extends NFCActivity {
             nowDis.setStatus("完成");
             historyDisDetailList.add(nowDis);
         }
+        Log.e("Now:",now+"");
         System.out.println("<>" + historyDisDetailList.size());
         if (now == dispensingDetailDomainList.size()) {
             dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
@@ -645,14 +659,15 @@ private  void setGlobalView(){
     dispensing_grid_linearLayout.setVisibility(View.VISIBLE);
     parseObject(listDis);
     setNowAdjust();
+
+    long temp = serverTime - dispensingDomain.getBeginTime().getTime();
+    socInt = temp / 1000;
+    Log.e("socInt", serverTime + ""+dispensingDomain.getBeginTime().getTime());
+        cDTimer.start();
     if(!hasDownTimer) {
         downTimer.start();
         hasDownTimer=true;
     }
-    long temp = serverTime - dispensingDomain.getBeginTime().getTime();
-    socInt = temp / 1000;
-    Log.e("socInt", socInt + "");
-        cDTimer.start();
 }
     /**
      * 获取待调剂处方
@@ -693,7 +708,7 @@ private  void setGlobalView(){
                         isHer = false;
                         isFinish = false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
-                        dispensing_tagInfo_textView.setText(tagDomain.getCode());
+                        dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M",""));
                         dispensing_tagInfo_textView.setBackgroundColor(HextoColor(tagDomain.getColorValue()));
                     //自动隐藏标签绑定信息
 //                        showButtonTimer.start();
@@ -864,6 +879,7 @@ private  void setGlobalView(){
                          */
                         case 9:
                             Map map = new PrescriptionUtil().cancelPauseByTagId(tagId);
+                            serverTime = Long.parseLong(new ServerUtil().getServerTime());
                             if (map == null) {
                                 message.what = -1;
                                 message.obj = "无匹配处方！";
@@ -871,7 +887,7 @@ private  void setGlobalView(){
                             } else {
                                 prescriptionDomain = JSON.parseObject(map.get("prescription").toString(), PrescriptionDomain.class);
                                 dispensingDomain = JSON.parseObject(map.get("dispensing").toString(), DispensingDomain.class);
-                                List listDis = JSON.parseObject(map.get("dispensingDetail").toString(), List.class);
+                                listDis = JSON.parseObject(map.get("dispensingDetail").toString(), List.class);
                                 message.what = 0;
                                 message.obj = listDis;
                                 handler.sendMessage(message);
@@ -940,42 +956,43 @@ private  void setGlobalView(){
 
     //ListMap 转为 List<Bean>
     private void parseObject(List listDis) {
-
         dispensingDetailDomainList = new ArrayList<DispensingDetailDomain>();
-        for (Object obj : listDis) {
-            dispensingDetailDomain = new DispensingDetailDomain();
-            dispensingDetailDomain.setId((Integer) ((Map) obj).get("id"));
-            dispensingDetailDomain.setDisId((Integer) ((Map) obj).get("disId"));
-            dispensingDetailDomain.setPlanId((String) ((Map) obj).get("planId"));
-            dispensingDetailDomain.setHerbId((String) ((Map) obj).get("herbId"));
-            dispensingDetailDomain.setHerbName((String) ((Map) obj).get("herbName"));
-            dispensingDetailDomain.setHerbUnit((String) ((Map) obj).get("herbUnit"));
-            dispensingDetailDomain.setQuantity(new BigDecimal(df1.format(((Map) obj).get("quantity"))));
-            dispensingDetailDomain.setSpecial((String) ((Map) obj).get("special"));
-            dispensingDetailDomain.setValuables((String) ((Map) obj).get("valuables"));
-            dispensingDetailDomain.setUserId((Integer) ((Map) obj).get("userId"));
-            dispensingDetailDomain.setDeptId((String) ((Map) obj).get("deptId"));
-            dispensingDetailDomain.setHerbSpec((String) ((Map) obj).get("herbSpec"));
-            dispensingDetailDomain.setWarning((String) ((Map) obj).get("warning"));
-            if ((((Map) obj).get("beginTime") != null) && (((Map) obj).get("endTime") != null))
-                try {
-                    dispensingDetailDomain.setBeginTime(sdf.parse((String) ((Map) obj).get("beginTime")));
-                    dispensingDetailDomain.setEndTime(sdf.parse((String) ((Map) obj).get("endTime")));
-                } catch (ParseException e) {
+        if(listDis.size()!=0) {
+            for (Object obj : listDis) {
+                dispensingDetailDomain = new DispensingDetailDomain();
+                dispensingDetailDomain.setId((Integer) ((Map) obj).get("id"));
+                dispensingDetailDomain.setDisId((Integer) ((Map) obj).get("disId"));
+                dispensingDetailDomain.setPlanId((String) ((Map) obj).get("planId"));
+                dispensingDetailDomain.setHerbId((String) ((Map) obj).get("herbId"));
+                dispensingDetailDomain.setHerbName((String) ((Map) obj).get("herbName"));
+                dispensingDetailDomain.setHerbUnit((String) ((Map) obj).get("herbUnit"));
+                dispensingDetailDomain.setQuantity(new BigDecimal(df1.format(((Map) obj).get("quantity"))));
+                dispensingDetailDomain.setSpecial((String) ((Map) obj).get("special"));
+                dispensingDetailDomain.setValuables((String) ((Map) obj).get("valuables"));
+                dispensingDetailDomain.setUserId((Integer) ((Map) obj).get("userId"));
+                dispensingDetailDomain.setDeptId((String) ((Map) obj).get("deptId"));
+                dispensingDetailDomain.setHerbSpec((String) ((Map) obj).get("herbSpec"));
+                dispensingDetailDomain.setWarning((String) ((Map) obj).get("warning"));
+                if ((((Map) obj).get("beginTime") != null) && (((Map) obj).get("endTime") != null))
+                    try {
+                        dispensingDetailDomain.setBeginTime(sdf.parse((String) ((Map) obj).get("beginTime")));
+                        dispensingDetailDomain.setEndTime(sdf.parse((String) ((Map) obj).get("endTime")));
+                    } catch (ParseException e) {
 //                e.printStackTrace();
-                    new CoolToast(getBaseContext()).show((String) e.getMessage());
+                        new CoolToast(getBaseContext()).show((String) e.getMessage());
+                    }
+                dispensingDetailDomain.setStatus((String) ((Map) obj).get("status"));
+                dispensingDetailDomain.setShelf((String) ((Map) obj).get("shelf"));
+                if ("饮片".equals(prescriptionDomain.getClassification()) || "膏方".equals(prescriptionDomain.getClassification())) {
+                    if ("".equals((String) ((Map) obj).get("herbSpec"))) {
+                        totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
+                    }
+                } else {
+                    totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
                 }
-            dispensingDetailDomain.setStatus((String) ((Map) obj).get("status"));
-            dispensingDetailDomain.setShelf((String) ((Map) obj).get("shelf"));
-            if ("饮片".equals(prescriptionDomain.getClassification()) || "膏方".equals(prescriptionDomain.getClassification())) {
-                if ("".equals((String) ((Map) obj).get("herbSpec"))) {
-                    totalWeight = Arith.add((BigDecimal)((Map) obj).get("quantity"),totalWeight);
-                }
-            } else {
-                totalWeight = Arith.add((BigDecimal)((Map) obj).get("quantity"),totalWeight);
-            }
 
-            dispensingDetailDomainList.add(dispensingDetailDomain);
+                dispensingDetailDomainList.add(dispensingDetailDomain);
+            }
         }
 //
 //        Collections.sort(dCollections.sort(dispensingDetailDomainList, new ListShelfComparator());

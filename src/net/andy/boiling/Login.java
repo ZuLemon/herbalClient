@@ -191,7 +191,7 @@ public class Login extends Activity {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case -1:
-                        new CoolToast(getBaseContext()).show((String) msg.obj);
+                        new AppOption().setOption(AppOption.APP_OPTION_STATION, "未设置队列");
                         break;
                     case 0:
                         new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(msg.obj));
@@ -206,8 +206,13 @@ public class Login extends Activity {
                 super.run();
                 try {
                     StationDomain st = new StationUtil().getStationByDevice();
-                    message.obj = new RuleUtil().getRules(st.getRulesId()).getName();
-                    message.what = 0;
+                    if(st==null){
+                        message.obj=null;
+                        message.what = -1;
+                    }else {
+                        message.obj = new RuleUtil().getRules(st.getRulesId()).getName();
+                        message.what = 0;
+                    }
                     handler.sendMessage(message);
                 } catch (Exception e) {
                     message.what = -1;

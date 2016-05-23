@@ -90,6 +90,10 @@ public class StationRuleUI extends Activity {
 //                    stationDomain.setDevice(String.valueOf(((Map) stationAll.get(i)).get("device")));
 //                }
 //            }
+            if(stationrule_stationName_editText.getText().toString().length()==0){
+                new CoolToast(getBaseContext()).show("工位名称不能为空");
+                return;
+            }
             if (stationDomain.getId() != null) {
 
                 stationDomain.setName("" + stationrule_stationName_editText.getText());
@@ -241,6 +245,7 @@ public class StationRuleUI extends Activity {
                     break;
                 case 2:
                     new CoolToast(getBaseContext()).show((String) msg.obj);
+                    StationThread(0);
                     StationThread();
                     break;
             }

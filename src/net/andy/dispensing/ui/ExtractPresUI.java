@@ -29,6 +29,7 @@ public class ExtractPresUI extends Activity{
     private Button extractpres_update_button;
     private EditText extractpres_time_editText;
     private TextView extractpres_description_textView;
+    private Integer intevalId=0;
     private Integer extTime;
     private boolean isClick;
     private ButtonListener buttonListener=new ButtonListener();
@@ -83,6 +84,7 @@ public class ExtractPresUI extends Activity{
                         break;
                     case 1:
                         Map valMap= (Map) msg.obj;
+                        intevalId=Integer.parseInt(String.valueOf(valMap.get("id")));
                         extractpres_update_button.setText("修改时间");
                         extractpres_time_editText.setText(String.valueOf(valMap.get("interval")));
 //                        extractpres_time_editText.setFocusable(true);
@@ -123,7 +125,7 @@ public class ExtractPresUI extends Activity{
                             handler.sendMessage(message);
                             break;
                         case 2:
-                            message.obj= new ExtPreUtil().setInterval(Integer.parseInt(String.valueOf(extractpres_time_editText.getText())));
+                            message.obj= new ExtPreUtil().setInterval(intevalId,Integer.parseInt(String.valueOf(extractpres_time_editText.getText())));
                             message.what = 2;
                             handler.sendMessage(message);
                             break;

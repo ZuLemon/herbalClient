@@ -21,7 +21,7 @@ public class OnlineUtil {
     public List getOnline(String userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "userId", userId));
-        returnDomain = (ReturnDomain) new Http().post ( "getOnline.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) new Http().post ( "readyOnline/getOnline.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {
@@ -35,7 +35,7 @@ public class OnlineUtil {
     public String offline(Integer userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "userId",String.valueOf( userId)));
-        returnDomain = (ReturnDomain) new Http().post ( "offline.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) new Http().post ( "readyOnline/offline.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "设置下线成功！";
         } else {
