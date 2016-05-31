@@ -42,4 +42,15 @@ public class OnlineUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
+    public String online(Integer userId,Integer ruleId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add ( new BasicNameValuePair( "userId",String.valueOf( userId)));
+        pairs.add ( new BasicNameValuePair( "ruleId",String.valueOf( ruleId)));
+        returnDomain = (ReturnDomain) new Http().post ( "readyOnline/online.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return "上线成功！";
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
 }

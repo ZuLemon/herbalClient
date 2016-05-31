@@ -92,6 +92,7 @@ public class MqttService extends Service {
         @Override
         public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
             String mes = new String(mqttMessage.getPayload(), "utf-8");
+            Log.e("mes",mes);
             new MqttNotification().notification(mes);
         }
 

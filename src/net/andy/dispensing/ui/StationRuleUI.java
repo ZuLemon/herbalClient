@@ -7,6 +7,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+import net.andy.com.Application;
 import net.andy.dispensing.domain.RulesDomain;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.util.RuleUtil;
@@ -150,7 +151,8 @@ public class StationRuleUI extends Activity {
                         new CoolToast(getBaseContext()).show((String) msg.obj);
                         break;
                     case 0:
-                        new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(msg.obj));
+                        Application.setRulesDomain((RulesDomain) msg.obj);
+                        new AppOption().setOption(AppOption.APP_OPTION_STATION, ((RulesDomain)msg.obj).getName());
                         break;
                 }
             }
@@ -162,7 +164,7 @@ public class StationRuleUI extends Activity {
                 super.run();
                 try {
                     StationDomain st = new StationUtil().getStationByDevice();
-                    message.obj = new RuleUtil().getRules(st.getRulesId()).getName();
+                    message.obj = new RuleUtil().getRules(st.getRulesId());
                     message.what = 0;
                     handler.sendMessage(message);
                 } catch (Exception e) {

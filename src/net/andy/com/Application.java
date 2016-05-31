@@ -3,6 +3,8 @@ package net.andy.com;
 import android.content.Context;
 import android.content.Intent;
 import net.andy.boiling.domain.Users;
+import net.andy.dispensing.domain.RulesDomain;
+import net.andy.dispensing.domain.StationDomain;
 
 /**
  * Created by Administrator on 2014-11-10.
@@ -13,6 +15,17 @@ public class Application extends android.app.Application {
     private static Users users;
     private static int msgCount=0;
     private static int intervalTime=3;
+
+
+    private static RulesDomain rulesDomain;
+
+    public static RulesDomain getRulesDomain() {
+        return rulesDomain;
+    }
+
+    public static void setRulesDomain(RulesDomain rulesDomain) {
+        Application.rulesDomain = rulesDomain;
+    }
 
     @Override
     public void onCreate() {

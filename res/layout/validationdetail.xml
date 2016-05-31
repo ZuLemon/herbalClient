@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@color/info_panel_bg">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
-              android:id="@+id/adjust_history_linearLayout"
+              android:id="@+id/validationdetail_linearLayout"
               android:background="@color/info_panel_bg"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="530dp">
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -20,7 +24,7 @@
                   android:gravity="center"
                   android:layout_gravity="center"
                   android:text="免煎 14付 口服水冲日二次"
-                  android:id="@+id/disHistory_info_textView"/>
+                  android:id="@+id/validationdetail_info_textView"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -30,20 +34,6 @@
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp">
-            <!--<LinearLayout-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:paddingLeft="5dp"-->
-                    <!--android:layout_gravity="center"-->
-                    <!--android:gravity="center"-->
-                    <!--android:layout_height="wrap_content">-->
-                <!--<TextView style="@style/Custom25TextViewTheme"-->
-                          <!--android:gravity="center_vertical"-->
-                          <!--android:layout_gravity="center"-->
-                          <!--android:id="@+id/disHistory_stationName_textView"-->
-                          <!--android:textColor="#ffffffff"-->
-                          <!--android:text="黄河路门诊自煎饮片"/>-->
-            <!--</LinearLayout>-->
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
@@ -74,18 +64,18 @@
                 <TextView style="@style/Custom20TextViewTheme"
                           android:layout_weight="1"
                           android:gravity="left"
-                          android:id="@+id/disHistory_patientName_textView"
+                          android:id="@+id/validationdetail_patientName_textView"
                           android:textColor="#ffffffff"
                           android:text="测试用户"/>
                 <TextView style="@style/Custom20TextViewTheme"
                           android:layout_weight="1"
                           android:gravity="left"
-                          android:id="@+id/disHistory_deptName_textView"
+                          android:id="@+id/validationdetail_deptName_textView"
                           android:textColor="#ffffffff"
                           android:text="测试科室"/>
                 <TextView style="@style/Custom20TextViewTheme"
                           android:layout_weight="1"
-                          android:id="@+id/disHistory_doctorName_textView"
+                          android:id="@+id/validationdetail_doctorName_textView"
                           android:gravity="left"
                           android:textColor="#ffffffff"
                           android:text="测试医生"/>
@@ -95,19 +85,45 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/dis_history_gridView"
-              android:layout_alignParentTop="true"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:stretchMode="columnWidth"
-              android:listSelector="#AACCDD"
-              android:numColumns="auto_fit"
-              android:verticalSpacing="1dp"
-              android:gravity="center"
-              android:background="@color/info_panel_bg"
-              android:visibility="visible">
-    </GridView>
-        </LinearLayout>
-
+        <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:id="@+id/validationdetail_gridView"
+                  android:layout_alignParentTop="true"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:stretchMode="columnWidth"
+                  android:listSelector="#AACCDD"
+                  android:numColumns="auto_fit"
+                  android:verticalSpacing="1dp"
+                  android:gravity="center"
+                  android:background="@color/info_panel_bg"
+                  android:visibility="visible">
+        </GridView>
+    </LinearLayout>
 </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_alignParentBottom="true">
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="确认复核"
+                android:id="@+id/validationdetail_confirm_button"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/orangerred_circular"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="返    回"
+                android:id="@+id/validationdetail_return_button"/>
+    </LinearLayout>
+    </RelativeLayout>

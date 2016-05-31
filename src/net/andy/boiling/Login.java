@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import net.andy.boiling.ui.UpdateUI;
 import net.andy.com.*;
+import net.andy.dispensing.domain.RulesDomain;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.util.RuleUtil;
 import net.andy.dispensing.util.StationUtil;
@@ -194,7 +195,8 @@ public class Login extends Activity {
                         new AppOption().setOption(AppOption.APP_OPTION_STATION, "未设置队列");
                         break;
                     case 0:
-                        new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(msg.obj));
+                        Application.setRulesDomain((RulesDomain) msg.obj);
+                        new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(((RulesDomain) msg.obj).getName()));
                         break;
                 }
             }
@@ -210,7 +212,7 @@ public class Login extends Activity {
                         message.obj=null;
                         message.what = -1;
                     }else {
-                        message.obj = new RuleUtil().getRules(st.getRulesId()).getName();
+                        message.obj = new RuleUtil().getRules(st.getRulesId());
                         message.what = 0;
                     }
                     handler.sendMessage(message);

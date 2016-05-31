@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="19"
+          android:versionCode="21"
           android:versionName="1.0">
     <uses-sdk android:minSdkVersion="17" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
@@ -40,7 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <service android:name="net.andy.com.MqttService"/>
         <service android:name="net.andy.com.FloatViewService"/>
         <activity android:name=".Option"/>
@@ -68,8 +67,7 @@
                   android:theme="@style/TranslucentFullscreen"
         />
         <activity android:name="net.andy.dispensing.ui.ReplenishUI"/>
-        <activity android:name="net.andy.dispensing.ui.DisHistoryUI"
-                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.DisHistoryUI"/>
         <activity android:name="net.andy.dispensing.ui.AckReplenishUI"
                   android:theme="@style/TranslucentFullscreen"/>
         <activity android:name="net.andy.dispensing.ui.PausePresUI"
@@ -78,6 +76,8 @@
         <activity android:name="net.andy.dispensing.ui.ExtractPresUI"/>
         <activity android:name="net.andy.dispensing.ui.UrgentPresUI"/>
         <activity android:name="net.andy.dispensing.ui.OnlineUI"/>
+        <activity android:name="net.andy.dispensing.ui.ValidationUI"/>
+        <activity android:name="net.andy.dispensing.ui.ValidationDetailUI"/>
         <!--<service android:name=".service.PollingService"/>-->
         <!--<receiver android:name=".util.BootUtil">-->
         <!--<intent-filter>-->

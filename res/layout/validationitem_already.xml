@@ -25,12 +25,12 @@
                       android:layout_height="match_parent"
                       android:textColor="@android:color/black"
                       android:textSize="20sp"
-                      android:id="@+id/validationItem_count"
+                      android:id="@+id/validationItem_already_count"
                       android:gravity="left"
                       android:text="12"/>
         </LinearLayout>
         <LinearLayout android:layout_width="130dp"
-                      android:layout_height="65dp"
+                      android:layout_height="45dp"
                       android:layout_gravity="center_vertical"
                       android:gravity="center_vertical"
                       android:paddingBottom="5dp"
@@ -44,36 +44,8 @@
                       android:textColor="@android:color/black"
                       android:textSize="25sp"
                       android:text="管理员"
-                      android:id="@+id/validationItem_diser"/>
+                      android:id="@+id/validationItem_already_diser"/>
 
-        </LinearLayout>
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical"
-                      android:paddingRight="5dp"
-                      android:paddingLeft="5dp"
-                      android:paddingTop="1dp"
-                      android:layout_gravity="left"
-                      android:gravity="center_vertical"
-                      android:layout_weight="2">
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:text="门诊饮片"
-                      android:gravity="right"
-                      android:paddingBottom="5dp"
-                      android:id="@+id/validationItem_classification"
-                      android:textColor="@android:color/black"
-                      android:textSize="15sp"
-            />
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/validationItem_presNumber"
-                      android:text="7付 32味"
-                      android:paddingBottom="5dp"
-                      android:gravity="right"
-                      android:textColor="@android:color/black"
-                      android:textSize="15sp"
-            />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent"
@@ -81,33 +53,20 @@
                   android:layout_weight="1"
                   android:paddingLeft="5dp"
                 android:paddingRight="5dp">
-        <TextView android:layout_width="wrap_content"
+        <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:layout_weight="3"
                   android:layout_gravity="right"
                   android:gravity="left"
                   android:paddingLeft="5dp"
                   android:paddingRight="5dp"
-                  android:text="中药处方单 口服水煎日两次"
+                  android:text="选中时间:27日 12:51:53"
                   android:textColor="@android:color/darker_gray"
-                  android:id="@+id/validationItem_info"
-                  android:textSize="15sp"
-        />
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:layout_gravity="right"
-                  android:gravity="left"
-                  android:paddingLeft="5dp"
-                  android:paddingRight="5dp"
-                  android:text="剩余味数：5"
-                  android:textColor="@android:color/darker_gray"
-                  android:id="@+id/validationItem_cnt"
+                  android:id="@+id/validationItem_already_time"
                   android:textSize="15sp"
         />
     </LinearLayout>
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:id="@+id/validationItem_id"
+              android:id="@+id/validationItem_already_id"
               android:visibility="gone"/>
 </LinearLayout>

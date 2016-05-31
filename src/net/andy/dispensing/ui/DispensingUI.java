@@ -1,19 +1,21 @@
 package net.andy.dispensing.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.*;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import com.alibaba.fastjson.JSON;
 import net.andy.boiling.domain.TagDomain;
 import net.andy.boiling.util.TagUtil;
-import net.andy.dispensing.domain.DispensingDetailDomain;
-import net.andy.dispensing.domain.DispensingDomain;
-import net.andy.dispensing.domain.ReadyDomain;
-import net.andy.dispensing.domain.StationDomain;
+import net.andy.com.Application;
+import net.andy.dispensing.domain.*;
 import net.andy.dispensing.util.*;
 import net.andy.boiling.R;
 import net.andy.boiling.domain.PrescriptionDomain;
@@ -36,6 +38,8 @@ import java.util.regex.Pattern;
  */
 public class DispensingUI extends NFCActivity {
     private PowerManager.WakeLock mWakeLock;
+    public static final String ACTION_DISPENSING= "net.andy.com.MqttNotification";
+    private  UpdateUIBroadcastReceiver broadcastReceiver;
     private final static int SCANNIN_GREQUEST_CODE = 1000;
     private final static int PAUSE_PRESITION_CODE = 2000;
     private final static int PAUSE_GETPRESITION_CODE = 3000;
@@ -100,7 +104,7 @@ public class DispensingUI extends NFCActivity {
     private String barcode = "";
     private SimpleAdapter imageAdapter;
     private GridView dispensing_history_gridView;
-    private SimpleAdapter simpleAdapter;
+    private GridAdapter gridAdapter;
     private Integer count;
     private long minInt;
     private String minString;
@@ -119,13 +123,27 @@ public class DispensingUI extends NFCActivity {
     private boolean hasHistory;
     private boolean isShow;
     private boolean hasDownTimer;
+    private boolean hasValidateion;
+    private boolean isGetPresTime=true;
     private long serverTime;
     private boolean hasReady;
     private int clickCount=0;
     private TagDomain tagDomain;
+    private DispensingValidationDomain dispensingValidationDomain=new DispensingValidationDomain();
     private String settingHerbspec = new AppOption().getOption(AppOption.APP_OPTION_HERSPEC);
     private DecimalFormat df1 = new DecimalFormat("#.##");
     private List<HashMap<String, Object>> imageData = new ArrayList<HashMap<String, Object>>();
+    private CountDownTimer getPresTime = new CountDownTimer(2 * 1000, 200) {
+        @Override
+        public void onTick(long l) {
+            isGetPresTime=false;
+        }
+
+        @Override
+        public void onFinish() {
+            isGetPresTime=true;
+        }
+    };
     private CountDownTimer cDTimer = new CountDownTimer(Integer.parseInt(new AppOption().getOption(AppOption.APP_OPTION_WAITTIME)) * 1000, 1000) {
         @Override
         public void onTick(long l) {
@@ -200,6 +218,11 @@ public class DispensingUI extends NFCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dispensing);
+        // 动态注册广播
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACTION_DISPENSING);
+        broadcastReceiver = new UpdateUIBroadcastReceiver();
+        registerReceiver(broadcastReceiver, filter);
         //屏幕常亮
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
@@ -266,10 +289,10 @@ public class DispensingUI extends NFCActivity {
         dispensing_image_gridView.setAdapter(imageAdapter);
         historyDisDetailList = new ArrayList<DispensingDetailDomain>();
         historyData = new ArrayList<HashMap<String, Object>>();
-        simpleAdapter = new SimpleAdapter(this,
-                historyData, R.layout.dis_historyitem, new String[]{"ItemNameView", "ItemNumView"}, new int[]{R.id.dispensing_name_textView, R.id.dispensing_num_textView});
-        dispensing_history_gridView.setAdapter(simpleAdapter);
+        gridAdapter = new GridAdapter(this);
+        dispensing_history_gridView.setAdapter(gridAdapter);
         hasHistory=false;
+        herbalUtil(12);
         reset();
         getReadyPre();
 //        setImage();
@@ -286,6 +309,8 @@ public class DispensingUI extends NFCActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        // 注销广播
+        unregisterReceiver(broadcastReceiver);
 //        run = false;
     }
     @Override
@@ -345,13 +370,29 @@ public class DispensingUI extends NFCActivity {
         }
         imageAdapter.notifyDataSetChanged();
     }
-
+    private void showValidationImage(){
+        if(dispensingValidationDomain!=null) {
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("imageItem", R.drawable.fuhe);
+            hasValidateion=true;
+            imageData.add(map);
+            imageAdapter.notifyDataSetChanged();
+        }
+    }
     /**
      * 无预调剂处方时
      */
 
     private void setValue() {
         nowDis = dispensingDetailDomainList.get(disCount);
+        if (!"".equals(nowDis.getSpecial())) {
+            dispensing_special_textView.setVisibility(View.VISIBLE);
+            dispensing_special_textView.setText((++valCount)+""+nowDis.getSpecial());
+            dispensing_presName_textView.setTextColor(Color.RED);
+        } else {
+            dispensing_presName_textView.setTextColor(Color.BLACK);
+            dispensing_special_textView.setVisibility(View.INVISIBLE);
+        }
         if ("饮片".equals(prescriptionDomain.getClassification()) || "膏方".equals(prescriptionDomain.getClassification())) {
             dispensing_nowCount_textView.setText("第" + (disCount + 1) + "味  共" + dispensingDetailDomainList.size() + "味  计" + df1.format(Arith.mul(totalWeight , prescriptionDomain.getPresNumber())) + nowDis.getHerbUnit());
             dispensing_presName_textView.setText(nowDis.getHerbName() + " " + Arith.mul( nowDis.getQuantity(), prescriptionDomain.getPresNumber()) + nowDis.getHerbUnit());
@@ -361,12 +402,7 @@ public class DispensingUI extends NFCActivity {
             dispensing_presName_textView.setText(nowDis.getHerbName() + " " + nowDis.getQuantity() + nowDis.getHerbUnit());
             dispensing_total_textView.setText(Arith.mul(nowDis.getQuantity(), prescriptionDomain.getPresNumber()) + nowDis.getHerbUnit());
         }
-        if (!"".equals(nowDis.getSpecial())) {
-            dispensing_special_textView.setVisibility(View.VISIBLE);
-            dispensing_special_textView.setText((++valCount)+""+nowDis.getSpecial());
-        } else {
-            dispensing_special_textView.setVisibility(View.INVISIBLE);
-        }
+
         if (!Boolean.parseBoolean(settingHerbspec)) {
             // 显示规格
             dispensing_herspecAndTotal_linearLayout.setVisibility(View.GONE);
@@ -409,10 +445,10 @@ public class DispensingUI extends NFCActivity {
      *
      */
     private void getReadyPre(){
-        clickCount++;
-        if(clickCount%3==0){
-            herbalUtil(12);
-        }
+//        clickCount++;
+//        if(clickCount%3==0){
+//            herbalUtil(12);
+//        }
     }
     class MyButtonListener implements View.OnClickListener {
         @Override
@@ -454,9 +490,14 @@ public class DispensingUI extends NFCActivity {
 //                    startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
                     break;
                 case R.id.dispensing_tagInfo_linearLayout:
-                    isFinish = false;
-                    //正常流程
-                    herbalUtil(0);
+                    if(isGetPresTime) {
+                        getPresTime.start();
+                        isFinish = false;
+                        //正常流程
+                        herbalUtil(0);
+                    }else{
+                        new CoolToast(getBaseContext()).show("点击无效，请不要频繁点击！");
+                    }
                     //开启读条码功能
 //                    Intent i = new Intent();
 //                    i.setClass(DispensingUI.this, MipcaActivityCapture.class);
@@ -491,7 +532,7 @@ public class DispensingUI extends NFCActivity {
                     if (hasHistory) {
                         Intent in = new Intent(DispensingUI.this, DisHistoryUI.class);
                         in.putExtra("dises", (Serializable) historyDisDetailList);
-                        in.putExtra("preNum", prescriptionDomain.getPresNumber());
+                        in.putExtra("pre", (Serializable)prescriptionDomain);
                         startActivity(in);
                     } else {
                         new CoolToast(getBaseContext()).show("请先获取处方");
@@ -546,6 +587,7 @@ public class DispensingUI extends NFCActivity {
         int now = 0;
         for (; now < dispensingDetailDomainList.size(); now++
                 ) {
+            System.out.println("setNowAdjust:" +dispensingDetailDomainList.get(now).getStatus());
             if ("未调剂".equals(dispensingDetailDomainList.get(now).getStatus())) {
                 disCount = now;
                 break;
@@ -572,29 +614,29 @@ public class DispensingUI extends NFCActivity {
      **/
     private void setStatus(boolean b) {
         if (b) {
-            dispensing_readNextMedicine_linearLayout.animate()
-                    .alpha(0f)
-                    .setDuration(2000)
-                    .setListener(null);
+//            dispensing_readNextMedicine_linearLayout.animate()
+//                    .alpha(0f)
+//                    .setDuration(2000)
+//                    .setListener(null);
             dispensing_readNextMedicine_linearLayout.setVisibility(View.GONE);
             dispensing_medicineInfo_linearLayout.setVisibility(View.VISIBLE);
-            dispensing_medicineInfo_linearLayout.setAlpha(0f);
-            dispensing_medicineInfo_linearLayout.animate()
-                    .alpha(1f)
-                    .setDuration(2000)
-                    .setListener(null);
+//            dispensing_medicineInfo_linearLayout.setAlpha(0f);
+//            dispensing_medicineInfo_linearLayout.animate()
+//                    .alpha(1f)
+//                    .setDuration(2000)
+//                    .setListener(null);
         } else {
-            dispensing_medicineInfo_linearLayout.animate()
-                    .alpha(0f)
-                    .setDuration(1000)
-                    .setListener(null);
+//            dispensing_medicineInfo_linearLayout.animate()
+//                    .alpha(0f)
+//                    .setDuration(1000)
+//                    .setListener(null);
             dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
             dispensing_readNextMedicine_linearLayout.setVisibility(View.VISIBLE);
-            dispensing_readNextMedicine_linearLayout.setAlpha(0f);
-            dispensing_readNextMedicine_linearLayout.animate()
-                    .alpha(1f)
-                    .setDuration(1000)
-                    .setListener(null);
+//            dispensing_readNextMedicine_linearLayout.setAlpha(0f);
+//            dispensing_readNextMedicine_linearLayout.animate()
+//                    .alpha(1f)
+//                    .setDuration(1000)
+//                    .setListener(null);
         }
     }
 
@@ -616,7 +658,7 @@ public class DispensingUI extends NFCActivity {
                     setStatus(false);
                     dispensing_banding_linearLayout.setVisibility(View.GONE);
                     historyData.clear();
-                    simpleAdapter.notifyDataSetChanged();
+                    gridAdapter.notifyDataSetChanged();
                     socInt = 0;
                     downTimer.cancel();
                     isHer = false;
@@ -659,7 +701,6 @@ private  void setGlobalView(){
     dispensing_grid_linearLayout.setVisibility(View.VISIBLE);
     parseObject(listDis);
     setNowAdjust();
-
     long temp = serverTime - dispensingDomain.getBeginTime().getTime();
     socInt = temp / 1000;
     Log.e("socInt", serverTime + ""+dispensingDomain.getBeginTime().getTime());
@@ -702,6 +743,9 @@ private  void setGlobalView(){
                         dispensing_adjust_linearLayout.setVisibility(View.GONE);
                         dispensing_warning_linearLayout.setVisibility(View.VISIBLE);
                         setValue();
+                        if(!hasValidateion) {
+                            herbalUtil(14);
+                        }
                         break;
                     case 4:
                         hasPre = false;
@@ -732,7 +776,7 @@ private  void setGlobalView(){
                         dispensing_readNextMedicine_button.setVisibility(View.VISIBLE);
                         dispensing_banding_linearLayout.setVisibility(View.GONE);
                         historyData.clear();
-                        simpleAdapter.notifyDataSetChanged();
+                        gridAdapter.notifyDataSetChanged();
                         setStatus(false);
                         downTimer.cancel();
                         downTimer.onFinish();
@@ -766,6 +810,12 @@ private  void setGlobalView(){
                     case 12:
                         dispensing_noDispensing_textView.setText("待调："+restCount);
                         dispensing_alreadyDispensing_textView.setText("完成："+alreadyDisCount);
+                        break;
+                    case 13:
+                        dispensing_alreadyDispensing_textView.setText("完成："+alreadyDisCount);
+                        break;
+                    case 14:
+                        showValidationImage();
                         break;
                 }
             }
@@ -907,11 +957,23 @@ private  void setGlobalView(){
                             handler.sendMessage(message);
                             break;
                         case 12:
+                            new OnlineUtil().online(Application.getUsers().getId(),Application.getRulesDomain().getId());
                             StationDomain tempSd=new StationUtil().getStationByDevice();
                             restCount=reportUtil.getNoDispensingByRule(tempSd.getRulesId());
-                            alreadyDisCount=reportUtil.getDispensingByUser(new AppOption().getOption(AppOption.APP_OPTION_USER));
+                            alreadyDisCount=reportUtil.getDispensingByUser(String.valueOf(Application.getUsers().getId()));
                             message.obj = "";
                             message.what = 12;
+                            handler.sendMessage(message);
+                            break;
+                        case 13:
+                            alreadyDisCount=reportUtil.getDispensingByUser(String.valueOf(Application.getUsers().getId()));
+                            message.obj = "";
+                            message.what = 13;
+                            handler.sendMessage(message);
+                            break;
+                        case 14:
+                            dispensingValidationDomain=new ValidationUtil().getValidationByDis(String.valueOf(nowDis.getDisId()));
+                            message.what = 14;
                             handler.sendMessage(message);
                             break;
                     }
@@ -925,7 +987,7 @@ private  void setGlobalView(){
     }
 
     private void reset() {
-        herbalUtil(12);
+        herbalUtil(13);
         dispensing_grid_linearLayout.setVisibility(View.GONE);
         imageData.clear();
         imageAdapter.notifyDataSetChanged();
@@ -939,6 +1001,7 @@ private  void setGlobalView(){
         hasReady = false;
         totalWeight = new BigDecimal(0);
         valCount=0;
+        hasValidateion=false;
     }
 
     private void setView() {
@@ -1068,8 +1131,10 @@ private  void setGlobalView(){
             map = new HashMap<String, Object>();
             map.put("ItemNameView", historyDisDetailList.get(i).getHerbName());
             map.put("ItemNumView", (historyDisDetailList.get(i).getQuantity()) + dispensingDetailDomainList.get(i).getHerbUnit());
+            map.put("ItemWaringView", (historyDisDetailList.get(i).getWarning()));
+            map.put("ItemSpecialView", (historyDisDetailList.get(i).getSpecial()));
             historyData.add(map);
-            simpleAdapter.notifyDataSetChanged();
+            gridAdapter.notifyDataSetChanged();
             if ((i - m) < 0) {
                 continue;
             }
@@ -1079,16 +1144,98 @@ private  void setGlobalView(){
             map = new HashMap<String, Object>();
             map.put("ItemNameView", historyDisDetailList.get((i - m)).getHerbName());
             map.put("ItemNumView", (historyDisDetailList.get((i - m)).getQuantity()) + dispensingDetailDomainList.get((i - m)).getHerbUnit());
+            map.put("ItemWaringView", (historyDisDetailList.get((i - m)).getWarning()));
+            map.put("ItemSpecialView", (historyDisDetailList.get((i - m)).getSpecial()));
             historyData.add(map);
-            simpleAdapter.notifyDataSetChanged();
+            gridAdapter.notifyDataSetChanged();
             if ((i - x) < 0) {
                 continue;
             }
             map = new HashMap<String, Object>();
             map.put("ItemNameView", historyDisDetailList.get((i - x)).getHerbName());
             map.put("ItemNumView", (historyDisDetailList.get((i - x)).getQuantity()) + dispensingDetailDomainList.get((i - x)).getHerbUnit());
+            map.put("ItemWaringView", (historyDisDetailList.get((i - x)).getWarning()));
+            map.put("ItemSpecialView", (historyDisDetailList.get((i - x)).getSpecial()));
+
             historyData.add(map);
-            simpleAdapter.notifyDataSetChanged();
+            gridAdapter.notifyDataSetChanged();
+        }
+    }
+    private class GridAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
+
+        public GridAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return historyData.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return i;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final Dis dis;
+            if (view == null) {
+                view = inflater.inflate(R.layout.dis_historyitem, viewGroup, false);
+                dis = new Dis();
+                dis.historyItem_linearLayout= (LinearLayout) view.findViewById(R.id.historyItem_linearLayout);
+                dis.historyItem_name_textView= (TextView) view.findViewById(R.id.historyItem_name_textView);
+                dis.historyItem_waring_imageView = (ImageView) view.findViewById(R.id.historyItem_waring_imageView);
+                dis.historyItem_num_textView = (TextView) view.findViewById(R.id.historyItem_num_textView);
+                view.setTag(dis);
+            } else {
+                dis = (Dis) view.getTag();
+            }
+            Map map = (Map) historyData.get(i);
+//            Log.e("map", map.toString());
+            if("true".equals(map.get("ItemWaringView"))){
+                dis.historyItem_waring_imageView.setVisibility(View.VISIBLE);
+            }else{
+                dis.historyItem_waring_imageView.setVisibility(View.INVISIBLE);
+            }
+            if(map.get("ItemSpecialView").toString().length()>0){
+                dis.historyItem_linearLayout.setBackgroundColor(Color.parseColor("#D2691E"));
+                dis.historyItem_name_textView.setTextColor(Color.WHITE);
+                dis.historyItem_num_textView.setTextColor(Color.WHITE);
+                dis.historyItem_name_textView .setText(""+map.get("ItemNameView")+map.get("ItemSpecialView"));
+            }else {
+                dis.historyItem_linearLayout.setBackgroundColor(Color.WHITE);
+                dis.historyItem_name_textView.setTextColor(Color.BLACK);
+                dis.historyItem_num_textView.setTextColor(Color.BLACK);
+                dis.historyItem_name_textView.setText("" + map.get("ItemNameView"));
+            }
+            dis.historyItem_num_textView .setText(""+map.get("ItemNumView"));
+            return view;
+        }
+
+
+        private class Dis {
+            private LinearLayout historyItem_linearLayout;
+            private ImageView historyItem_waring_imageView;
+            private TextView historyItem_name_textView;
+            private TextView historyItem_num_textView;
+        }
+    }
+    private class UpdateUIBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String bindId=intent.getStringExtra("bindId");
+            String message=intent.getStringExtra("message");
+            if(Application.getRulesDomain().getId().equals(Integer.parseInt(bindId))){
+                dispensing_noDispensing_textView.setText("待调："+message);
+                Log.i("待调更新",message);
+            }
         }
     }
 }
