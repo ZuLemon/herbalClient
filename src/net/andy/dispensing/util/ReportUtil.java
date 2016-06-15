@@ -28,6 +28,18 @@ public class ReportUtil {
         }
     }
     /**
+     获取队列未调剂 处方数
+     */
+    public List getNoDispensing() throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        returnDomain = (ReturnDomain) new Http().post ( "report/dispensing/getNoDispensing.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+    /**
      获取今天已经调剂的 处方数
      */
     public Integer getDispensingByUser(String userId) throws Exception {

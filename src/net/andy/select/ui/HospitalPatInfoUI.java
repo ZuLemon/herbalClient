@@ -1,4 +1,4 @@
-package net.andy.dispensing.ui;
+package net.andy.select.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,9 @@ import net.andy.boiling.R;
 import net.andy.boiling.domain.PrescriptionDomain;
 
 /**
- * Created by Guang on 2016/3/16.
+ * Created by Guang on 2016/6/8.
  */
-public class PatientInfoUI extends Activity{
+public class HospitalPatInfoUI extends Activity{
     private LinearLayout adjustPatientInfo_linearLayout;
     private TextView adjustPatientinfo_drugstoreName_textView;
     private TextView adjustPatientInfo_classification_textView;
@@ -28,7 +28,7 @@ public class PatientInfoUI extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.hospitalpatinfo);
+        setContentView(R.layout.dis_patientinfo);
         adjustPatientInfo_linearLayout= (LinearLayout) findViewById(R.id.adjustPatientInfo_linearLayout);
         adjustPatientinfo_drugstoreName_textView= (TextView) findViewById(R.id.adjustPatientinfo_drugstoreName_textView);
         adjustPatientInfo_classification_textView= (TextView) findViewById(R.id.adjustPatientInfo_classification_textView);

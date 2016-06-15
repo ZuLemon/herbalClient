@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@android:color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:padding="5dp"
+                  android:orientation="vertical"
+    >
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="15dp"
+                  android:paddingBottom="15dp"
+                  android:text="选择科室"
+                  android:textSize="18sp"
+                  android:textColor="@android:color/background_dark"
+                  android:background="@android:drawable/editbox_background_normal"
+                  android:id="@+id/deptName"
+        />
+        <!--<EditText android:layout_width="match_parent"-->
+                     <!--android:layout_height="wrap_content"-->
+                     <!--android:paddingTop="15dp"-->
+                     <!--android:paddingBottom="15dp"-->
+                     <!--android:inputType="text"-->
+                     <!--android:hint="选择科室"-->
+                     <!--android:textSize="18sp"-->
+                     <!--android:textColor="@android:color/background_dark"-->
+                     <!--android:background="@android:drawable/editbox_background_normal"-->
+                     <!--android:id="@+id/deptId"-->
+    <!--/>-->
+        <EditText android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="15dp"
+                  android:paddingBottom="15dp"
+                  android:inputType="text"
+                  android:hint="姓名"
+                  android:textSize="18sp"
+                  android:textColor="@android:color/background_dark"
+                  android:background="@android:drawable/editbox_background_normal"
+                  android:id="@+id/patName"
+        />
+        <Button android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="查询"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:id="@+id/search"
+        />
+    </LinearLayout>
+
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@android:color/darker_gray"
+              android:height="1dp"
+    />
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="5dp"
+              android:id="@+id/patList"
+    />
+
+</LinearLayout>

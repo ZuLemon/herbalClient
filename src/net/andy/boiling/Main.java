@@ -31,15 +31,15 @@ public class Main extends Activity {
     //    private Users users=null;
 //    private TextView user_info_view;
     //定义图标数组
-    private int[] imageRes = {R.drawable.water, R.drawable.take, R.drawable.extract,
-            R.drawable.unknown, R.drawable.unknown, R.drawable.unknown,
-            R.drawable.unknown, R.drawable.adjust, R.drawable.exit,
-            R.drawable.revise, R.drawable.equip, R.drawable.tag};
-    //定义标题数组
-    private String[] itemName = {"浸泡", "取处方", "煎制"
-            , "未知", "测试", "上药",
-            "设置", "按味调剂", "退出",
-            "修改密码", "设备管理", "标签管理"};
+//    private int[] imageRes = {R.drawable.water, R.drawable.take, R.drawable.extract,
+//            R.drawable.unknown, R.drawable.unknown, R.drawable.unknown,
+//            R.drawable.unknown, R.drawable.adjust, R.drawable.exit,
+//            R.drawable.revise, R.drawable.equip, R.drawable.tag};
+//    //定义标题数组
+//    private String[] itemName = {"浸泡", "取处方", "煎制"
+//            , "未知", "测试", "上药",
+//            "设置", "按味调剂", "退出",
+//            "修改密码", "设备管理", "标签管理"};
     private List<PermissionDomain> permissionDomainList;
     private PermissionDomain permissionDomain;
     private GridView main_GridView;
@@ -94,6 +94,7 @@ public class GridViewItemOnClick implements AdapterView.OnItemClickListener {
         Intent intent = null;
         try {
             intent = new Intent(Main.this, Class.forName(permissionDomainList.get(position).getModule()));
+            Log.e("Class", String.valueOf(Class.forName(permissionDomainList.get(position).getModule())));
             startActivity(intent);
         } catch (ClassNotFoundException e) {
             new CoolToast(getBaseContext()).show("未找到UI：" + permissionDomainList.get(position).getModule());

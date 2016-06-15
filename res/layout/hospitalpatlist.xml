@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/white_circular"
+              android:paddingBottom="5dp"
+              android:paddingRight="5dp"
+              android:paddingLeft="5dp"
+              android:paddingTop="5dp"
+              android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_weight="1">
+        <LinearLayout android:layout_width="15dp"
+                      android:layout_height="wrap_content"
+                      android:paddingBottom="5dp"
+                      android:paddingLeft="5dp"
+                      android:paddingTop="5dp"
+                      android:orientation="vertical"
+                      android:layout_gravity="center_vertical"
+                      android:gravity="center_vertical"
+                      android:layout_weight="1">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:textColor="@android:color/black"
+                      android:textSize="20sp"
+                      android:id="@+id/hospitalpat_count"
+                      android:gravity="left"
+                      android:text="12"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="130dp"
+                      android:layout_height="65dp"
+                      android:layout_gravity="center_vertical"
+                      android:gravity="center_vertical"
+                      android:paddingBottom="5dp"
+                      android:paddingLeft="5dp"
+                      android:paddingTop="5dp"
+                      android:layout_weight="4">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:background="@android:color/white"
+                      android:gravity="left"
+                      android:textColor="@android:color/black"
+                      android:textSize="25sp"
+                      android:text="姓名"
+                      android:id="@+id/hospitalpat_name"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
+                      android:paddingRight="5dp"
+                      android:paddingLeft="5dp"
+                      android:paddingTop="1dp"
+                      android:layout_gravity="left"
+                      android:gravity="center_vertical"
+                      android:layout_weight="2">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="骨一科"
+                      android:gravity="right"
+                      android:paddingBottom="5dp"
+                      android:id="@+id/hospitalpat_deptName"
+                      android:textColor="@android:color/black"
+                      android:textSize="15sp"
+            />
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/hospitalpat_bedNo"
+                      android:text="12床"
+                      android:paddingBottom="5dp"
+                      android:gravity="right"
+                      android:textColor="@android:color/black"
+                      android:textSize="15sp"
+            />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:paddingLeft="5dp"
+                  android:paddingRight="5dp">
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_weight="3"
+                  android:layout_gravity="right"
+                  android:gravity="left"
+                  android:paddingLeft="5dp"
+                  android:paddingRight="5dp"
+                  android:text="年龄"
+                  android:textColor="@android:color/darker_gray"
+                  android:id="@+id/hospitalpat_info"
+                  android:textSize="15sp"
+        />
+    </LinearLayout>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/hospitalpat_id"
+              android:visibility="gone"/>
+</LinearLayout>

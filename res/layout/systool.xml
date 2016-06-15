@@ -18,10 +18,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="46.0dip"
                 android:gravity="center"
-                android:text="系统管理"/>
-
+                android:text="系统工具"/>
     </LinearLayout>
-
 
     <ScrollView
             android:scrollbarThumbVertical="@drawable/scrollbar_handle_vertical"
@@ -144,43 +142,6 @@
             </LinearLayout>
             <!-- 第二个白框end -->
 
-            <!-- 第三个白框begin -->
-            <LinearLayout
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:background="@drawable/dark_circular"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10.0dip"
-                    android:layout_marginTop="7.0dip"
-                    android:layout_marginRight="10.0dip">
-                <LinearLayout
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:id="@+id/sysadmin_topPre_linearLayout"
-                        android:layout_width="fill_parent"
-                        android:layout_height="50.0dip">
-                    <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10.0dip"
-                            android:src="@drawable/workset"/>
-                    <TextView
-                            android:textSize="18.0sp"
-                            android:textColor="#ff545454"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10.0dip"
-                            android:text="优先删除处方"
-                            android:layout_weight="1.0"/>
-                    <ImageView
-                            android:layout_width="12.0dip"
-                            android:layout_height="12.0dip"
-                            android:layout_marginRight="10.0dip"
-                            android:src="@drawable/into_icon"/>
-                </LinearLayout>
-            </LinearLayout>
-            <!-- 第三个白框end -->
             <!-- 第四个白框begin -->
             <LinearLayout
                     android:gravity="center_vertical"

@@ -24,9 +24,8 @@ import net.andy.dispensing.ui.WaitDispenUI;
  * 系统管理
  * Created by Guang on 2016/5/12.
  */
-public class SysAdminUI extends Activity {
+public class SysToolUI extends Activity {
     private LinearLayout sysadmin_extract_linearLayout;
-    private LinearLayout sysadmin_topPre_linearLayout;
     private LinearLayout sysadmin_online_linearLayout;
     private LinearLayout sysadmin_waitDispen_linearLayout;
     private TextView sysadmin_interval_textView;
@@ -40,10 +39,9 @@ public class SysAdminUI extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sysadmin);
+        setContentView(R.layout.systool);
         coolToast = new CoolToast(getBaseContext());
         sysadmin_extract_linearLayout = (LinearLayout) findViewById(R.id.sysadmin_extract_linearLayout);
-        sysadmin_topPre_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_topPre_linearLayout);
         sysadmin_online_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_online_linearLayout);
         sysadmin_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_waitDispen_linearLayout);
         buttonListener = new ButtonListener();
@@ -61,7 +59,6 @@ public class SysAdminUI extends Activity {
     private void setMonitor() {
         sysadmin_interval_textView.setOnClickListener(buttonListener);
         sysadmin_extract_linearLayout.setOnClickListener(buttonListener);
-        sysadmin_topPre_linearLayout.setOnClickListener(buttonListener);
         sysadmin_online_linearLayout.setOnClickListener(buttonListener);
         sysadmin_waitDispen_linearLayout.setOnClickListener(buttonListener);
     }
@@ -98,19 +95,19 @@ public class SysAdminUI extends Activity {
                     setInterval();
                     break;
                 case R.id.sysadmin_extract_linearLayout:
-                    Intent intent = new Intent(SysAdminUI.this, ExtractPresUI.class);
+                    Intent intent = new Intent(SysToolUI.this, ExtractPresUI.class);
                     startActivity(intent);
                     break;
                 case R.id.sysadmin_topPre_linearLayout:
-                    Intent topPreintent = new Intent(SysAdminUI.this, UrgentPresUI.class);
+                    Intent topPreintent = new Intent(SysToolUI.this, UrgentPresUI.class);
                     startActivity(topPreintent);
                     break;
                 case R.id.sysadmin_online_linearLayout:
-                    Intent onlineintent = new Intent(SysAdminUI.this, OnlineUI.class);
+                    Intent onlineintent = new Intent(SysToolUI.this, OnlineUI.class);
                     startActivity(onlineintent);
                     break;
                 case R.id.sysadmin_waitDispen_linearLayout:
-                    Intent waitDispen = new Intent(SysAdminUI.this, WaitDispenUI.class);
+                    Intent waitDispen = new Intent(SysToolUI.this, WaitDispenUI.class);
                     startActivity(waitDispen);
                     break;
                 default:

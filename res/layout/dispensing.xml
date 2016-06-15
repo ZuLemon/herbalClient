@@ -27,7 +27,8 @@
                       style="@style/Custom25TextViewTheme"
                       android:text="中药调剂信息系统"
                       android:textColor="#D2691E"
-                      android:id="@+id/dispensing_sysinfo_textView"/>
+                      android:id="@+id/dispensing_sysinfo_textView"
+                        android:visibility="gone"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -60,40 +61,6 @@
                           android:numColumns="5">
                 </GridView>
             </LinearLayout>
-
-            <!--<ImageView android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="3dp"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:background="@drawable/zhuyuan"-->
-            <!--android:id="@+id/dispensing_category_imageView"-->
-            <!--/>-->
-
-            <!--<ImageView android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="3dp"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:background="@drawable/yinpian"-->
-            <!--android:id="@+id/dispensing_classification_imageView"/>-->
-
-            <!--<ImageView android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="3dp"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:background="@drawable/daijian"-->
-            <!--android:id="@+id/dispensing_process_imageView"/>-->
-            <!--<ImageView android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="5dp"-->
-            <!--android:layout_marginRight="5dp"-->
-            <!--android:background="@drawable/xiyao"-->
-            <!--android:id="@+id/dispensing_xiyao_imageView"/>-->
-            <!--<ImageView android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="3dp"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:background="@drawable/fuhe"-->
-            <!--android:id="@+id/dispensing_heshi_imageView"/>-->
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -522,13 +489,6 @@
                 style="@style/AdjustThreeButtonTheme"
                 android:text="上药"
                 android:id="@+id/dispensing_applyMedicine_button"/>
-        <!--<Button android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginRight="5dp"-->
-        <!--android:background="@drawable/orangerred_circular"-->
-        <!--android:layout_weight="1"-->
-        <!--style="@style/AdjustThreeButtonTheme"-->
-        <!--android:text="查询"/>-->
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"

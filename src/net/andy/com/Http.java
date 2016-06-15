@@ -24,8 +24,8 @@ public class Http {
     public Object post(String url, List<NameValuePair> pairs,Class clzz) throws Exception {
         String json;
         HttpClient client = new DefaultHttpClient();
-        client.getParams().setParameter("http.socket.timeout",3000);
-        client.getParams().setParameter("http.connection.timeout",3000);
+        client.getParams().setParameter("http.socket.timeout",10000);
+        client.getParams().setParameter("http.connection.timeout",10000);
         client.getParams().setParameter("http.connection-manager.timeout",60*60L);
 //        client.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
         HttpPost httpPost = new HttpPost("http://"+appOption.getOption(AppOption.APP_OPTION_SERVER)+"/herbal/" + url);

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Guang on 2016/5/19.
  */
-public class UrgentPresUtil {
+public class UrgentDelPresUtil {
     private ReturnDomain returnDomain;
     /**
      获取处方列表
@@ -43,5 +43,17 @@ public class UrgentPresUtil {
         } else {
             throw new Exception ( returnDomain.getException () );
         }
+    }
+
+
+    public String delPres(Integer id) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add ( new BasicNameValuePair( "id", String.valueOf(id)));
+//        returnDomain = (ReturnDomain) new Http().post ( "prescription/delPres.do", pairs, ReturnDomain.class );
+//        if ( returnDomain.getSuccess () ) {
+            return "删除成功！";
+//        } else {
+//            throw new Exception ( returnDomain.getException () );
+//        }
     }
 }

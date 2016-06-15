@@ -16,8 +16,7 @@
                   android:textSize="20sp"
                   android:textColor="@android:color/black"
                   android:text="7付"
-                  android:id="@+id/urgentPres_presNumber_textView"
-                 />
+                  android:id="@+id/urgentPres_presNumber_textView" />
         <TextView android:layout_width="match_parent"
                   android:layout_height="fill_parent"
                   android:background="#FFFFFF"

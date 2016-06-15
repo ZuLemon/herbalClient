@@ -118,6 +118,7 @@ public class DispensingUI extends NFCActivity {
     private int valCount=0;
     private boolean isEnd;
     private boolean isFinish;
+    private boolean isRead;
     private boolean hasPre;
     private boolean isHer;
     private boolean hasHistory;
@@ -133,7 +134,7 @@ public class DispensingUI extends NFCActivity {
     private String settingHerbspec = new AppOption().getOption(AppOption.APP_OPTION_HERSPEC);
     private DecimalFormat df1 = new DecimalFormat("#.##");
     private List<HashMap<String, Object>> imageData = new ArrayList<HashMap<String, Object>>();
-    private CountDownTimer getPresTime = new CountDownTimer(2 * 1000, 200) {
+    private CountDownTimer getPresTime = new CountDownTimer(5 * 1000, 200) {
         @Override
         public void onTick(long l) {
             isGetPresTime=false;
@@ -722,6 +723,7 @@ private  void setGlobalView(){
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case -1:
+                        isRead=false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
                         break;
                     case 0:
@@ -750,6 +752,7 @@ private  void setGlobalView(){
                     case 4:
                         hasPre = false;
                         isHer = false;
+                        isRead=false;
                         isFinish = false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
                         dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M",""));
@@ -1101,7 +1104,10 @@ private  void setGlobalView(){
         Log.e("Dispensing", isFinish + "");
         tagId = getNfc().readID(intent);
         if (isFinish) {
-            herbalUtil(4);
+            if(!isRead) {
+                isRead=true;
+                herbalUtil(4);
+            }
         } else {
             new CoolToast(getBaseContext()).show("请先完成处方调剂！");
         }

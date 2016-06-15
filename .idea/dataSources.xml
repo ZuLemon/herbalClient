@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3079758769">
+  <component name="DataSourceManagerImpl" format="xml" hash="2202888830">
     <data-source source="LOCAL" name="测试库" uuid="5306bcdc-42b0-4709-a42e-25618e3f111c">
       <driver-ref>sqlserver.jtds</driver-ref>
       <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
@@ -10,6 +10,11 @@
       <driver-ref>sqlserver.jtds</driver-ref>
       <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:jtds:sqlserver://192.168.1.70:1433/herbal;instance=LIS</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="SQL Server (Microsoft) - herbal@192.168.1.70" uuid="2b9fabab-448f-4b15-b34a-1a20b0aa1fc5">
+      <driver-ref>sqlserver.ms</driver-ref>
+      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
+      <jdbc-url>jdbc:sqlserver://192.168.1.70\LIS:1433;databaseName=herbal</jdbc-url>
     </data-source>
   </component>
 </project>
