@@ -181,6 +181,7 @@
                       android:layout_weight="1"
                       android:layout_marginBottom="8dp"
                       android:layout_gravity="center"
+                      android:background="@drawable/orange_button"
                       android:id="@+id/dispensing_tagInfo_textView"
                       style="@style/Custom50TextViewTheme"
                       android:textColor="#000000"
@@ -233,17 +234,47 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:visibility="gone"
-                android:background="@drawable/skyblue_circular"
+                android:background="@drawable/orange_button"
                 android:id="@+id/dispensing_banding_linearLayout"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp">
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                          android:orientation="horizontal"
+            >
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          style="@style/Custom25TextViewTheme"
+                          android:layout_gravity="center_vertical"
+                          android:textColor="@android:color/white"
+                          android:background="@drawable/orange_button"
+                          android:gravity="right"
+                          android:layout_weight="1"
+                          android:text="共计："/>
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:gravity="left"
+                          android:layout_gravity="center_vertical"
+                          android:textColor="@android:color/white"
+                          android:id="@+id/dispensing_sum_textView"
+                          style="@style/Custom25TextViewTheme"
+                          android:background="@drawable/orange_button"
+                          android:text="*"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+            >
             <TextView android:layout_width="match_parent"
-                      android:layout_height="match_parent"
+                      android:layout_height="wrap_content"
                       android:background="@drawable/orange_button"
                       android:id="@+id/dispensing_banding_button"
                       style="@style/AdjustOneButtonTheme"
                       android:text="绑定标签"/>
+                </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

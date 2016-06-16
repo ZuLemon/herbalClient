@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.com.AppOption;
+import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.UrgentDelPresUtil;
 
@@ -32,6 +33,7 @@ public class UrgentPresUI extends Activity{
     private ListView urgentPres_patient_listView;
     private Button urgentPres_search_button;
     private EditText urgentPres_patientId_editText;
+    private String patId;
     private Integer Id;
     private List<Map<String, Object>> urgList = new ArrayList<Map<String, Object>>();
     private UrgDelAdapter urgDelAdapter;
@@ -49,9 +51,19 @@ public class UrgentPresUI extends Activity{
         urgentPres_search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                urgentPresThread(0);
+                confirm();
             }
         });
+    }
+    private void confirm(){
+        urgList.clear();
+
+        patId=urgentPres_patientId_editText.getText().toString().trim();
+        if("".equals(patId)){
+            new CoolToast(getBaseContext()).show("请输入门诊号或住院号");
+        }else {
+            urgentPresThread(0);
+        }
     }
     private class LongClick implements AdapterView.OnItemLongClickListener{
         @Override
@@ -93,6 +105,7 @@ public class UrgentPresUI extends Activity{
 //        builder.create().show();
 //    }
     public void setListView(List presList) {
+        urgDelAdapter.notifyDataSetChanged();
         if(presList.size()==0){
             new CoolToast( getBaseContext () ).show ( "此卡号没有需调剂处方");
             return;
@@ -125,7 +138,7 @@ public class UrgentPresUI extends Activity{
                     switch (what){
                         case 0:
                             message.what = 0;
-                            message.obj = new UrgentDelPresUtil().getPrescriptionByPatientNo(urgentPres_patientId_editText.getText().toString().trim(), new AppOption().getOption(AppOption.APP_OPTION_USER));
+                            message.obj = new UrgentDelPresUtil().getPrescriptionByPatientNo(patId, String.valueOf(Application.getUsers().getId()));
                             handler.sendMessage ( message );
                             break;
                     }
@@ -139,11 +152,9 @@ public class UrgentPresUI extends Activity{
     }
     private class UrgDelAdapter extends BaseAdapter {
         private LayoutInflater inflater;
-
         public UrgDelAdapter(Context context) {
             this.inflater = LayoutInflater.from(context);
         }
-
         @Override
         public int getCount() {
             return urgList.size();
@@ -165,11 +176,12 @@ public class UrgentPresUI extends Activity{
                 view = inflater.inflate(R.layout.urgentpreslist, viewGroup, false);
                 urgDelPresView = new UrgDelPresView();
                 urgDelPresView.urgentPres_id_textView  = (TextView) view.findViewById(R.id.urgentPres_id_textView);
+                urgDelPresView.urgentPres_presNumber_textView  = (TextView) view.findViewById(R.id.urgentPres_presNumber_textView);
                 urgDelPresView.urgentPres_category_textView= (TextView) view.findViewById(R.id.urgentPres_category_textView);
                 urgDelPresView.urgentPres_name_textView = (TextView) view.findViewById(R.id.urgentPres_name_textView);
                 urgDelPresView.urgentPres_patientName_textView= (TextView) view.findViewById(R.id.urgentPres_patientName_textView);
-                urgDelPresView.urgentPres_presNumber_textView= (TextView) view.findViewById(R.id.urgentPres_presNumber_textView);
-                urgDelPresView.urgentPres_classification_textView= (TextView) view.findViewById(R.id.urgentPres_classification_textView);
+                urgDelPresView.urgentPres_main_textView= (TextView) view.findViewById(R.id.urgentPres_main_textView);
+                urgDelPresView.urgentPres_way_textView= (TextView) view.findViewById(R.id.urgentPres_way_textView);
                 view.setTag(urgDelPresView);
             } else {
                 urgDelPresView = (UrgDelPresView) view.getTag();
@@ -177,11 +189,12 @@ public class UrgentPresUI extends Activity{
             Map map = (Map)urgList.get(i);
             Log.e("map", map.toString());
             urgDelPresView.urgentPres_id_textView .setText(""+map.get ( "id" ));
-            urgDelPresView.urgentPres_category_textView.setText(map.get ( "category" )+"："+ map.get ( "patientNo" ));
+            urgDelPresView.urgentPres_patientName_textView.setText(""+map.get("patientName"));
+            urgDelPresView.urgentPres_category_textView.setText(""+map.get ( "category" )+map.get ( "classification" )+" "+ map.get ( "patientNo" ));
             urgDelPresView.urgentPres_name_textView  .setText(""+ map.get("patientName"));
-            urgDelPresView.urgentPres_patientName_textView .setText(""+ map.get("patientName"));
-            urgDelPresView.urgentPres_presNumber_textView .setText(""+ map.get("presNumber")+"付");
-            urgDelPresView.urgentPres_classification_textView .setText(""+ map.get("classification"));
+            urgDelPresView.urgentPres_presNumber_textView .setText(""+ map.get("presNumber")+"付"+ map.get("herbCnt")+"味");
+            urgDelPresView.urgentPres_main_textView .setText(""+ map.get("main"));
+            urgDelPresView.urgentPres_way_textView .setText(""+ map.get("way")+ map.get("process")+ map.get("frequency"));
 //            if (i == selectItem) {
 //                view.setBackgroundColor(Color.RED);
 //            }
@@ -195,17 +208,18 @@ public class UrgentPresUI extends Activity{
 //        }
 //        private int  selectItem=-1;
         private class UrgDelPresView {
-            private TextView urgentPres_classification_textView;
             private TextView urgentPres_presNumber_textView;
             private TextView urgentPres_patientName_textView;
             private TextView urgentPres_name_textView;
             private TextView urgentPres_category_textView;
             private TextView urgentPres_id_textView;
+            private TextView urgentPres_main_textView;
+            private TextView urgentPres_way_textView;
         }
     }
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        urgentPresThread(0);
+    protected void onResume() {
+        super.onResume();
+        confirm();
     }
 }

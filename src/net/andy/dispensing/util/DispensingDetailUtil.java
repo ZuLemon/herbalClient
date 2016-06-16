@@ -42,11 +42,12 @@ public class DispensingDetailUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
-    public void finish(String id) throws Exception {
+    public String finish(String id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", id ) );
         returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/finish.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
+            return "";
         } else {
             throw new Exception ( returnDomain.getException () );
         }
@@ -57,7 +58,6 @@ public class DispensingDetailUtil {
         pairs.add ( new BasicNameValuePair ( "readyId", String.valueOf(readyId)) );
         returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/updateReady.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
-
         } else {
             throw new Exception ( returnDomain.getException () );
         }
@@ -66,6 +66,23 @@ public class DispensingDetailUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
         returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/getDispensingDetailByDisId.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+
+    /**
+     * 获取总量
+     * @param disId
+     * @return
+     * @throws Exception
+     */
+    public List getQuantityForUnit(Integer disId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/getQuantityForUnit.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

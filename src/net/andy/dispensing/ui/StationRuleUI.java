@@ -1,6 +1,8 @@
 package net.andy.dispensing.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -66,7 +68,13 @@ public class StationRuleUI extends Activity {
         stationrule_description_textView = (TextView) findViewById(R.id.stationrule_description_textView);
         stationrule_type_textView = (TextView) findViewById(R.id.stationrule_type_textView);
         stationrule_submit_button = (Button) findViewById(R.id.stationrule_submit_button);
-        stationrule_driver_editText.setText(appOption.getOption(AppOption.APP_DEVICE_ID));
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager == null) {
+            new CoolToast(getBaseContext()).show("请先打开无线网络");
+            return;
+        }
+        String deviceid = wifiManager.getConnectionInfo().getMacAddress();
+        stationrule_driver_editText.setText(deviceid);
         rlueAdapter = new ArrayAdapter<SpinnerItem>(this, android.R.layout.simple_spinner_item, rlueNameList);
         //设置下拉列表的风格
         rlueAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

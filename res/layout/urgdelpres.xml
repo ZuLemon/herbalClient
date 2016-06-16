@@ -16,6 +16,7 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp">
             <TextView style="@style/Custom20TextViewTheme"
+                      android:layout_width="match_parent"
                         android:paddingBottom="10dp"
                       android:paddingTop="10dp"
                       android:paddingLeft="20dp"
@@ -30,6 +31,7 @@
                 android:layout_height="1px" />
 
             <TextView style="@style/Custom20TextViewTheme"
+                      android:layout_width="match_parent"
                       android:paddingBottom="10dp"
                       android:paddingTop="10dp"
                       android:paddingLeft="20dp"
@@ -37,5 +39,33 @@
                       android:layout_gravity="left"
                       android:text="删除该处方"
                       android:id="@+id/urgdelpres_delpres_textView"/>
+        <View
+                android:background="@drawable/shape_line"
+                android:layout_width="fill_parent"
+                android:layout_height="1px" />
+
+        <TextView style="@style/Custom20TextViewTheme"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="10dp"
+                  android:paddingTop="10dp"
+                  android:paddingLeft="20dp"
+                  android:gravity="left"
+                  android:layout_gravity="left"
+                  android:text="修改为自煎"
+                  android:id="@+id/urgdelpres_noProcess_textView"/>
+        <View
+                android:background="@drawable/shape_line"
+                android:layout_width="fill_parent"
+                android:layout_height="1px" />
+
+        <TextView style="@style/Custom20TextViewTheme"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="10dp"
+                  android:paddingTop="10dp"
+                  android:paddingLeft="20dp"
+                  android:gravity="left"
+                  android:layout_gravity="left"
+                  android:text="修改为代煎"
+                  android:id="@+id/urgdelpres_process_textView"/>
             </LinearLayout>
 </LinearLayout>

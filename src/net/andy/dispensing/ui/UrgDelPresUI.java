@@ -1,19 +1,28 @@
 package net.andy.dispensing.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import net.andy.boiling.R;
 import net.andy.boiling.domain.PrescriptionDomain;
+import net.andy.boiling.util.PrescriptionUtil;
+import net.andy.boiling.util.UserUtil;
 import net.andy.com.AppOption;
+import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.UrgentDelPresUtil;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -24,6 +33,10 @@ public class UrgDelPresUI extends Activity{
     private LinearLayout urgdelpres_linearLayout;
     private TextView urgdelpres_urgpres_textView;
     private TextView urgdelpres_delpres_textView;
+    private TextView urgdelpres_noProcess_textView;
+    private TextView urgdelpres_process_textView;
+    private String process="";
+    private String passwd;
     private ClickLis clickLis=new ClickLis();
     private String id;
     @Override
@@ -33,9 +46,13 @@ public class UrgDelPresUI extends Activity{
         urgdelpres_linearLayout= (LinearLayout) findViewById(R.id.urgdelpres_linearLayout);
         urgdelpres_urgpres_textView= (TextView) findViewById(R.id.urgdelpres_urgpres_textView);
         urgdelpres_delpres_textView= (TextView) findViewById(R.id.urgdelpres_delpres_textView);
+        urgdelpres_noProcess_textView= (TextView) findViewById(R.id.urgdelpres_noProcess_textView);
+        urgdelpres_process_textView= (TextView) findViewById(R.id.urgdelpres_process_textView);
         urgdelpres_linearLayout.setOnClickListener(clickLis);
         urgdelpres_urgpres_textView.setOnClickListener(clickLis);
         urgdelpres_delpres_textView.setOnClickListener(clickLis);
+        urgdelpres_noProcess_textView.setOnClickListener(clickLis);
+        urgdelpres_process_textView.setOnClickListener(clickLis);
         Intent in=getIntent();
         id=in.getStringExtra("id");
         Log.e("id",id);
@@ -49,12 +66,35 @@ public class UrgDelPresUI extends Activity{
                     break;
                 case R.id.urgdelpres_urgpres_textView:
                     urgentPresThread(0);
-                    Log.e("urgentPresThread",id);
+                    break;
+                case R.id.urgdelpres_noProcess_textView:
+                    process="自煎";
+                    urgentPresThread(3);
+                    break;
+                case R.id.urgdelpres_process_textView:
+                    process="代煎";
+                    urgentPresThread(3);
                     break;
                 case R.id.urgdelpres_delpres_textView:
-                    urgentPresThread(1);
-                    Log.e("urgentPresThread",id);
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.dialog_passwd,
+                            (ViewGroup) findViewById(R.id.dialog_passwd));
+                    EditText passwdEditText= (EditText) layout.findViewById(R.id.passwd);
+                    new AlertDialog.Builder(UrgDelPresUI.this).setTitle("请输入密码").setView(layout)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            passwd=passwdEditText.getText().toString();
+                            if("".equals(passwd)){
+                                new CoolToast(getBaseContext()).show("密码不能为空");
+                            }else {
+                                urgentPresThread(2);
+                            }
+                        }
+                    }) .setNegativeButton("取消", null).show();
+
                     break;
+
             }
         }
     }
@@ -73,6 +113,18 @@ public class UrgDelPresUI extends Activity{
                         finish();
                         break;
                     case 1:
+                        new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
+                        finish();
+                        break;
+                    case 2:
+                      if("success".equals( msg.obj )){
+                          urgentPresThread(1);
+                          finish();
+                      }else{
+                          new CoolToast( getBaseContext () ).show ( "密码错误" );
+                      }
+                        break;
+                    case 3:
                         new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
                         finish();
                         break;
@@ -96,6 +148,16 @@ public class UrgDelPresUI extends Activity{
                             message.obj = new UrgentDelPresUtil().delPres(Integer.parseInt(id));
                             handler.sendMessage ( message );
                             break;
+                        case 2:
+                            message.what = 2;
+                            message.obj = new UserUtil().confirmPasswd(String.valueOf(Application.getUsers().getId()),passwd);
+                            handler.sendMessage ( message );
+                            break;
+                        case 3:
+                            message.what = 3;
+                            message.obj = new PrescriptionUtil().setProcess(Integer.parseInt(id),process);
+                            handler.sendMessage ( message );
+                            break;
                     }
                 } catch (Exception e) {
                     message.what = -1;
@@ -105,4 +167,6 @@ public class UrgDelPresUI extends Activity{
             }
         }.start ();
     }
+
+
 }

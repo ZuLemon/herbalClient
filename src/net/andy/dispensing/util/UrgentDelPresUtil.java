@@ -49,11 +49,11 @@ public class UrgentDelPresUtil {
     public String delPres(Integer id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "id", String.valueOf(id)));
-//        returnDomain = (ReturnDomain) new Http().post ( "prescription/delPres.do", pairs, ReturnDomain.class );
-//        if ( returnDomain.getSuccess () ) {
+        returnDomain = (ReturnDomain) new Http().post ( "prescription/powerDelete.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
             return "删除成功！";
-//        } else {
-//            throw new Exception ( returnDomain.getException () );
-//        }
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
     }
 }

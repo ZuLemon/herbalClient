@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import net.andy.boiling.ui.UpdateUI;
+import net.andy.boiling.util.UserUtil;
 import net.andy.com.*;
 import net.andy.dispensing.domain.RulesDomain;
 import net.andy.dispensing.domain.StationDomain;
@@ -61,14 +62,14 @@ public class Login extends Activity {
 //        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
 //        deviceid= tm.getDeviceId();
 //        if(deviceid == null || deviceid.length()==0){
-        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager != null) {
-            deviceid = wifiManager.getConnectionInfo().getMacAddress();
-        }
-        System.out.println(">>" + deviceid);
+//        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+//        if (wifiManager != null) {
+//            deviceid = wifiManager.getConnectionInfo().getMacAddress();
 //        }
-        //设备号
-        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
+//        System.out.println(">>" + deviceid);
+////        }
+//        //设备号
+//        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
 //        appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
         if ("".equals(appOption.getOption(AppOption.APP_OPTION_WAITTIME)))
             appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
@@ -143,23 +144,21 @@ public class Login extends Activity {
             new Thread() {
                 @Override
                 public void run() {
-                    List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-                    pairs.add(new BasicNameValuePair("id", userId.getText().toString()));
-                    pairs.add(new BasicNameValuePair("password", password.getText().toString()));
-                    pairs.add(new BasicNameValuePair("browser", "HttpClient"));
-                    pairs.add(new BasicNameValuePair("version", "mobile"));
                     try {
-                        String info = (String) ((Map) (new Http().post("login1.do", pairs, Map.class))).get("info");
+                        String info = new UserUtil().confirmPasswd(userId.getText().toString(),password.getText().toString());
                         if (info.equals("success")) {
                             appOption.setOption(AppOption.APP_OPTION_USER, userId.getText().toString());
                             appOption.setOption(AppOption.APP_OPTION_PASSWORD, password.getText().toString());
-
                             //获取登录用户详细信息
                             new LogUserInfo().setLogUsers();
-
                             //检查推送服务是否运行
                             checkService();
 
+            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            deviceid = wifiManager.getConnectionInfo().getMacAddress();
+        }
+        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
                             //结束当前
                             Login.this.finish();
                             Intent intent = new Intent(Login.this, Main.class);

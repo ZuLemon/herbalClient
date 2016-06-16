@@ -16,7 +16,6 @@ import net.andy.boiling.R;
 import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.ui.ValidationUI;
-import net.andy.dispensing.util.UrgentPresUtil;
 
 import java.text.ParseException;
 import java.util.ArrayList;

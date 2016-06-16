@@ -1,5 +1,7 @@
 package net.andy.dispensing.util;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import com.alibaba.fastjson.JSON;
 import net.andy.com.AppOption;
 import net.andy.dispensing.domain.StationDomain;

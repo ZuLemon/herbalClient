@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static android.R.attr.password;
+
 /**
  * UserUtil
  *
@@ -33,6 +35,19 @@ public class UserUtil {
             return ( String ) ( ( Map ) ( new Http ().post ( "/user/changePassword.do", pairs, Map.class ) ) ).get ( "returnInfo" );
         } catch (Exception e) {
             throw new Exception ( e.getMessage () );
+        }
+    }
+    public String confirmPasswd(String userId,String password){
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add(new BasicNameValuePair("id", userId));
+        pairs.add(new BasicNameValuePair("password", password));
+        pairs.add(new BasicNameValuePair("browser", "HttpClient"));
+        pairs.add(new BasicNameValuePair("version", "mobile"));
+        try {
+            return (String) ((Map) (new Http().post("login1.do", pairs, Map.class))).get("info");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "异常";
         }
     }
 }

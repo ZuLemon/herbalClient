@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.wifi.WifiManager;
 import android.os.*;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,6 +54,7 @@ public class DispensingUI extends NFCActivity {
     private LinearLayout dispensing_warning_linearLayout;
     private LinearLayout dispensing_adjust_linearLayout;
     private Button dispensing_adjust_button;
+    private TextView dispensing_sum_textView;
     private TextView dispensing_category_textView;
     private TextView dispensing_patientNo_textView;
     private TextView dispensing_patientName_textView;
@@ -128,6 +130,7 @@ public class DispensingUI extends NFCActivity {
     private boolean isGetPresTime=true;
     private long serverTime;
     private boolean hasReady;
+    private List<Map> sumList=new ArrayList();
     private int clickCount=0;
     private TagDomain tagDomain;
     private DispensingValidationDomain dispensingValidationDomain=new DispensingValidationDomain();
@@ -257,6 +260,7 @@ public class DispensingUI extends NFCActivity {
         dispensing_sysinfo_textView = (TextView) findViewById(R.id.dispensing_sysinfo_textView);
         dispensing_alreadyDispensing_textView= (TextView) findViewById(R.id.dispensing_alreadyDispensing_textView);
         dispensing_noDispensing_textView= (TextView) findViewById(R.id.dispensing_noDispensing_textView);
+        dispensing_sum_textView= (TextView) findViewById(R.id.dispensing_sum_textView);
         dispensing_grid_linearLayout = (LinearLayout) findViewById(R.id.dispensing_grid_linearLayout);
         dispensing_otherButton_linearLayout = (LinearLayout) findViewById(R.id.dispensing_otherButton_linearLayout);
         dispensing_show_button = (ImageButton) findViewById(R.id.dispensing_show_button);
@@ -468,10 +472,7 @@ public class DispensingUI extends NFCActivity {
                         } else {
 //                        if("".equals(dispensingDomain.getTagId())) {
                             herbalUtil(3);
-                            dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
-                            dispensing_banding_linearLayout.setVisibility(View.VISIBLE);
-                            isEnd = false;
-                            isFinish = true;
+
 //                        }else{
 //                            herbalUtil(10);
 //                            isEnd = false;
@@ -601,9 +602,10 @@ public class DispensingUI extends NFCActivity {
         Log.e("Now:",now+"");
         System.out.println("<>" + historyDisDetailList.size());
         if (now == dispensingDetailDomainList.size()) {
-            dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
-            dispensing_banding_linearLayout.setVisibility(View.VISIBLE);
+//            dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
+//            dispensing_banding_linearLayout.setVisibility(View.VISIBLE);
             new CoolToast(getBaseContext()).show("已完成处方调剂,请绑定标签！");
+            herbalUtil(3);
             isFinish = true;
         }
         System.out.println((dispensingDetailDomainList.size() - 1) + "setNowAdjust:" + now);
@@ -749,6 +751,22 @@ private  void setGlobalView(){
                             herbalUtil(14);
                         }
                         break;
+                    case 3:
+                        cDTimer.start();
+                        String sum="";
+                        for(int i=0;i<sumList.size();i++) {
+                            if(i>0){
+                                sum =sum +"\n"+sumList.get(i).get("sum")+sumList.get(i).get("herbUnit");
+                            }else {
+                                sum = sum + sumList.get(i).get("sum") + sumList.get(i).get("herbUnit");
+                            }
+                        }
+                        dispensing_sum_textView.setText(sum);
+                        dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
+                        dispensing_banding_linearLayout.setVisibility(View.VISIBLE);
+                        isEnd = false;
+                        isFinish = true;
+                        break;
                     case 4:
                         hasPre = false;
                         isHer = false;
@@ -830,7 +848,14 @@ private  void setGlobalView(){
                     switch (what) {
                         //获取处方和待调剂处方
                         case 0:
-                            Map alldis = new PrescriptionUtil().insertDispensingByDevice(new AppOption().getOption(AppOption.APP_DEVICE_ID), new AppOption().getOption(AppOption.APP_OPTION_USER));
+                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            if (wifiManager == null) {
+                                message.what = -1;
+                                message.obj = "请先打开无线网络";
+                                handler.sendMessage(message);
+                            }
+                            String deviceid = wifiManager.getConnectionInfo().getMacAddress();
+                            Map alldis = new PrescriptionUtil().insertDispensingByDevice(deviceid, new AppOption().getOption(AppOption.APP_OPTION_USER));
                             serverTime = Long.parseLong(new ServerUtil().getServerTime());
                             if (alldis == null) {
                                 message.what = -1;
@@ -857,21 +882,27 @@ private  void setGlobalView(){
                             break;
                         //提交第一味药开始调剂时间
                         case 1:
+                            Log.e("1",nowDis.getHerbName());
                             dispensingDetailUtil.start(String.valueOf(nowDis.getId()));
                             message.what = 1;
                             handler.sendMessage(message);
                             break;
                         //更新调剂药的状态
                         case 2:
+                            Log.e("22",nowDis.getHerbName());
                             dispensingDetailUtil.finish(String.valueOf(nowDis.getId()));
+                            Log.e("2",nowDis.getHerbName());
                             dispensingDetailUtil.start(String.valueOf(nextDis.getId()));
+
                             message.what = 2;
                             handler.sendMessage(message);
                             break;
                         //提交最后一味结束
                         case 3:
+                            Log.e("3",nowDis.getHerbName());
                             dispensingDetailUtil.finish(String.valueOf(nowDis.getId()));
-                            message.what = 1;
+                            sumList =dispensingDetailUtil.getQuantityForUnit(dispensingDomain.getId());
+                            message.what = 3;
                             handler.sendMessage(message);
                             break;
                         //绑定标签，本处方调剂结束
@@ -906,12 +937,12 @@ private  void setGlobalView(){
                                 handler.sendMessage(message);
                             }
                             break;
-                        //提交最后一味结束
-                        case 6:
-                            dispensingDetailUtil.finish(String.valueOf(nowDis.getId()));
-                            message.what = 1;
-                            handler.sendMessage(message);
-                            break;
+//                        //提交最后一味结束
+//                        case 6:
+//                            dispensingDetailUtil.finish(String.valueOf(nowDis.getId()));
+//                            message.what = 1;
+//                            handler.sendMessage(message);
+//                            break;
                         //提醒上药
                         case 7:
                             StationDomain stationDomain = new StationUtil().getStationByDevice();
@@ -1049,14 +1080,7 @@ private  void setGlobalView(){
                     }
                 dispensingDetailDomain.setStatus((String) ((Map) obj).get("status"));
                 dispensingDetailDomain.setShelf((String) ((Map) obj).get("shelf"));
-                if ("饮片".equals(prescriptionDomain.getClassification()) || "膏方".equals(prescriptionDomain.getClassification())) {
-                    if ("".equals((String) ((Map) obj).get("herbSpec"))) {
-                        totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
-                    }
-                } else {
-                    totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
-                }
-
+                totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
                 dispensingDetailDomainList.add(dispensingDetailDomain);
             }
         }

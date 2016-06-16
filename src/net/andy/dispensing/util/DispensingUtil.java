@@ -33,6 +33,19 @@ public class DispensingUtil {
         }
     }
     /**
+     获取处方总量
+     */
+    public List getDispensingByPlanId(String disId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "disId", disId ) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensing/getDispensingByPlanId.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+    /**
      完成处方
      */
     public String updateToFinish(String id,String tagId) throws Exception {
