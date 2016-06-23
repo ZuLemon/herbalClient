@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -92,14 +93,17 @@ public class PersonalEffortUI extends Activity {
                     break;
                 case R.id.personaleffort_today_button:
                     getTime("today");
+                    startActivity(new Intent(PersonalEffortUI.this,LoadingUI.class));
                     PersonalThread();
                     break;
                 case R.id.personaleffort_month_button:
                     getTime("month");
+                    startActivity(new Intent(PersonalEffortUI.this,LoadingUI.class));
                     PersonalThread();
                     break;
                 case R.id.personaleffort_preMonth_button:
                     getTime("preMonth");
+                    startActivity(new Intent(PersonalEffortUI.this,LoadingUI.class));
                     PersonalThread();
                     break;
             }
@@ -115,9 +119,11 @@ public class PersonalEffortUI extends Activity {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case 0:
+                        LoadingUI.instance.finish();
                         setView();
                         break;
                     case -1:
+                        LoadingUI.instance.finish();
                         break;
                 }
             }
@@ -173,6 +179,7 @@ public class PersonalEffortUI extends Activity {
 
         @Override
         public void afterTextChanged(Editable s) {
+
             PersonalThread();
         }
     };

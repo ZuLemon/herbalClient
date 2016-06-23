@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,6 +31,7 @@ import java.util.Map;
  * Created by Guang on 2016/6/6.
  */
 public class WaitDispenUI extends Activity{
+    private TextView waitdispen_title_textView;
     private ListView waitdispen_listView;
     private WaitDispenAdapter waitDispenAdapter;
     private Integer userId;
@@ -38,16 +40,25 @@ public class WaitDispenUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.waitdispen);
+        waitdispen_title_textView= (TextView) findViewById(R.id.waitdispen_title_textView);
         waitdispen_listView= (ListView) findViewById(R.id.waitdispen_listView);
         waitDispenAdapter=new WaitDispenAdapter(this);
-        onlineThread(0);
+        waitdispen_title_textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(WaitDispenUI.this,LoadingUI.class));
+                waitThread(0);
+            }
+        });
+        startActivity(new Intent(WaitDispenUI.this,LoadingUI.class));
+        waitThread(0);
     }
     public void setListView() {
             waitdispen_listView.setAdapter ( waitDispenAdapter );
             waitDispenAdapter.notifyDataSetChanged();
 
     }
-    private void onlineThread(int what) {
+    private void waitThread(int what) {
         final Message message = new Message ();
         final Handler handler = new Handler () {
             @Override
@@ -56,12 +67,14 @@ public class WaitDispenUI extends Activity{
                 switch (msg.what) {
                     case -1:
                         new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
+                        LoadingUI.instance.finish();
                         break;
                     case 0:
                         setListView ();
+                        LoadingUI.instance.finish();
                         break;
                     case 1:
-                        onlineThread(0);
+                        waitThread(0);
                         new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
                         break;
                 }

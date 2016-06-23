@@ -161,7 +161,8 @@
                             android:layout_weight="1.0"
                             android:selectAllOnFocus="true"
                             android:text="2"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
                               android:text="秒"
                               android:gravity="left"
                               android:textSize="15sp"
@@ -186,7 +187,7 @@
 
             <!-- 第二个白框begin -->
             <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <include layout="@layout/mysetting"/>
             </LinearLayout>
@@ -194,7 +195,7 @@
 
             <!-- 第三个白框begin -->
             <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <include layout="@layout/topic"/>
             </LinearLayout>

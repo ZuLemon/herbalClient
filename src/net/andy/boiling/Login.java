@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import net.andy.boiling.util.UserUtil;
 import net.andy.com.*;
 import net.andy.dispensing.domain.RulesDomain;
 import net.andy.dispensing.domain.StationDomain;
+import net.andy.dispensing.ui.LoadingUI;
 import net.andy.dispensing.util.RuleUtil;
 import net.andy.dispensing.util.StationUtil;
 import org.apache.http.NameValuePair;
@@ -46,8 +48,8 @@ public class Login extends Activity {
         instance = this;
         UpdateUI manager = new UpdateUI(Login.this);
         //默认地址
-        if("".equals(appOption.getOption(AppOption.APP_OPTION_SERVER)))
-        appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
+        if ("".equals(appOption.getOption(AppOption.APP_OPTION_SERVER)))
+            appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
         // 检查软件更新
         manager.checkUpdate();
         setContentView(R.layout.login);
@@ -72,10 +74,10 @@ public class Login extends Activity {
 //        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
 //        appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
         if ("".equals(appOption.getOption(AppOption.APP_OPTION_WAITTIME)))
-            appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
+            appOption.setOption(AppOption.APP_OPTION_WAITTIME, "3");
 //        appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
 
-        appOption.setOption(AppOption.APP_OPTION_STATE,"YES");
+        appOption.setOption(AppOption.APP_OPTION_STATE, "YES");
 //        tag_code_editText.setText(deviceid);
         submit.setOnClickListener(new SubmitOnclick());
         //设置
@@ -107,10 +109,10 @@ public class Login extends Activity {
         super.onNewIntent(intent);
     }
 
-    public boolean isNumeric(String str){
+    public boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
-        if( !isNum.matches() ){
+        if (!isNum.matches()) {
             return false;
         }
         return true;
@@ -125,27 +127,30 @@ public class Login extends Activity {
                 return;
             }
             //管理员修改服务器地址
-            if("admin".equals(userId.getText().toString())&&"wlbgs".equals(password.getText().toString())){
+            if ("admin".equals(userId.getText().toString()) && "wlbgs".equals(password.getText().toString())) {
                 userId.setText(appOption.getOption(AppOption.APP_OPTION_USER));
                 password.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
                 Intent intent = new Intent(Login.this, Option.class);
                 startActivity(intent);
                 return;
             }
-            if(!isNumeric(userId.getText().toString())){
+            if (!isNumeric(userId.getText().toString())) {
                 new CoolToast(getBaseContext()).show("用户编号错误");
                 return;
             }
+            //正在加载
+            startActivity(new Intent(Login.this, LoadingUI.class));
             final Handler handler = new Handler() {
                 public void handleMessage(Message msg) {
                     new CoolToast(getBaseContext()).show((String) msg.obj);
+                    LoadingUI.instance.finish();
                 }
             };
             new Thread() {
                 @Override
                 public void run() {
                     try {
-                        String info = new UserUtil().confirmPasswd(userId.getText().toString(),password.getText().toString());
+                        String info = new UserUtil().confirmPasswd(userId.getText().toString(), password.getText().toString());
                         if (info.equals("success")) {
                             appOption.setOption(AppOption.APP_OPTION_USER, userId.getText().toString());
                             appOption.setOption(AppOption.APP_OPTION_PASSWORD, password.getText().toString());
@@ -153,29 +158,29 @@ public class Login extends Activity {
                             new LogUserInfo().setLogUsers();
                             //检查推送服务是否运行
                             checkService();
-
-            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        if (wifiManager != null) {
-            deviceid = wifiManager.getConnectionInfo().getMacAddress();
-        }
-        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
+                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            if (wifiManager != null) {
+                                deviceid = wifiManager.getConnectionInfo().getMacAddress();
+                            }
+                            appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
                             //结束当前
                             Login.this.finish();
+                            LoadingUI.instance.finish();
                             Intent intent = new Intent(Login.this, Main.class);
                             startActivity(intent);
-
                         } else {
                             message.obj = info;
                             handler.sendMessage(message);
                         }
                     } catch (Exception e) {
+                        Log.e("错误",e.getMessage());
                         if(handler.obtainMessage(message.what, message.obj) != null){
                             Message _msg = new Message();
                             _msg.what = message.what;
                             _msg.obj= e.getMessage();
                             message = _msg;
                         }else{
-                            message.obj=e.getMessage();
+                        message.obj = e.getMessage();
                         }
                         handler.sendMessage(message);
                     }
@@ -183,6 +188,7 @@ public class Login extends Activity {
             }.start();
         }
     }
+
     private void StationThread() {
         final Message message = new Message();
         final Handler handler = new Handler() {
@@ -207,10 +213,10 @@ public class Login extends Activity {
                 super.run();
                 try {
                     StationDomain st = new StationUtil().getStationByDevice();
-                    if(st==null){
-                        message.obj=null;
+                    if (st == null) {
+                        message.obj = null;
                         message.what = -1;
-                    }else {
+                    } else {
                         message.obj = new RuleUtil().getRules(st.getRulesId());
                         message.what = 0;
                     }
@@ -223,6 +229,7 @@ public class Login extends Activity {
             }
         }.start();
     }
+
     public class OptionOnClick implements Button.OnClickListener {
         @Override
         public void onClick(View v) {

@@ -2,6 +2,7 @@ package net.andy.dispensing.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -51,8 +52,10 @@ public class ExtractPresUI extends Activity{
             switch (view.getId()){
                 case R.id.extractpres_update_button:
                     if(isClick){
+                        startActivity(new Intent(ExtractPresUI.this,LoadingUI.class));
                         extractPresThread(2);
                     }else{
+                        startActivity(new Intent(ExtractPresUI.this,LoadingUI.class));
                         extractPresThread(1);
                     }
                     break;
@@ -62,6 +65,7 @@ public class ExtractPresUI extends Activity{
                         return;
                     }
                     extTime= Integer.valueOf(extractpres_time_editText.getText().toString());
+                    startActivity(new Intent(ExtractPresUI.this,LoadingUI.class));
                     extractPresThread(0);
                     break;
             }
@@ -76,17 +80,20 @@ public class ExtractPresUI extends Activity{
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case -1:
+                        LoadingUI.instance.finish();
                         new CoolToast(getBaseContext()).show((String) msg.obj);
                         break;
                     case 0:
+                        LoadingUI.instance.finish();
                         new CoolToast(getBaseContext()).show("提取处方成功");
                         extractpres_description_textView.setText((String) msg.obj);
                         break;
                     case 1:
+                        LoadingUI.instance.finish();
                         Map valMap= (Map) msg.obj;
                         intevalId=Integer.parseInt(String.valueOf(valMap.get("id")));
                         extractpres_update_button.setText("修改时间");
-                        extractpres_time_editText.setText(String.valueOf(valMap.get("interval")));
+                        extractpres_time_editText.setText(String.valueOf(valMap.get("loadInterval")));
 //                        extractpres_time_editText.setFocusable(true);
 //                        extractpres_time_editText.setFocusableInTouchMode(true);
 //                        extractpres_time_editText.requestFocus();
@@ -95,6 +102,7 @@ public class ExtractPresUI extends Activity{
                         isClick=true;
                         break;
                     case 2:
+                        LoadingUI.instance.finish();
                         new CoolToast(getBaseContext()).show(String.valueOf(msg.obj));
                         extractpres_description_textView.setText("修改为1分钟提取"+extractpres_time_editText.getText()+"分钟的处方");
                         isClick=false;

@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 public class DispensingUI extends NFCActivity {
     private PowerManager.WakeLock mWakeLock;
     public static final String ACTION_DISPENSING= "net.andy.com.MqttNotification";
+    private Date date=new Date(new Date().getTime()-60*1000);
     private  UpdateUIBroadcastReceiver broadcastReceiver;
     private final static int SCANNIN_GREQUEST_CODE = 1000;
     private final static int PAUSE_PRESITION_CODE = 2000;
@@ -137,7 +138,7 @@ public class DispensingUI extends NFCActivity {
     private String settingHerbspec = new AppOption().getOption(AppOption.APP_OPTION_HERSPEC);
     private DecimalFormat df1 = new DecimalFormat("#.##");
     private List<HashMap<String, Object>> imageData = new ArrayList<HashMap<String, Object>>();
-    private CountDownTimer getPresTime = new CountDownTimer(5 * 1000, 200) {
+    private CountDownTimer getPresTime = new CountDownTimer(10 * 1000, 200) {
         @Override
         public void onTick(long l) {
             isGetPresTime=false;
@@ -148,6 +149,7 @@ public class DispensingUI extends NFCActivity {
             isGetPresTime=true;
         }
     };
+
     private CountDownTimer cDTimer = new CountDownTimer(Integer.parseInt(new AppOption().getOption(AppOption.APP_OPTION_WAITTIME)) * 1000, 1000) {
         @Override
         public void onTick(long l) {
@@ -302,7 +304,6 @@ public class DispensingUI extends NFCActivity {
         getReadyPre();
 //        setImage();
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -455,6 +456,22 @@ public class DispensingUI extends NFCActivity {
 //            herbalUtil(12);
 //        }
     }
+    private  synchronized void getPres(){
+        Date nowDate=new Date();
+        long sec=(nowDate.getTime()-date.getTime())/1000;
+        Log.e("<<",sec+"");
+        if(sec>5){
+            isFinish = false;
+            //正常流程
+//            Log.e(">>","点击");
+            herbalUtil(0);
+        }else{
+            if(sec>0) {
+                new CoolToast(getBaseContext()).show("点击无效，请不要频繁点击！");
+            }
+        }
+        date=new Date();
+    }
     class MyButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -482,9 +499,7 @@ public class DispensingUI extends NFCActivity {
                     }
                     break;
                 case R.id.dispensing_readNextMedicine_button:
-                    isFinish = false;
-                    //正常流程
-                    herbalUtil(0);
+                    getPres();
                     //开启读条码功能
 //                    Intent intent = new Intent();
 //                    intent.setClass(DispensingUI.this, MipcaActivityCapture.class);
@@ -492,14 +507,8 @@ public class DispensingUI extends NFCActivity {
 //                    startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
                     break;
                 case R.id.dispensing_tagInfo_linearLayout:
-                    if(isGetPresTime) {
-                        getPresTime.start();
-                        isFinish = false;
-                        //正常流程
-                        herbalUtil(0);
-                    }else{
-                        new CoolToast(getBaseContext()).show("点击无效，请不要频繁点击！");
-                    }
+                    //正常流程
+                    getPres();
                     //开启读条码功能
 //                    Intent i = new Intent();
 //                    i.setClass(DispensingUI.this, MipcaActivityCapture.class);
@@ -913,7 +922,15 @@ private  void setGlobalView(){
                             handler.sendMessage(message);
                             break;
                         case 5:
-                            Map all = new PrescriptionUtil().insertDispensingByDevice(new AppOption().getOption(AppOption.APP_DEVICE_ID), new AppOption().getOption(AppOption.APP_OPTION_USER), barcode);
+                           wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            if (wifiManager == null) {
+                                message.what = -1;
+                                message.obj = "请先打开无线网络";
+                                handler.sendMessage(message);
+                            }
+                            String device = wifiManager.getConnectionInfo().getMacAddress();
+
+                            Map all = new PrescriptionUtil().insertDispensingByDevice(device, new AppOption().getOption(AppOption.APP_OPTION_USER), barcode);
                             serverTime = Long.parseLong(new ServerUtil().getServerTime());
                             if (all == null) {
                                 message.what = -1;

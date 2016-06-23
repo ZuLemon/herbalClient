@@ -18,7 +18,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="46.0dp"
                 android:gravity="center"
-                android:text="设置工位对应规则"/>
+                android:text="个人工作量"/>
 
     </LinearLayout>
     <ScrollView
@@ -62,6 +62,7 @@
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
+                            android:focusable="false"
                             android:singleLine="true"
                             android:textSize="16sp" />
                 </LinearLayout>
@@ -87,6 +88,7 @@
                             android:id="@+id/personaleffort_endTime_editText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:focusable="false"
                             android:singleLine="true"
                             android:layout_weight="1"
                             android:textSize="16sp" />
@@ -178,14 +180,14 @@
                     android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10.0dp"
-                    android:minHeight="50.0dp">
+                    android:padding="10dp"
+                    android:minHeight="50dp">
                 <TextView
-                        android:textSize="18.0sp"
+                        android:textSize="18sp"
                         android:textColor="#ff545454"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10.0dp"
+                        android:layout_marginLeft="10dp"
                         android:text="总付数："/>
                 <TextView
                         android:id="@+id/personaleffort_presNumTotal_textView"
@@ -193,7 +195,7 @@
                         android:textColor="#ff545454"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="3.0dp"
+                        android:layout_marginLeft="3dp"
                         android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import net.andy.boiling.R;
+import net.andy.dispensing.ui.LoadingUI;
 import net.andy.hos.util.ExtInpatientUtil;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class ExtInPatientUI extends Activity{
                     startActivityForResult(intn,0);
                     break;
                 case R.id.search:
+                    startActivity(new Intent(ExtInPatientUI.this, LoadingUI.class));
                     HospitalThread(0);
                     break;
             }
@@ -83,6 +85,7 @@ public class ExtInPatientUI extends Activity{
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage ( msg );
+                LoadingUI.instance.finish();
                 switch (msg.what) {
                     case -1:
                         break;

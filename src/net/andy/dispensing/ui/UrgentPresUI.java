@@ -19,7 +19,10 @@ import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.UrgentDelPresUtil;
+import net.andy.hos.ui.ExtInPatientUI;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +33,7 @@ import java.util.Map;
  * Created by Guang on 2016/5/18.
  */
 public class UrgentPresUI extends Activity{
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private ListView urgentPres_patient_listView;
     private Button urgentPres_search_button;
     private EditText urgentPres_patientId_editText;
@@ -57,11 +61,11 @@ public class UrgentPresUI extends Activity{
     }
     private void confirm(){
         urgList.clear();
-
         patId=urgentPres_patientId_editText.getText().toString().trim();
         if("".equals(patId)){
             new CoolToast(getBaseContext()).show("请输入门诊号或住院号");
         }else {
+            startActivity(new Intent(UrgentPresUI.this, LoadingUI.class));
             urgentPresThread(0);
         }
     }
@@ -121,9 +125,11 @@ public class UrgentPresUI extends Activity{
                 super.handleMessage ( msg );
                 switch (msg.what) {
                     case -1:
+                        LoadingUI.instance.finish();
                         new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
                         break;
                     case 0:
+                        LoadingUI.instance.finish();
                         setListView ( (List) msg.obj );
                         break;
                 }
@@ -176,12 +182,13 @@ public class UrgentPresUI extends Activity{
                 view = inflater.inflate(R.layout.urgentpreslist, viewGroup, false);
                 urgDelPresView = new UrgDelPresView();
                 urgDelPresView.urgentPres_id_textView  = (TextView) view.findViewById(R.id.urgentPres_id_textView);
-                urgDelPresView.urgentPres_presNumber_textView  = (TextView) view.findViewById(R.id.urgentPres_presNumber_textView);
+                urgDelPresView.urgentPres_presDept_textView  = (TextView) view.findViewById(R.id.urgentPres_presDept_textView);
                 urgDelPresView.urgentPres_category_textView= (TextView) view.findViewById(R.id.urgentPres_category_textView);
                 urgDelPresView.urgentPres_name_textView = (TextView) view.findViewById(R.id.urgentPres_name_textView);
                 urgDelPresView.urgentPres_patientName_textView= (TextView) view.findViewById(R.id.urgentPres_patientName_textView);
                 urgDelPresView.urgentPres_main_textView= (TextView) view.findViewById(R.id.urgentPres_main_textView);
                 urgDelPresView.urgentPres_way_textView= (TextView) view.findViewById(R.id.urgentPres_way_textView);
+                urgDelPresView.urgentPres_subTime_textView= (TextView) view.findViewById(R.id.urgentPres_subTime_textView);
                 view.setTag(urgDelPresView);
             } else {
                 urgDelPresView = (UrgDelPresView) view.getTag();
@@ -190,11 +197,17 @@ public class UrgentPresUI extends Activity{
             Log.e("map", map.toString());
             urgDelPresView.urgentPres_id_textView .setText(""+map.get ( "id" ));
             urgDelPresView.urgentPres_patientName_textView.setText(""+map.get("patientName"));
-            urgDelPresView.urgentPres_category_textView.setText(""+map.get ( "category" )+map.get ( "classification" )+" "+ map.get ( "patientNo" ));
+            urgDelPresView.urgentPres_category_textView.setText(""+map.get ( "category" )+map.get ("classification" )+" "+ map.get ( "patientNo" ));
             urgDelPresView.urgentPres_name_textView  .setText(""+ map.get("patientName"));
-            urgDelPresView.urgentPres_presNumber_textView .setText(""+ map.get("presNumber")+"付"+ map.get("herbCnt")+"味");
-            urgDelPresView.urgentPres_main_textView .setText(""+ map.get("main"));
+            urgDelPresView.urgentPres_presDept_textView .setText(map.get("deptName")+" "+ map.get("doctorName"));
+            urgDelPresView.urgentPres_main_textView .setText(""+ map.get("main")+ " " +map.get("presNumber")+"付"+ map.get("herbCnt")+"味");
             urgDelPresView.urgentPres_way_textView .setText(""+ map.get("way")+ map.get("process")+ map.get("frequency"));
+            try {
+                urgDelPresView.urgentPres_subTime_textView.setText(dateFormat.format(dateFormat.parse(String.valueOf(map.get("subTime")))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
 //            if (i == selectItem) {
 //                view.setBackgroundColor(Color.RED);
 //            }
@@ -208,18 +221,19 @@ public class UrgentPresUI extends Activity{
 //        }
 //        private int  selectItem=-1;
         private class UrgDelPresView {
-            private TextView urgentPres_presNumber_textView;
+            private TextView urgentPres_presDept_textView;
             private TextView urgentPres_patientName_textView;
             private TextView urgentPres_name_textView;
             private TextView urgentPres_category_textView;
             private TextView urgentPres_id_textView;
             private TextView urgentPres_main_textView;
             private TextView urgentPres_way_textView;
-        }
+            private TextView urgentPres_subTime_textView;
+}
     }
     @Override
     protected void onResume() {
         super.onResume();
-        confirm();
+//        confirm();
     }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:id="@+id/assignItem_linearLayout"
+              android:background="@android:color/white"
+              android:layout_marginLeft="5dp"
+              android:layout_marginRight="5dp"
+              android:padding="3dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+            android:id="@+id/assignItem__name_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:text="管理员"
+            android:gravity="left"
+            android:layout_weight="3"/>
+        <EditText android:layout_width="50dp"
+                  android:layout_height="40dp"
+                  android:id="@+id/assignItem__num_editText"
+                  android:textSize="13sp"
+                  android:textColor="#000"
+                  android:hint="张数"
+                  android:editable="false"
+                  android:focusable="false"
+                  android:gravity="right"
+                  android:numeric="integer"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:visibility="gone" android:id="@+id/assignItem__id_textView"/>
+</LinearLayout>

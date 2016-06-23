@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@drawable/white_circular"
+                android:background="@drawable/white_circular"
               android:paddingBottom="5dp"
               android:paddingRight="5dp"
               android:paddingLeft="5dp"
@@ -12,33 +12,40 @@
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
                   android:layout_weight="1">
+        <LinearLayout android:layout_width="15dp"
+                      android:layout_height="wrap_content"
+                      android:paddingBottom="5dp"
+                      android:paddingLeft="5dp"
+                      android:paddingTop="5dp"
+                      android:orientation="vertical"
+                      android:layout_gravity="center_vertical"
+                      android:gravity="center_vertical"
+                      android:layout_weight="1">
+            <TextView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:textColor="@android:color/black"
+                      android:textSize="20sp"
+                      android:id="@+id/validationItem_count"
+                      android:gravity="left"
+                      android:text="12"/>
+        </LinearLayout>
         <LinearLayout android:layout_width="130dp"
                       android:layout_height="65dp"
                       android:layout_gravity="center_vertical"
                       android:gravity="center_vertical"
                       android:paddingBottom="5dp"
-                      android:paddingLeft="10dp"
+                      android:paddingLeft="5dp"
                       android:paddingTop="5dp"
-                      android:layout_weight="4"
-                      android:orientation="vertical">
+                      android:layout_weight="4">
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:background="@android:color/white"
                       android:gravity="left"
                       android:textColor="@android:color/black"
                       android:textSize="20sp"
-                      android:layout_weight="3"
-                      android:text="管理员"
-                      android:id="@+id/urgentPres_patientName_textView"/>
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:background="@android:color/white"
-                      android:gravity="left"
-                      android:layout_weight="1"
-                      android:textColor="@android:color/black"
-                      android:textSize="15sp"
-                      android:text="开单科室 医生"
-                      android:id="@+id/urgentPres_presDept_textView"/>
+                      android:text="病人"
+                      android:id="@+id/alreadydisitem_patientName"/>
+
         </LinearLayout>
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="match_parent"
@@ -51,19 +58,19 @@
                       android:layout_weight="2">
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="新处方 7付 32味"
+                      android:text="门诊饮片"
                       android:gravity="right"
                       android:paddingBottom="5dp"
-                      android:id="@+id/urgentPres_main_textView"
+                      android:id="@+id/alreadydisitem_classification"
                       android:textColor="@android:color/black"
                       android:textSize="15sp"
             />
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="2016-06-21"
+                      android:id="@+id/alreadydisitem_presNumber"
+                      android:text="7付 32味"
                       android:paddingBottom="5dp"
                       android:gravity="right"
-                      android:id="@+id/urgentPres_subTime_textView"
                       android:textColor="@android:color/black"
                       android:textSize="15sp"
             />
@@ -73,7 +80,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="5dp"
-                  android:paddingRight="5dp">
+                android:paddingRight="5dp">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_weight="3"
@@ -81,30 +88,26 @@
                   android:gravity="left"
                   android:paddingLeft="5dp"
                   android:paddingRight="5dp"
-                  android:text="门诊免煎 00000000"
-                  android:textColor="@android:color/black"
-                  android:id="@+id/urgentPres_category_textView"
-                  android:textSize="18sp"
+                  android:text="中药处方单 口服水煎日两次"
+                  android:textColor="@android:color/darker_gray"
+                  android:id="@+id/alreadydisitem_info"
+                  android:textSize="15sp"
         />
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:layout_gravity="right"
-                  android:gravity="left"
+                  android:gravity="right"
                   android:paddingLeft="5dp"
                   android:paddingRight="5dp"
-                  android:text="口服代煎日二次"
+                  android:text="09:38:15"
                   android:textColor="@android:color/darker_gray"
-                  android:id="@+id/urgentPres_way_textView"
+                  android:id="@+id/alreadydisitem_startTime"
                   android:textSize="15sp"
         />
     </LinearLayout>
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:visibility="gone"
-              android:id="@+id/urgentPres_id_textView"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:visibility="gone"
-              android:id="@+id/urgentPres_name_textView"/>
+              android:id="@+id/alreadydisitem_id"
+              android:visibility="gone"/>
 </LinearLayout>

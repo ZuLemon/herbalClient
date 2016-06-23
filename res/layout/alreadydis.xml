@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical"
+               android:background="@color/info_panel_bg">
+        <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@color/button_unselected"
+                android:layout_width="match_parent"
+                android:layout_height="44dp">
+            <TextView
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:padding="12dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="46dp"
+                    android:gravity="center"
+                    android:id="@+id/alreadydis_title"
+                    android:text="今日已调剂处方"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
+            <ListView android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:paddingLeft="5dp"
+                      android:paddingRight="5dp"
+                      android:divider="#00000000"
+                      android:dividerHeight="5dp"
+                      android:id="@+id/alreadydis_list"/>
+        </LinearLayout>
+    </LinearLayout>
+

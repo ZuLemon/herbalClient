@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="27"
+          android:versionCode="29"
           android:versionName="1.1">
-    <uses-sdk android:minSdkVersion="17" tools:ignore="UsesMinSdkAttributes"/>
+    <uses-sdk android:minSdkVersion="19" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <!-- 振动器权限 -->
@@ -86,5 +86,12 @@
         <activity android:name="net.andy.dispensing.ui.UrgDelPresUI"
                   android:theme="@style/TranslucentFullscreen"/>
         <activity android:name=".ui.SysAdminUI"/>
+        <activity android:name="net.andy.dispensing.ui.AssignOtherWayUI"
+                  android:windowSoftInputMode="adjustPan"/>
+        <activity android:name="net.andy.dispensing.ui.AssignResultUI"
+                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.LoadingUI"
+                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.AlreadyDisUI"/>
     </application>
 </manifest>

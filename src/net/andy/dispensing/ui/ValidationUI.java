@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 复核处方
  * Created by Guang on 2016/5/26.
  */
 public class ValidationUI extends Activity {

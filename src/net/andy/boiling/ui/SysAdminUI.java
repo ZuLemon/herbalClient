@@ -15,10 +15,7 @@ import net.andy.boiling.R;
 import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.domain.StationDomain;
-import net.andy.dispensing.ui.ExtractPresUI;
-import net.andy.dispensing.ui.OnlineUI;
-import net.andy.dispensing.ui.UrgentPresUI;
-import net.andy.dispensing.ui.WaitDispenUI;
+import net.andy.dispensing.ui.*;
 
 /**
  * 系统管理
@@ -28,9 +25,8 @@ public class SysAdminUI extends Activity {
     private LinearLayout sysadmin_extract_linearLayout;
     private LinearLayout sysadmin_topPre_linearLayout;
     private LinearLayout sysadmin_online_linearLayout;
+    private LinearLayout sysadmin_assignWork_linearLayout;
     private LinearLayout sysadmin_waitDispen_linearLayout;
-    private TextView sysadmin_interval_textView;
-    private EditText sysadmin_interval_editText;
     private StationDomain stationDomain;
     private boolean isInterval;
     private AppOption appOption = new AppOption();
@@ -46,9 +42,8 @@ public class SysAdminUI extends Activity {
         sysadmin_topPre_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_topPre_linearLayout);
         sysadmin_online_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_online_linearLayout);
         sysadmin_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_waitDispen_linearLayout);
+        sysadmin_assignWork_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_assignWork_linearLayout);
         buttonListener = new ButtonListener();
-        sysadmin_interval_textView = (TextView) findViewById(R.id.sysadmin_interval_textView);
-        sysadmin_interval_editText = (EditText) findViewById(R.id.sysadmin_interval_editText);
         stationDomain = new StationDomain();
         init();
         setMonitor();
@@ -59,44 +54,20 @@ public class SysAdminUI extends Activity {
     }
 
     private void setMonitor() {
-        sysadmin_interval_textView.setOnClickListener(buttonListener);
         sysadmin_extract_linearLayout.setOnClickListener(buttonListener);
         sysadmin_topPre_linearLayout.setOnClickListener(buttonListener);
         sysadmin_online_linearLayout.setOnClickListener(buttonListener);
         sysadmin_waitDispen_linearLayout.setOnClickListener(buttonListener);
+        sysadmin_assignWork_linearLayout.setOnClickListener(buttonListener);
     }
 
-    private void setInterval() {
-        if (isInterval) {
-            isInterval = false;
-            if (Integer.parseInt(sysadmin_interval_editText.getText() + "") == 0) {
-                sysadmin_interval_editText.setText("1");
-                coolToast.show("间隔时间至少为 1");
-            } else {
-                coolToast.show("保存成功");
-            }
-            sysadmin_interval_editText.setFocusable(false);
-            appOption.setOption(AppOption.APP_OPTION_WAITTIME, sysadmin_interval_editText.getText().toString());
-            sysadmin_interval_textView.setText("修改");
-        } else {
-            isInterval = true;
-            sysadmin_interval_editText.setFocusable(true);
-            sysadmin_interval_editText.setFocusableInTouchMode(true);
-            sysadmin_interval_editText.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-            sysadmin_interval_textView.setText("保存");
-        }
-    }
+
 
 
     private class ButtonListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.sysadmin_interval_textView:
-                    setInterval();
-                    break;
                 case R.id.sysadmin_extract_linearLayout:
                     Intent intent = new Intent(SysAdminUI.this, ExtractPresUI.class);
                     startActivity(intent);
@@ -113,52 +84,14 @@ public class SysAdminUI extends Activity {
                     Intent waitDispen = new Intent(SysAdminUI.this, WaitDispenUI.class);
                     startActivity(waitDispen);
                     break;
+                case R.id.sysadmin_assignWork_linearLayout:
+                    Intent assignWork = new Intent(SysAdminUI.this, AssignOtherWayUI.class);
+                    startActivity(assignWork);
+                    break;
                 default:
                     break;
             }
         }
-    }
-
-    /**
-     * 系统管理子线程
-     **/
-    private void settingThread(int what) {
-        final Message message = new Message();
-        final Handler handler = new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case -1:
-                        new CoolToast(getBaseContext()).show((String) msg.obj);
-
-                        break;
-                    case 0:
-                        break;
-                    case 1:
-                        new CoolToast(getBaseContext()).show((String) msg.obj);
-                        break;
-                }
-            }
-        };
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    switch (what) {
-                        case 0:
-                            break;
-                        case 1:
-                            message.obj = 0;
-                            message.what = 1;
-                            handler.sendMessage(message);
-                            break;
-                    }
-                } catch (Exception e) {
-                    message.what = -1;
-                    message.obj = e.getMessage();
-                    handler.sendMessage(message);
-                }
-            }
-        }.start();
     }
 
 }

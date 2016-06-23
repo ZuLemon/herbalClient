@@ -76,6 +76,10 @@ public class StationUtil {
 
     /**
      * 更新工位
+     * @param stationDomain
+     * @param arg
+     * @return
+     * @throws Exception
      */
     public Object updateStation(StationDomain stationDomain, Integer arg) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();

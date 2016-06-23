@@ -18,8 +18,10 @@ import net.andy.boiling.domain.ReturnDomain;
 import net.andy.com.Http;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.domain.TopicDomain;
+import net.andy.dispensing.ui.AlreadyDisUI;
 import net.andy.dispensing.ui.PersonalEffortUI;
 import net.andy.dispensing.ui.StationRuleUI;
+import net.andy.dispensing.ui.WaitDispenUI;
 import net.andy.dispensing.util.SpinnerItem;
 import net.andy.dispensing.util.StationUtil;
 import net.andy.boiling.R;
@@ -40,6 +42,8 @@ import java.util.Map;
 public class SettingUI extends Activity {
     private LinearLayout setting_station_linearLayout;
     private LinearLayout setting_personaleffort_linearLayout;
+    private LinearLayout setting_waitDispen_linearLayout;
+    private LinearLayout setting_alreadydis_linearLayout;
     private SwitchButton switchButton;
     private TextView setting_interval_textView;
     private TextView setting_station_textView;
@@ -65,6 +69,8 @@ public class SettingUI extends Activity {
         coolToast = new CoolToast(getBaseContext());
         setting_station_linearLayout = (LinearLayout) findViewById(R.id.setting_station_linearLayout);
         setting_personaleffort_linearLayout= (LinearLayout) findViewById(R.id.setting_personaleffort_linearLayout);
+        setting_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.setting_waitDispen_linearLayout);
+        setting_alreadydis_linearLayout= (LinearLayout) findViewById(R.id.setting_alreadydis_linearLayout);
         buttonListener = new ButtonListener();
 //        setting_station_spinner= (Spinner) findViewById(R.id.setting_station_spinner);
         switchButton = (SwitchButton) findViewById(R.id.switchButton);
@@ -88,6 +94,8 @@ public class SettingUI extends Activity {
         setting_interval_textView.setOnClickListener(buttonListener);
         setting_station_linearLayout.setOnClickListener(buttonListener);
         setting_personaleffort_linearLayout.setOnClickListener(buttonListener);
+        setting_waitDispen_linearLayout.setOnClickListener(buttonListener);
+        setting_alreadydis_linearLayout.setOnClickListener(buttonListener);
 //        setting_station_textView.setOnClickListener(buttonListener);
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -184,6 +192,14 @@ public class SettingUI extends Activity {
                 case R.id.setting_personaleffort_linearLayout:
                     Intent effortIntent = new Intent(SettingUI.this, PersonalEffortUI.class);
                     startActivity(effortIntent);
+                    break;
+                case R.id.setting_waitDispen_linearLayout:
+                    Intent waitIntent = new Intent(SettingUI.this, WaitDispenUI.class);
+                    startActivity(waitIntent);
+                    break;
+                case R.id.setting_alreadydis_linearLayout:
+                    Intent alreadyIntent = new Intent(SettingUI.this, AlreadyDisUI.class);
+                    startActivity(alreadyIntent);
                     break;
                 default:
                     break;
