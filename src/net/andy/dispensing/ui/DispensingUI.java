@@ -150,7 +150,7 @@ public class DispensingUI extends NFCActivity {
         }
     };
 
-    private CountDownTimer cDTimer = new CountDownTimer(Integer.parseInt(new AppOption().getOption(AppOption.APP_OPTION_WAITTIME)) * 1000, 1000) {
+    private CountDownTimer cDTimer = new CountDownTimer(Integer.parseInt(new AppOption().getOption(AppOption.APP_OPTION_WAITTIME)) * 1000, 500) {
         @Override
         public void onTick(long l) {
 //            dispensing_medicineInfo_linearLayout.setClickable(false);

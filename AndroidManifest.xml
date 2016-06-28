@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="29"
+          android:versionCode="31"
           android:versionName="1.1">
-    <uses-sdk android:minSdkVersion="19" tools:ignore="UsesMinSdkAttributes"/>
+    <uses-sdk android:minSdkVersion="18" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <!-- 振动器权限 -->

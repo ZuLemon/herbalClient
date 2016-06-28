@@ -141,6 +141,7 @@ public class AlreadyDisUI extends Activity {
                 val.alreadydisitem_presNumber = (TextView) view.findViewById(R.id.alreadydisitem_presNumber);
                 val.alreadydisitem_classification = (TextView) view.findViewById(R.id.alreadydisitem_classification);
                 val.alreadydisitem_patientName = (TextView) view.findViewById(R.id.alreadydisitem_patientName);
+                val.alreadydisitem_patientNo  = (TextView) view.findViewById(R.id.alreadydisitem_patientNo);
                 view.setTag(val);
             } else {
                 val = (Val) view.getTag();
@@ -152,7 +153,7 @@ public class AlreadyDisUI extends Activity {
             val.alreadydisitem_patientName .setText(""+map.get("patientName"));
             val.alreadydisitem_classification .setText(""+map.get("category")+map.get("classification"));
             val.alreadydisitem_presNumber .setText(""+ map.get("presNumber")+"付"+ map.get("herbCnt")+"味");
-            val.alreadydisitem_info .setText(""+map.get("way")+map.get("manufacture")+map.get("frequency"));
+            val.alreadydisitem_patientNo .setText(map.get("category")+"号："+map.get("patientNo"));
             try {
                 val.alreadydisitem_startTime .setText(format2.format(format1.parse(String.valueOf(map.get("beginTime")))));
             } catch (ParseException e) {
@@ -168,6 +169,7 @@ public class AlreadyDisUI extends Activity {
             private TextView alreadydisitem_presNumber;
             private TextView alreadydisitem_classification;
             private TextView alreadydisitem_patientName;
+            private TextView alreadydisitem_patientNo;
         }
     }
 

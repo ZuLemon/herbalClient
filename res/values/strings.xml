@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">中药房管理</string>
+    <string name="app_name">中药调剂</string>
     <string name="app_OK">确定</string>
     <string name="app_submit">提交</string>
     <string name="addequip">添加设备</string>
