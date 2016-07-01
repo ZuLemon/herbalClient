@@ -53,6 +53,12 @@
                           android:layout_weight="1"
                           android:gravity="left"
                           android:textColor="#ffffffff"
+                          android:id="@+id/disHistory_category_textView"
+                          android:text="门诊号："/>
+                <TextView style="@style/Custom20TextViewTheme"
+                          android:layout_weight="1"
+                          android:gravity="left"
+                          android:textColor="#ffffffff"
                           android:text="姓名："/>
                 <TextView style="@style/Custom20TextViewTheme"
                           android:layout_weight="1"
@@ -70,7 +76,12 @@
                     android:layout_width="wrap_content"
                     android:paddingLeft="5dp"
                     android:layout_height="wrap_content">
-
+                <TextView style="@style/Custom20TextViewTheme"
+                          android:layout_weight="1"
+                          android:gravity="left"
+                          android:id="@+id/disHistory_patientId_textView"
+                          android:textColor="#ffffffff"
+                          android:text="00000000"/>
                 <TextView style="@style/Custom20TextViewTheme"
                           android:layout_weight="1"
                           android:gravity="left"

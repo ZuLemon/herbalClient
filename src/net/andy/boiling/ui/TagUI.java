@@ -65,12 +65,12 @@ public class TagUI extends NFCActivity {
         tag_status2_radioButton = (RadioButton) findViewById(R.id.tag_status2_radioButton);
         tag_status3_radioButton = (RadioButton) findViewById(R.id.tag_status3_radioButton);
         Button tag_ok_button = (Button) findViewById(R.id.tag_ok_button);
-        colorItemList.add(new ColorItem("红色","#FF0000"));
-        colorItemList.add(new ColorItem("绿色","#00FF00"));
-        colorItemList.add(new ColorItem("蓝色","#0099FF"));
-        colorItemList.add(new ColorItem("黄色","#FFFF00"));
+        colorItemList.add(new ColorItem("红色","#ffFF0000"));
+        colorItemList.add(new ColorItem("绿色","#ff00FF00"));
+        colorItemList.add(new ColorItem("蓝色","#ff0099FF"));
+        colorItemList.add(new ColorItem("黄色","#ffFFFF00"));
         colorItemList.add(new ColorItem("棕色","#ff8a6f20"));
-        colorItemList.add(new ColorItem("粉色","#FF1CAE"));
+        colorItemList.add(new ColorItem("粉色","#ffFF1CAE"));
         tag_code_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

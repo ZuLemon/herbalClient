@@ -80,7 +80,6 @@
         <activity android:name="net.andy.dispensing.ui.WaitDispenUI"/>
         <activity android:name="net.andy.dispensing.ui.PersonalEffortUI"
                   android:windowSoftInputMode="adjustUnspecified|stateHidden"/>
-        <activity android:name="net.andy.select.ui.HospitalPatUI"/>
         <activity android:name="net.andy.hos.ui.ExtInPatientUI"/>
         <activity android:name="net.andy.hos.ui.ExtInPatientDeptUI"/>
         <activity android:name="net.andy.dispensing.ui.UrgDelPresUI"

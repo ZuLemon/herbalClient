@@ -45,6 +45,8 @@ public class ValidationDetailUI extends Activity{
     private ButtonListener buttonListener=new ButtonListener();
     private List listDis;
     private boolean isReady=false;
+    private TextView validationdetail_category_textView;
+    private TextView validationdetail_patientId_textView;
     private TextView validationdetail_patientName_textView;
     private TextView validationdetail_deptName_textView;
     private Integer preId;
@@ -64,6 +66,8 @@ public class ValidationDetailUI extends Activity{
         validationdetail_gridView = (GridView) findViewById(R.id.validationdetail_gridView);
         validationdetail_doctorName_textView= (TextView) findViewById(R.id.validationdetail_doctorName_textView);
         validationdetail_info_textView= (TextView) findViewById(R.id.validationdetail_info_textView);
+        validationdetail_patientId_textView= (TextView) findViewById(R.id.validationdetail_patientId_textView);
+        validationdetail_category_textView= (TextView) findViewById(R.id.validationdetail_category_textView);
         validationdetail_patientName_textView= (TextView) findViewById(R.id.validationdetail_patientName_textView);
         validationdetail_deptName_textView= (TextView) findViewById(R.id.validationdetail_deptName_textView);
         validationdetail_return_button= (Button) findViewById(R.id.validationdetail_return_button);
@@ -217,6 +221,8 @@ public class ValidationDetailUI extends Activity{
                     case 0:
                         validationdetail_info_textView.setText(pre.getClassification()+" "+pre.getPresNumber()+"付 "+pre.getWay()+pre.getManufacture()+pre.getFrequency());
                         validationdetail_patientName_textView.setText(pre.getPatientName());
+                        validationdetail_category_textView.setText(pre.getCategory()+"：");
+                        validationdetail_patientId_textView.setText(pre.getPatientNo());
                         validationdetail_doctorName_textView.setText(pre.getDoctorName());
                         validationdetail_deptName_textView.setText(pre.getDeptName());
                         parseObject(listDis);

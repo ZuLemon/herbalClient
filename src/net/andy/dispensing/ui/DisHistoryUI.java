@@ -30,7 +30,8 @@ public class DisHistoryUI extends Activity{
     private GridView dis_history_gridView;
     private TextView disHistory_info_textView;
     private TextView disHistory_doctorName_textView;
-//    private TextView disHistory_stationName_textView;
+    private TextView disHistory_category_textView;
+    private TextView disHistory_patientId_textView;
     private TextView disHistory_patientName_textView;
     private TextView disHistory_deptName_textView;
 
@@ -47,7 +48,8 @@ public class DisHistoryUI extends Activity{
         dis_history_gridView = (GridView) findViewById(R.id.dis_history_gridView);
         disHistory_doctorName_textView= (TextView) findViewById(R.id.disHistory_doctorName_textView);
         disHistory_info_textView= (TextView) findViewById(R.id.disHistory_info_textView);
-//        disHistory_stationName_textView= (TextView) findViewById(R.id.disHistory_stationName_textView);
+        disHistory_patientId_textView= (TextView) findViewById(R.id.disHistory_patientId_textView);
+        disHistory_category_textView= (TextView) findViewById(R.id.disHistory_category_textView);
         disHistory_patientName_textView= (TextView) findViewById(R.id.disHistory_patientName_textView);
         disHistory_deptName_textView= (TextView) findViewById(R.id.disHistory_deptName_textView);
 //        adjust_history_gridView.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +68,8 @@ public class DisHistoryUI extends Activity{
         dispensingDetailDomainList= (List<DispensingDetailDomain>) in.getSerializableExtra("dises");
         pre= (PrescriptionDomain) in.getSerializableExtra("pre");
         disHistory_info_textView.setText(pre.getClassification()+" "+pre.getPresNumber()+"付 "+pre.getWay()+pre.getManufacture()+pre.getFrequency());
+        disHistory_category_textView.setText(pre.getCategory()+"：");
+        disHistory_patientId_textView.setText(pre.getPatientNo());
         disHistory_patientName_textView.setText(pre.getPatientName());
         disHistory_doctorName_textView.setText(pre.getDoctorName());
         disHistory_deptName_textView.setText(pre.getDeptName());
