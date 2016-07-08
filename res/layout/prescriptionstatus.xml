@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:id="@+id/prescriptionStatus_linearLayout"
+              android:background="#55000000"
+              android:layout_gravity="center"
+              android:gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dark_circular"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+        <TextView style="@style/Custom20TextViewTheme"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="10dp"
+                  android:paddingTop="10dp"
+                  android:paddingLeft="20dp"
+                  android:gravity="left"
+                  android:layout_gravity="left"
+                  android:text="未调剂"
+                  android:layout_weight="1"
+                  android:id="@+id/prescriptionStatus_status_textView"/>
+        <View
+                android:background="@drawable/shape_line"
+                android:layout_width="fill_parent"
+                android:layout_height="1px" />
+        <TextView style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_waitCount_textView"
+                  android:text="前面有 0 个处方等候"
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_waitTime_textView"
+                  android:text="候方用时："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_dispensingPerson_textView"
+                  android:text="  调剂人："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView  style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_dispensingTime_textView"
+                  android:text="调剂用时："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView  style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_tagCode_textView"
+                  android:text="绑定标签："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_insPerson_textView"
+                  android:text="    检验人："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_insTime_textView"
+                  android:text="检验时间："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        </LinearLayout>
+</LinearLayout>

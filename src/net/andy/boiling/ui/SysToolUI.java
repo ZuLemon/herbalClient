@@ -15,10 +15,7 @@ import net.andy.boiling.R;
 import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.domain.StationDomain;
-import net.andy.dispensing.ui.ExtractPresUI;
-import net.andy.dispensing.ui.OnlineUI;
-import net.andy.dispensing.ui.UrgentPresUI;
-import net.andy.dispensing.ui.WaitDispenUI;
+import net.andy.dispensing.ui.*;
 
 /**
  * 系统管理
@@ -28,6 +25,7 @@ public class SysToolUI extends Activity {
     private LinearLayout sysadmin_extract_linearLayout;
     private LinearLayout sysadmin_online_linearLayout;
     private LinearLayout sysadmin_waitDispen_linearLayout;
+    private LinearLayout sysadmin_selectPres_linearLayout;
     private TextView sysadmin_interval_textView;
     private EditText sysadmin_interval_editText;
     private StationDomain stationDomain;
@@ -44,6 +42,7 @@ public class SysToolUI extends Activity {
         sysadmin_extract_linearLayout = (LinearLayout) findViewById(R.id.sysadmin_extract_linearLayout);
         sysadmin_online_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_online_linearLayout);
         sysadmin_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_waitDispen_linearLayout);
+        sysadmin_selectPres_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_selectPres_linearLayout);
         buttonListener = new ButtonListener();
         sysadmin_interval_textView = (TextView) findViewById(R.id.sysadmin_interval_textView);
         sysadmin_interval_editText = (EditText) findViewById(R.id.sysadmin_interval_editText);
@@ -61,6 +60,7 @@ public class SysToolUI extends Activity {
         sysadmin_extract_linearLayout.setOnClickListener(buttonListener);
         sysadmin_online_linearLayout.setOnClickListener(buttonListener);
         sysadmin_waitDispen_linearLayout.setOnClickListener(buttonListener);
+        sysadmin_selectPres_linearLayout.setOnClickListener(buttonListener);
     }
 
     private void setInterval() {
@@ -109,6 +109,10 @@ public class SysToolUI extends Activity {
                 case R.id.sysadmin_waitDispen_linearLayout:
                     Intent waitDispen = new Intent(SysToolUI.this, WaitDispenUI.class);
                     startActivity(waitDispen);
+                    break;
+                case R.id.sysadmin_selectPres_linearLayout:
+                    Intent selDispen = new Intent(SysToolUI.this, SelectPresUI.class);
+                    startActivity(selDispen);
                     break;
                 default:
                     break;

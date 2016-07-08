@@ -27,6 +27,7 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 /**
+ * 置顶、删除、修改处方属性
  * Created by Guang on 2016/3/16.
  */
 public class UrgDelPresUI extends Activity{

@@ -27,6 +27,7 @@ public class SysAdminUI extends Activity {
     private LinearLayout sysadmin_online_linearLayout;
     private LinearLayout sysadmin_assignWork_linearLayout;
     private LinearLayout sysadmin_waitDispen_linearLayout;
+    private LinearLayout sysadmin_selectPres_linearLayout;
     private StationDomain stationDomain;
     private boolean isInterval;
     private AppOption appOption = new AppOption();
@@ -43,6 +44,7 @@ public class SysAdminUI extends Activity {
         sysadmin_online_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_online_linearLayout);
         sysadmin_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_waitDispen_linearLayout);
         sysadmin_assignWork_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_assignWork_linearLayout);
+        sysadmin_selectPres_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_selectPres_linearLayout);
         buttonListener = new ButtonListener();
         stationDomain = new StationDomain();
         init();
@@ -59,6 +61,7 @@ public class SysAdminUI extends Activity {
         sysadmin_online_linearLayout.setOnClickListener(buttonListener);
         sysadmin_waitDispen_linearLayout.setOnClickListener(buttonListener);
         sysadmin_assignWork_linearLayout.setOnClickListener(buttonListener);
+        sysadmin_selectPres_linearLayout.setOnClickListener(buttonListener);
     }
 
 
@@ -87,6 +90,10 @@ public class SysAdminUI extends Activity {
                 case R.id.sysadmin_assignWork_linearLayout:
                     Intent assignWork = new Intent(SysAdminUI.this, AssignOtherWayUI.class);
                     startActivity(assignWork);
+                    break;
+                case R.id.sysadmin_selectPres_linearLayout:
+                    Intent selectPres = new Intent(SysAdminUI.this, SelectPresUI.class);
+                    startActivity(selectPres);
                     break;
                 default:
                     break;

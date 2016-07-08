@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/button_unselected"
+            android:layout_width="fill_parent"
+            android:layout_height="44.0dip">
+        <TextView
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:padding="12dp"
+                android:layout_width="fill_parent"
+                android:layout_height="46.0dip"
+                android:gravity="center"
+                android:text="查询处方"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@color/info_panel_bg"
+                  android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="5dp"
+                      android:layout_marginBottom="5dp">
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:textColor="@android:color/black"
+                    android:ems="10"
+                    android:hint="门诊/住院号"
+                    android:id="@+id/selectPres_patientId_editText"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="3"
+                    android:numeric="integer"/>
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/selectPres_search_button"
+                    android:text="查询"/>
+        </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+        <ListView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:paddingLeft="5dp"
+                  android:paddingRight="5dp"
+                  android:divider="#00000000"
+                  android:dividerHeight="5dp"
+                  android:id="@+id/selectPres_patient_listView">
+        </ListView>
+    </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

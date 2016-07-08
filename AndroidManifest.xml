@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="31"
-          android:versionName="1.1">
+          android:versionCode="33"
+          android:versionName="1.2">
     <uses-sdk android:minSdkVersion="18" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
@@ -92,5 +92,8 @@
         <activity android:name="net.andy.dispensing.ui.LoadingUI"
                   android:theme="@style/TranslucentFullscreen"/>
         <activity android:name="net.andy.dispensing.ui.AlreadyDisUI"/>
+        <activity android:name="net.andy.dispensing.ui.PrescriptionStatusUI"
+            android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.SelectPresUI"/>
     </application>
 </manifest>
