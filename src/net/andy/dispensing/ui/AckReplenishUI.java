@@ -150,7 +150,7 @@ public class AckReplenishUI extends Activity {
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(Application.getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+                    new CoolToast(getBaseContext()).show((String) e.getMessage());
                 }
             }
         }.start();

@@ -47,9 +47,14 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         instance = this;
         UpdateUI manager = new UpdateUI(Login.this);
+        String serverIP=appOption.getOption(AppOption.APP_OPTION_SERVER);
         //默认地址
-        if ("".equals(appOption.getOption(AppOption.APP_OPTION_SERVER)))
-            appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
+        if ("".equals(serverIP)||serverIP==null) {
+            appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99:8888");
+        }else if(!serverIP.matches(".*:.*")){
+            appOption.setOption(AppOption.APP_OPTION_SERVER, serverIP+":8888");
+        }
+        Application.setServerIP(appOption.getOption(AppOption.APP_OPTION_SERVER));
         // 检查软件更新
         manager.checkUpdate();
         setContentView(R.layout.login);
@@ -121,11 +126,7 @@ public class Login extends Activity {
     public class SubmitOnclick implements Button.OnClickListener {
         @Override
         public void onClick(View v) {
-            StationThread();
-            if (appOption.getOption(AppOption.APP_OPTION_SERVER).equals("")) {
-                new CoolToast(getBaseContext()).show("没有设置服务器地址,不能登陆");
-                return;
-            }
+
             //管理员修改服务器地址
             if ("admin".equals(userId.getText().toString()) && "wlbgs".equals(password.getText().toString())) {
                 userId.setText(appOption.getOption(AppOption.APP_OPTION_USER));
@@ -138,8 +139,13 @@ public class Login extends Activity {
                 new CoolToast(getBaseContext()).show("用户编号错误");
                 return;
             }
+            if ("".equals(Application.getServerIP())) {
+                new CoolToast(getBaseContext()).show("没有设置服务器地址,不能登陆");
+                return;
+            }
             //正在加载
             startActivity(new Intent(Login.this, LoadingUI.class));
+            StationThread();
             final Handler handler = new Handler() {
                 public void handleMessage(Message msg) {
                     new CoolToast(getBaseContext()).show((String) msg.obj);

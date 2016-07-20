@@ -60,6 +60,11 @@
                           android:gravity="left"
                           android:textColor="#ffffffff"
                           android:text="医生："/>
+                <TextView style="@style/Custom20TextViewTheme"
+                          android:layout_weight="1"
+                          android:gravity="left"
+                          android:textColor="#ffffffff"
+                          android:text="总量："/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="vertical"
@@ -90,6 +95,12 @@
                           android:gravity="left"
                           android:textColor="#ffffffff"
                           android:text="测试医生"/>
+                <TextView style="@style/Custom20TextViewTheme"
+                          android:layout_weight="1"
+                          android:id="@+id/validationdetail_globalNum_textView"
+                          android:gravity="left"
+                          android:textColor="#ffffffff"
+                          android:text="100g"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

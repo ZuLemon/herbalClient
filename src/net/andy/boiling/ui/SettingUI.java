@@ -31,6 +31,9 @@ import net.andy.com.CoolToast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,16 +43,25 @@ import java.util.Map;
  * Created by Guang on 2016/2/24.
  */
 public class SettingUI extends Activity {
+    @ViewInject(R.id.setting_station_linearLayout)
     private LinearLayout setting_station_linearLayout;
+    @ViewInject(R.id.setting_personaleffort_linearLayout)
     private LinearLayout setting_personaleffort_linearLayout;
+    @ViewInject(R.id.setting_waitDispen_linearLayout)
     private LinearLayout setting_waitDispen_linearLayout;
+    @ViewInject(R.id.setting_alreadydis_linearLayout)
     private LinearLayout setting_alreadydis_linearLayout;
+    @ViewInject(R.id.switchButton)
     private SwitchButton switchButton;
+    @ViewInject(R.id.setting_interval_textView)
     private TextView setting_interval_textView;
-    private TextView setting_station_textView;
+//    @ViewInject(R.id.setting_station_textView)
+//    private TextView setting_station_textView;
+    @ViewInject(R.id.setting_interval_editText)
     private EditText setting_interval_editText;
-    private ButtonListener buttonListener;
-    private Spinner setting_station_spinner;
+//    private ButtonListener buttonListener;
+//    @ViewInject(R.id.setting_station_linearLayout)
+//    private Spinner setting_station_spinner;
     private List stationNameList = new ArrayList<String>();
     private ArrayAdapter<String> stationAdapter;
     private SpinnerItem spinnerItem;
@@ -66,21 +78,22 @@ public class SettingUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting);
+        x.view().inject(this);
         coolToast = new CoolToast(getBaseContext());
-        setting_station_linearLayout = (LinearLayout) findViewById(R.id.setting_station_linearLayout);
-        setting_personaleffort_linearLayout= (LinearLayout) findViewById(R.id.setting_personaleffort_linearLayout);
-        setting_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.setting_waitDispen_linearLayout);
-        setting_alreadydis_linearLayout= (LinearLayout) findViewById(R.id.setting_alreadydis_linearLayout);
-        buttonListener = new ButtonListener();
-//        setting_station_spinner= (Spinner) findViewById(R.id.setting_station_spinner);
-        switchButton = (SwitchButton) findViewById(R.id.switchButton);
-        setting_interval_textView = (TextView) findViewById(R.id.setting_interval_textView);
-//        setting_station_textView= (TextView) findViewById(R.id.setting_station_textView);
-        setting_interval_editText = (EditText) findViewById(R.id.setting_interval_editText);
+//        setting_station_linearLayout = (LinearLayout) findViewById(R.id.setting_station_linearLayout);
+//        setting_personaleffort_linearLayout= (LinearLayout) findViewById(R.id.setting_personaleffort_linearLayout);
+//        setting_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.setting_waitDispen_linearLayout);
+//        setting_alreadydis_linearLayout= (LinearLayout) findViewById(R.id.setting_alreadydis_linearLayout);
+//        buttonListener = new ButtonListener();
+////        setting_station_spinner= (Spinner) findViewById(R.id.setting_station_spinner);
+//        switchButton = (SwitchButton) findViewById(R.id.switchButton);
+//        setting_interval_textView = (TextView) findViewById(R.id.setting_interval_textView);
+////        setting_station_textView= (TextView) findViewById(R.id.setting_station_textView);
+//        setting_interval_editText = (EditText) findViewById(R.id.setting_interval_editText);
 //        setting_station_spinner.setOnItemSelectedListener(new StSpinnerListener());
         stationDomain = new StationDomain();
         init();
-        setMonitor();
+//        setMonitor();
         replenishController();
 //        settingThread(0);
     }
@@ -90,27 +103,36 @@ public class SettingUI extends Activity {
         switchButton.setChecked(Boolean.parseBoolean(appOption.getOption(AppOption.APP_OPTION_HERSPEC)));
     }
 
-    private void setMonitor() {
-        setting_interval_textView.setOnClickListener(buttonListener);
-        setting_station_linearLayout.setOnClickListener(buttonListener);
-        setting_personaleffort_linearLayout.setOnClickListener(buttonListener);
-        setting_waitDispen_linearLayout.setOnClickListener(buttonListener);
-        setting_alreadydis_linearLayout.setOnClickListener(buttonListener);
-//        setting_station_textView.setOnClickListener(buttonListener);
-        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-                if (arg1) {
-                    appOption.setOption(AppOption.APP_OPTION_HERSPEC, "true");
-                    new CoolToast(getBaseContext()).show("打开");
-                } else {
-                    appOption.setOption(AppOption.APP_OPTION_HERSPEC, "false");
-                    new CoolToast(getBaseContext()).show("关闭");
-                }
-            }
-        });
+//    private void setMonitor() {
+//        setting_interval_textView.setOnClickListener(buttonListener);
+//        setting_station_linearLayout.setOnClickListener(buttonListener);
+//        setting_personaleffort_linearLayout.setOnClickListener(buttonListener);
+//        setting_waitDispen_linearLayout.setOnClickListener(buttonListener);
+//        setting_alreadydis_linearLayout.setOnClickListener(buttonListener);
+////        setting_station_textView.setOnClickListener(buttonListener);
+//        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+//                if (arg1) {
+//                    appOption.setOption(AppOption.APP_OPTION_HERSPEC, "true");
+//                    new CoolToast(getBaseContext()).show("打开");
+//                } else {
+//                    appOption.setOption(AppOption.APP_OPTION_HERSPEC, "false");
+//                    new CoolToast(getBaseContext()).show("关闭");
+//                }
+//            }
+//        });
+//    }
+    @Event(value = R.id.switchButton,type = CompoundButton.OnCheckedChangeListener.class)
+    private void CheckedChanged(CompoundButton arg0, boolean arg1) {
+        if (arg1) {
+            appOption.setOption(AppOption.APP_OPTION_HERSPEC, "true");
+            new CoolToast(getBaseContext()).show("打开");
+        } else {
+            appOption.setOption(AppOption.APP_OPTION_HERSPEC, "false");
+            new CoolToast(getBaseContext()).show("关闭");
+        }
     }
-
     //    private class StSpinnerListener implements AdapterView.OnItemSelectedListener{
 //
 //        @Override
@@ -178,9 +200,13 @@ public class SettingUI extends Activity {
         }
     }
 
-    private class ButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
+   @Event(value = {R.id.setting_interval_textView,
+           R.id.setting_station_linearLayout,
+           R.id.setting_personaleffort_linearLayout,
+           R.id.setting_waitDispen_linearLayout,
+           R.id.setting_alreadydis_linearLayout,
+   } ,type = View.OnClickListener.class)
+        private void btnClick(View view) {
             switch (view.getId()) {
                 case R.id.setting_interval_textView:
                     setInterval();
@@ -205,7 +231,6 @@ public class SettingUI extends Activity {
                     break;
             }
         }
-    }
 //    private void setStation(){
 //        System.out.println(stationAll.size());
 //        for(int i=0;i<stationAll.size();i++){

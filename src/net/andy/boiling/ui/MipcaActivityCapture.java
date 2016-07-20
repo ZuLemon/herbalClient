@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 /**
+ * 扫描二维码返回结果
  * Initial the camera
  * @author Ryan.Tang
  */

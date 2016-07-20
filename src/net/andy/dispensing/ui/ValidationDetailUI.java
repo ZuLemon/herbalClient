@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 处方复核明细
  * Created by Guang on 2016/3/18.
  */
 public class ValidationDetailUI extends Activity{
@@ -49,10 +50,12 @@ public class ValidationDetailUI extends Activity{
     private TextView validationdetail_patientId_textView;
     private TextView validationdetail_patientName_textView;
     private TextView validationdetail_deptName_textView;
+    private TextView validationdetail_globalNum_textView;
     private Integer preId;
     private Integer disId;
     private Integer id;
     private Integer pId;
+    private List quantityForUnitList=new ArrayList<Map>();
     private PrescriptionDomain pre;
     private GridAdapter gridAdapter;
     private DecimalFormat df1 = new DecimalFormat("#.##");
@@ -70,6 +73,7 @@ public class ValidationDetailUI extends Activity{
         validationdetail_category_textView= (TextView) findViewById(R.id.validationdetail_category_textView);
         validationdetail_patientName_textView= (TextView) findViewById(R.id.validationdetail_patientName_textView);
         validationdetail_deptName_textView= (TextView) findViewById(R.id.validationdetail_deptName_textView);
+        validationdetail_globalNum_textView= (TextView) findViewById(R.id.validationdetail_globalNum_textView);
         validationdetail_return_button= (Button) findViewById(R.id.validationdetail_return_button);
         validationdetail_confirm_button= (Button) findViewById(R.id.validationdetail_confirm_button);
         validationdetail_return_button.setOnClickListener(buttonListener);
@@ -225,6 +229,11 @@ public class ValidationDetailUI extends Activity{
                         validationdetail_patientId_textView.setText(pre.getPatientNo());
                         validationdetail_doctorName_textView.setText(pre.getDoctorName());
                         validationdetail_deptName_textView.setText(pre.getDeptName());
+                        String unit="";
+                        for (int i=0;i<quantityForUnitList.size();i++ ) {
+                            unit+=""+df1.format(((Map)quantityForUnitList.get(i)).get("sum"))+((Map)quantityForUnitList.get(i)).get("herbUnit")+" ";
+                        }
+                        validationdetail_globalNum_textView.setText(unit);
                         parseObject(listDis);
                         showDisList();
                         break;
@@ -249,6 +258,7 @@ public class ValidationDetailUI extends Activity{
                         case 0:
                             pre=new PrescriptionUtil().getPrescription(String.valueOf(preId));
                             listDis=new DispensingDetailUtil().getDispensingDetailByDisId(disId);
+                            quantityForUnitList=new DispensingDetailUtil().getQuantityForUnit(disId);
                             message.obj = "";
                             message.what = 0;
                             handler.sendMessage ( message );

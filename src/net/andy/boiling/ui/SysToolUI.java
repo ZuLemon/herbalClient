@@ -16,52 +16,58 @@ import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.ui.*;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 /**
- * 系统管理
+ * 系统工具
  * Created by Guang on 2016/5/12.
  */
 public class SysToolUI extends Activity {
-    private LinearLayout sysadmin_extract_linearLayout;
+    @ViewInject(R.id.sysadmin_online_linearLayout)
     private LinearLayout sysadmin_online_linearLayout;
-    private LinearLayout sysadmin_waitDispen_linearLayout;
+    @ViewInject(R.id.sysadmin_selectPres_linearLayout)
     private LinearLayout sysadmin_selectPres_linearLayout;
+    @ViewInject(R.id.sysadmin_interval_textView)
     private TextView sysadmin_interval_textView;
+    @ViewInject(R.id.sysadmin_interval_editText)
     private EditText sysadmin_interval_editText;
     private StationDomain stationDomain;
     private boolean isInterval;
     private AppOption appOption = new AppOption();
-    private ButtonListener buttonListener=new ButtonListener();
+//    private ButtonListener buttonListener=new ButtonListener();
     private CoolToast coolToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.systool);
+        x.view().inject(this);
         coolToast = new CoolToast(getBaseContext());
-        sysadmin_extract_linearLayout = (LinearLayout) findViewById(R.id.sysadmin_extract_linearLayout);
-        sysadmin_online_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_online_linearLayout);
-        sysadmin_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_waitDispen_linearLayout);
-        sysadmin_selectPres_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_selectPres_linearLayout);
-        buttonListener = new ButtonListener();
-        sysadmin_interval_textView = (TextView) findViewById(R.id.sysadmin_interval_textView);
-        sysadmin_interval_editText = (EditText) findViewById(R.id.sysadmin_interval_editText);
+//        sysadmin_extract_linearLayout = (LinearLayout) findViewById(R.id.sysadmin_extract_linearLayout);
+//        sysadmin_online_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_online_linearLayout);
+//        sysadmin_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_waitDispen_linearLayout);
+//        sysadmin_selectPres_linearLayout= (LinearLayout) findViewById(R.id.sysadmin_selectPres_linearLayout);
+//        buttonListener = new ButtonListener();
+//        sysadmin_interval_textView = (TextView) findViewById(R.id.sysadmin_interval_textView);
+//        sysadmin_interval_editText = (EditText) findViewById(R.id.sysadmin_interval_editText);
         stationDomain = new StationDomain();
         init();
-        setMonitor();
+//        setMonitor();
 //        replenishController();
     }
 
     private void init() {
     }
 
-    private void setMonitor() {
-        sysadmin_interval_textView.setOnClickListener(buttonListener);
-        sysadmin_extract_linearLayout.setOnClickListener(buttonListener);
-        sysadmin_online_linearLayout.setOnClickListener(buttonListener);
-        sysadmin_waitDispen_linearLayout.setOnClickListener(buttonListener);
-        sysadmin_selectPres_linearLayout.setOnClickListener(buttonListener);
-    }
+//    private void setMonitor() {
+//        sysadmin_interval_textView.setOnClickListener(buttonListener);
+//        sysadmin_extract_linearLayout.setOnClickListener(buttonListener);
+//        sysadmin_online_linearLayout.setOnClickListener(buttonListener);
+//        sysadmin_waitDispen_linearLayout.setOnClickListener(buttonListener);
+//        sysadmin_selectPres_linearLayout.setOnClickListener(buttonListener);
+//    }
 
     private void setInterval() {
         if (isInterval) {
@@ -87,9 +93,14 @@ public class SysToolUI extends Activity {
     }
 
 
-    private class ButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
+    @Event(value = {R.id.sysadmin_extract_linearLayout,
+            R.id.sysadmin_topPre_linearLayout,
+            R.id.sysadmin_online_linearLayout,
+            R.id.sysadmin_waitDispen_linearLayout,
+            R.id.sysadmin_assignWork_linearLayout,
+            R.id.sysadmin_selectPres_linearLayout
+    },type = View.OnClickListener.class)
+        private void onClick(View view) {
             switch (view.getId()) {
                 case R.id.sysadmin_interval_textView:
                     setInterval();
@@ -118,7 +129,6 @@ public class SysToolUI extends Activity {
                     break;
             }
         }
-    }
 
     /**
      * 系统管理子线程

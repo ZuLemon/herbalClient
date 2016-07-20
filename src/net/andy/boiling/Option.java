@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import net.andy.com.AppOption;
+import net.andy.com.Application;
 import net.andy.com.ChineseToSpeech;
 import net.andy.com.CoolToast;
 
@@ -34,8 +35,8 @@ public class Option extends Activity {
         server = (EditText) findViewById(R.id.option_server_editText);
         button = (Button) findViewById(R.id.option_server_button);
         checkBox = (CheckBox) findViewById(R.id.option_state_check);
-
-        server.setText(appOption.getOption(AppOption.APP_OPTION_SERVER));
+        server.setText(appOption.getOption(appOption.APP_OPTION_SERVER));
+//        server.setText(Application.getServerIP());
         checkBox.setChecked(appOption.getOption(AppOption.APP_OPTION_STATE).equals("YES"));
 
         button.setOnClickListener(new ButtonOnClick());
@@ -51,7 +52,8 @@ public class Option extends Activity {
     public class ButtonOnClick implements Button.OnClickListener{
         @Override
         public void onClick(View v) {
-            appOption.setOption(AppOption.APP_OPTION_SERVER, String.valueOf(server.getText()));
+            Application.setServerIP(String.valueOf(server.getText()));
+            appOption.setOption(AppOption.APP_OPTION_SERVER,String.valueOf(server.getText()) );
             appOption.setOption(AppOption.APP_OPTION_STATE,checkBox.isChecked()?"YES":"NO");
             new CoolToast(getBaseContext()).show("保存成功");
         }

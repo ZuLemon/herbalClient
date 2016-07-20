@@ -44,6 +44,7 @@ public class AlreadyDisUI extends Activity {
         alreadydis_list= (ListView) findViewById(R.id.alreadydis_list);
         alreadyAdapter = new AlreadyAdapter(this);
         alreadydis_list.setAdapter(alreadyAdapter);
+        alreadydis_list.setOnItemClickListener(new AlreadyListItemClick());
         startActivity(new Intent(AlreadyDisUI.this,LoadingUI.class));
         getList(0);
     }
@@ -99,10 +100,10 @@ public class AlreadyDisUI extends Activity {
 //            Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
 //            map.get("online_id_textView");
             Map map = (Map) list.get(position);
-            Intent in = new Intent(AlreadyDisUI.this, ValidationDetailUI.class);
-            in.putExtra("disId",Integer.parseInt(String.valueOf(map.get("disId"))));
-            in.putExtra("id", Integer.parseInt(String.valueOf(map.get("id"))));
-            in.putExtra("pId", Integer.parseInt(String.valueOf(map.get("pId"))));
+            Intent in = new Intent(AlreadyDisUI.this, AlreadyDisDetailUI.class);
+//            in.putExtra("disId",Integer.parseInt(String.valueOf(map.get("disId"))));
+            in.putExtra("presId", String.valueOf(map.get("presId")));
+//            in.putExtra("pId", Integer.parseInt(String.valueOf(map.get("pId"))));
             startActivity(in);
         }
     }

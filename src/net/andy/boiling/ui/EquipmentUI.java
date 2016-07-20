@@ -18,6 +18,9 @@ import net.andy.com.CoolToast;
 import net.andy.com.Http;
 import net.andy.com.NFCActivity;
 import org.apache.http.NameValuePair;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,54 +33,48 @@ import java.util.Map;
  */
 public class EquipmentUI extends NFCActivity {
     private ReturnDomain returnDomain = new ReturnDomain();
-    private ListView equip_listView;
+    @ViewInject(R.id.equip_list_listView)
+    private ListView equip_list_listView;
+    @ViewInject(R.id.equip_my_button)
+    private Button equip_my_button;
+    @ViewInject(R.id.equip_all_button)
+    private Button equip_all_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.equipment);
-        equip_listView = (ListView) findViewById(R.id.equip_list_listView);
-
-        Button equip_my_button = (Button) findViewById(R.id.equip_my_button);
-        Button equip_all_button = (Button) findViewById(R.id.equip_all_button);
-
-        equip_listView.setOnItemClickListener(new OnListItemClick());
-        equip_my_button.setOnClickListener(new OnMyClick());
-        equip_all_button.setOnClickListener(new OnAllClick());
-
+        x.view().inject(this);
         getEquipmentList("equipment/getEquipmentByUser.do");
     }
 
-    public class OnMyClick implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            getEquipmentList("equipment/getEquipmentByUser.do");
+    @Event(value = {R.id.equip_my_button, R.id.equip_all_button}, type = View.OnClickListener.class)
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.equip_my_button:
+                getEquipmentList("equipment/getEquipmentByUser.do");
+                break;
+            case R.id.equip_all_button:
+                getEquipmentList("equipment/getEquipmentOfAll.do");
+                break;
         }
     }
 
-    public class OnAllClick implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            getEquipmentList("equipment/getEquipmentOfAll.do");
-        }
-    }
     /*    监听ListView   并回传选择的数据     */
-    public class OnListItemClick implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Map map = (Map) (parent.getItemAtPosition(position));
+    @Event(value = R.id.equipman_list_listView, type = AdapterView.OnItemClickListener.class)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Map map = (Map) (parent.getItemAtPosition(position));
 //            openReturnUI(String.valueOf(map.get("equip_equipId_textView")));
-            System.out.println ( "#" + String.valueOf ( map.get ( "equip_id_textView" ) ) );
-           //回传值
-            Intent intentEquip = new Intent ( EquipmentUI.this, TakeUI.class );
-            Bundle bundle = new Bundle ();
-            bundle.putString ( "eId", String.valueOf ( map.get ( "equip_id_textView" ) ) );
-            bundle.putString ( "equipId", String.valueOf ( map.get ( "equip_equipId_textView" ) ) );
-            intentEquip.putExtras ( bundle );
-            setResult(1001, intentEquip);
-            //    结束当前这个Activity对象的生命
-            finish();
-        }
+        System.out.println("#" + String.valueOf(map.get("equip_id_textView")));
+        //回传值
+        Intent intentEquip = new Intent(EquipmentUI.this, TakeUI.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("eId", String.valueOf(map.get("equip_id_textView")));
+        bundle.putString("equipId", String.valueOf(map.get("equip_equipId_textView")));
+        intentEquip.putExtras(bundle);
+        setResult(1001, intentEquip);
+        //    结束当前这个Activity对象的生命
+        finish();
     }
 
     @Override
@@ -89,7 +86,7 @@ public class EquipmentUI extends NFCActivity {
     public void openReturnUI(String equipId) {
         Intent intent = new Intent(this, TakeUI.class);
         intent.putExtra("equipId", equipId);
-        setResult(0,intent);
+        setResult(0, intent);
         finish();
     }
 
@@ -100,15 +97,15 @@ public class EquipmentUI extends NFCActivity {
             map.put("equip_equipId_textView", ((Map) obj).get("equipId"));
             map.put("equip_equipPurpose_textView", ((Map) obj).get("equipPurpose"));
             map.put("equip_equipStatus_textView", ((Map) obj).get("equipStatus"));
-            map.put ( "equip_id_textView", ( ( Map ) obj ).get ( "id" ) );
+            map.put("equip_id_textView", ((Map) obj).get("id"));
             list.add(map);
         }
         SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.equipmentlist,
                 new String[]{"equip_equipId_textView", "equip_equipPurpose_textView",
                         "equip_equipStatus_textView", "equip_id_textView"},
                 new int[]{R.id.equip_equipId_textView, R.id.equip_equipPurpose_textView,
-                        R.id.equip_equipStatus_textView, R.id.equip_id_textView} );
-        equip_listView.setAdapter(adapter);
+                        R.id.equip_equipStatus_textView, R.id.equip_id_textView});
+        equip_list_listView.setAdapter(adapter);
     }
 
     public void getEquipment(final String tagId) {
@@ -134,23 +131,23 @@ public class EquipmentUI extends NFCActivity {
             public void run() {
                 super.run();
                 try {
-                    EquipmentDomain equipment = new EquipmentUtil ().getEquipByTagId ( tagId );
-                        if (equipment != null) {
-                            if (equipment.getEquipType().equals("煎药机")) {
-                                message.what = 0;
-                                message.obj = equipment.getEquipId();
-                                handler.sendMessage(message);
-                            } else {
-                                message.what = -1;
-                                message.obj = "这是" + equipment.getEquipId() + "号" + equipment.getEquipType() + "标签";
-                                handler.sendMessage(message);
-                            }
-
+                    EquipmentDomain equipment = new EquipmentUtil().getEquipByTagId(tagId);
+                    if (equipment != null) {
+                        if (equipment.getEquipType().equals("煎药机")) {
+                            message.what = 0;
+                            message.obj = equipment.getEquipId();
+                            handler.sendMessage(message);
                         } else {
                             message.what = -1;
-                            message.obj = "标签有误";
+                            message.obj = "这是" + equipment.getEquipId() + "号" + equipment.getEquipType() + "标签";
                             handler.sendMessage(message);
                         }
+
+                    } else {
+                        message.what = -1;
+                        message.obj = "标签有误";
+                        handler.sendMessage(message);
+                    }
                 } catch (Exception e) {
                     message.what = -1;
                     message.obj = e.getMessage();

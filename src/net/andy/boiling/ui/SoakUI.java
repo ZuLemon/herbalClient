@@ -17,6 +17,9 @@ import net.andy.com.Http;
 import net.andy.com.NFCActivity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,19 +47,34 @@ public class SoakUI extends NFCActivity {
     private boolean isPresc;
     private String tagType;
     private String planStatus;
+    @ViewInject(R.id.soak_patientNO_textView)
     private TextView soak_patientNO_textView;
+    @ViewInject(R.id.soak_patientName_textView)
     private TextView soak_patientName_textView;
+    @ViewInject(R.id.soak_category_textView)
     private TextView soak_category_textView;
+    @ViewInject(R.id.soak_classification_textView)
     private TextView soak_classification_textView;
+    @ViewInject(R.id.soak_diagnosis_textView)
     private TextView soak_diagnosis_textView;
+    @ViewInject(R.id.soak_presNumber_textView)
     private TextView soak_presNumber_textView;
+    @ViewInject(R.id.soak_method_textView)
     private TextView soak_method_textView;
+    @ViewInject(R.id.soak_planStatus_textView)
     private TextView soak_planStatus_textView;
+    @ViewInject(R.id.soak_waterQuantity1_textView)
     private TextView soak_waterQuantity1_textView;
+    @ViewInject(R.id.soak_soakTime_textView)
     private TextView soak_soakTime_textView;
+    @ViewInject(R.id.soak_soakBeginTime_textView)
     private TextView soak_soakBeginTime_textView;
+    @ViewInject(R.id.soak_soakEndTime_textView)
     private TextView soak_soakEndTime_textView;
-    private TextView equipId_textView;
+    @ViewInject(R.id.soak_submit_button)
+    private Button soak_submit_button;
+//    @ViewInject(R.id.equipId_textView)
+//    private TextView equipId_textView;
     private RadioGroup soak_equiptype1_radioGroup;
     private RadioButton soak1_equiptype1_radioButton;
     private RadioButton soak2_equiptype1_radioButton;
@@ -68,18 +86,19 @@ public class SoakUI extends NFCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.soak );
-        soak_patientNO_textView = ( TextView ) findViewById ( R.id.soak_patientNO_textView );
-        soak_patientName_textView = ( TextView ) findViewById ( R.id.soak_patientName_textView );
-        soak_category_textView = ( TextView ) findViewById ( R.id.soak_category_textView );
-        soak_classification_textView = ( TextView ) findViewById ( R.id.soak_classification_textView );
-        soak_diagnosis_textView = ( TextView ) findViewById ( R.id.soak_diagnosis_textView );
-        soak_presNumber_textView = ( TextView ) findViewById ( R.id.soak_presNumber_textView );
-        soak_method_textView = ( TextView ) findViewById ( R.id.soak_method_textView );
-        soak_planStatus_textView = ( TextView ) findViewById ( R.id.soak_planStatus_textView );
-        soak_waterQuantity1_textView = ( TextView ) findViewById ( R.id.soak_waterQuantity1_textView );
-        soak_soakTime_textView = ( TextView ) findViewById ( R.id.soak_soakTime_textView );
-        soak_soakBeginTime_textView = ( TextView ) findViewById ( R.id.soak_soakBeginTime_textView );
-        soak_soakEndTime_textView = ( TextView ) findViewById ( R.id.soak_soakEndTime_textView );
+        x.view().inject(this);
+//        soak_patientNO_textView = ( TextView ) findViewById ( R.id.soak_patientNO_textView );
+//        soak_patientName_textView = ( TextView ) findViewById ( R.id.soak_patientName_textView );
+//        soak_category_textView = ( TextView ) findViewById ( R.id.soak_category_textView );
+//        soak_classification_textView = ( TextView ) findViewById ( R.id.soak_classification_textView );
+//        soak_diagnosis_textView = ( TextView ) findViewById ( R.id.soak_diagnosis_textView );
+//        soak_presNumber_textView = ( TextView ) findViewById ( R.id.soak_presNumber_textView );
+//        soak_method_textView = ( TextView ) findViewById ( R.id.soak_method_textView );
+//        soak_planStatus_textView = ( TextView ) findViewById ( R.id.soak_planStatus_textView );
+//        soak_waterQuantity1_textView = ( TextView ) findViewById ( R.id.soak_waterQuantity1_textView );
+//        soak_soakTime_textView = ( TextView ) findViewById ( R.id.soak_soakTime_textView );
+//        soak_soakBeginTime_textView = ( TextView ) findViewById ( R.id.soak_soakBeginTime_textView );
+//        soak_soakEndTime_textView = ( TextView ) findViewById ( R.id.soak_soakEndTime_textView );
 //        soak_equiptype1_radioGroup = ( RadioGroup ) findViewById ( R.id.soak_equiptype1_radioGroup );
         soak_equiptype1_radioButtonList = new RadioButton[]{soak1_equiptype1_radioButton, soak2_equiptype1_radioButton};
 //        soak_equiptype1_valueList = new int[]{R.id.soak1_equiptype1_radioButton, R.id.soak2_equiptype1_radioButton};
@@ -89,8 +108,8 @@ public class SoakUI extends NFCActivity {
 //        }
         extractUtil = new ExtractUtil ();
         equipmentUtil = new EquipmentUtil ();
-        Button soak_submit_button = ( Button ) findViewById ( R.id.soak_submit_button );
-        soak_submit_button.setOnClickListener ( new Submit () );
+//        Button soak_submit_button = ( Button ) findViewById ( R.id.soak_submit_button );
+//        soak_submit_button.setOnClickListener ( new Submit () );
 //        soak_equiptype1_radioGroup.setOnCheckedChangeListener ( new RadioGroup.OnCheckedChangeListener () {
 //            @Override
 //            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -305,10 +324,8 @@ public class SoakUI extends NFCActivity {
         soakDomain = null;
     }
 
-    public class Submit implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
-
+    @Event(R.id.soak_submit_button)
+        private void onClick(View v) {
             final Message message = new Message ();
             final Handler handler = new Handler () {
                 public void handleMessage(Message msg) {
@@ -348,5 +365,4 @@ public class SoakUI extends NFCActivity {
                 }
             }.start ();
         }
-    }
 }

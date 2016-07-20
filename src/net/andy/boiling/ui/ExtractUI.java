@@ -13,39 +13,70 @@ import net.andy.boiling.util.*;
 import net.andy.com.ChineseToSpeech;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 /**
  * Created by Administrator on 2014-11-14.
  * 浸泡操作
  */
 public class ExtractUI extends NFCActivity {
+    @ViewInject(R.id.extract_equipId_textView)
     private TextView extract_equipId_textView;
+    @ViewInject(R.id.extract_equipName_textView)
     private TextView extract_equipName_textView;
+    @ViewInject(R.id.extract_equipPurpose_textView)
     private TextView extract_equipPurpose_textView;
+    @ViewInject(R.id.extract_equipStatus_textView)
     private TextView extract_equipStatus_textView;
+    @ViewInject(R.id.extract_presCode_textView)
     private TextView extract_presCode_textView;
+    @ViewInject(R.id.extract_presStatus_textView)
     private TextView extract_presStatus_textView;
+    @ViewInject(R.id.extract_patientNo_textView)
     private TextView extract_patientNo_textView;
+    @ViewInject(R.id.extract_patientName_textView)
     private TextView extract_patientName_textView;
+    @ViewInject(R.id.extract_category_textView)
     private TextView extract_category_textView;
+    @ViewInject(R.id.extract_classification_textView)
     private TextView extract_classification_textView;
+    @ViewInject(R.id.extract_presNumber_textView)
     private TextView extract_presNumber_textView;
+    @ViewInject(R.id.extract_way_textView)
     private TextView extract_way_textView;
+    @ViewInject(R.id.extract_temperature_textView)
     private TextView extract_temperature_textView;
+    @ViewInject(R.id.extract_pressure_textView)
     private TextView extract_pressure_textView;
+    @ViewInject(R.id.extract_quantity_textView)
     private TextView extract_quantity_textView;
+    @ViewInject(R.id.extract_planStatus_textView)
     private TextView extract_planStatus_textView;
+    @ViewInject(R.id.extract_waterQuantity1_textView)
     private TextView extract_waterQuantity1_textView;
+    @ViewInject(R.id.extract_soakTime_textView)
     private TextView extract_soakTime_textView;
+    @ViewInject(R.id.extract_extractTime1_textView)
     private TextView extract_extractTime1_textView;
+    @ViewInject(R.id.extract_waterQuantity2_textView)
     private TextView extract_waterQuantity2_textView;
+    @ViewInject(R.id.extract_extractTime2_textView)
     private TextView extract_extractTime2_textView;
+    @ViewInject(R.id.extract_waterQuantity3_textView)
     private TextView extract_waterQuantity3_textView;
+    @ViewInject(R.id.extract_extractTime3_textView)
     private TextView extract_extractTime3_textView;
+    @ViewInject(R.id.extract_status_textView)
     private TextView extract_status_textView;
+    @ViewInject(R.id.extract_pack_button)
     private Button extract_pack_button;
+    @ViewInject(R.id.extract_extract1_button)
     private Button extract_extract1_button;
+    @ViewInject(R.id.extract_extract2_button)
     private Button extract_extract2_button;
+    @ViewInject(R.id.extract_extract3_button)
     private Button extract_extract3_button;
     private ReturnDomain returnDomain;
     private TagDomain tagDomain = new TagDomain ();
@@ -64,6 +95,7 @@ public class ExtractUI extends NFCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.extract );
+        x.view().inject(this);
         Bundle bundle = this.getIntent().getExtras();
         if(bundle!=null) {
             String planStatus = bundle.getString("planStatus");
@@ -72,51 +104,50 @@ public class ExtractUI extends NFCActivity {
             System.out.println(planId + "planStatus:" + planStatus+code);
             request ( 3 ,planId);
         }
-        getWidget ();
-        bindEvent ();
+//        getWidget ();
+//        bindEvent ();
     }
 
-    public void getWidget() {
-        extract_equipId_textView = ( TextView ) findViewById ( R.id.extract_equipId_textView );
-        extract_equipName_textView = ( TextView ) findViewById ( R.id.extract_equipName_textView );
-        extract_equipPurpose_textView = ( TextView ) findViewById ( R.id.extract_equipPurpose_textView );
-        extract_equipStatus_textView = ( TextView ) findViewById ( R.id.extract_equipStatus_textView );
-        extract_presCode_textView = ( TextView ) findViewById ( R.id.extract_presCode_textView );
-        extract_presStatus_textView = ( TextView ) findViewById ( R.id.extract_presStatus_textView );
-        extract_patientNo_textView = ( TextView ) findViewById ( R.id.extract_patientNo_textView );
-        extract_patientName_textView = ( TextView ) findViewById ( R.id.extract_patientName_textView );
-        extract_category_textView = ( TextView ) findViewById ( R.id.extract_category_textView );
-        extract_classification_textView = ( TextView ) findViewById ( R.id.extract_classification_textView );
-        extract_presNumber_textView = ( TextView ) findViewById ( R.id.extract_presNumber_textView );
-        extract_way_textView = ( TextView ) findViewById ( R.id.extract_way_textView );
-        extract_temperature_textView = ( TextView ) findViewById ( R.id.extract_temperature_textView );
-        extract_pressure_textView = ( TextView ) findViewById ( R.id.extract_pressure_textView );
-        extract_quantity_textView = ( TextView ) findViewById ( R.id.extract_quantity_textView );
-        extract_planStatus_textView = ( TextView ) findViewById ( R.id.extract_planStatus_textView );
-        extract_waterQuantity1_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity1_textView );
-        extract_soakTime_textView = ( TextView ) findViewById ( R.id.extract_soakTime_textView );
-        extract_extractTime1_textView = ( TextView ) findViewById ( R.id.extract_extractTime1_textView );
-        extract_waterQuantity2_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity2_textView );
-        extract_extractTime2_textView = ( TextView ) findViewById ( R.id.extract_extractTime2_textView );
-        extract_waterQuantity3_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity3_textView );
-        extract_extractTime3_textView = ( TextView ) findViewById ( R.id.extract_extractTime3_textView );
-        extract_status_textView = ( TextView ) findViewById ( R.id.extract_status_textView );
-        extract_pack_button = ( Button ) findViewById ( R.id.extract_pack_button );
-        extract_extract1_button = ( Button ) findViewById ( R.id.extract_extract1_button );
-        extract_extract2_button = ( Button ) findViewById ( R.id.extract_extract2_button );
-        extract_extract3_button = ( Button ) findViewById ( R.id.extract_extract3_button );
-    }
+//    public void getWidget() {
+//        extract_equipId_textView = ( TextView ) findViewById ( R.id.extract_equipId_textView );
+//        extract_equipName_textView = ( TextView ) findViewById ( R.id.extract_equipName_textView );
+//        extract_equipPurpose_textView = ( TextView ) findViewById ( R.id.extract_equipPurpose_textView );
+//        extract_equipStatus_textView = ( TextView ) findViewById ( R.id.extract_equipStatus_textView );
+//        extract_presCode_textView = ( TextView ) findViewById ( R.id.extract_presCode_textView );
+//        extract_presStatus_textView = ( TextView ) findViewById ( R.id.extract_presStatus_textView );
+//        extract_patientNo_textView = ( TextView ) findViewById ( R.id.extract_patientNo_textView );
+//        extract_patientName_textView = ( TextView ) findViewById ( R.id.extract_patientName_textView );
+//        extract_category_textView = ( TextView ) findViewById ( R.id.extract_category_textView );
+//        extract_classification_textView = ( TextView ) findViewById ( R.id.extract_classification_textView );
+//        extract_presNumber_textView = ( TextView ) findViewById ( R.id.extract_presNumber_textView );
+//        extract_way_textView = ( TextView ) findViewById ( R.id.extract_way_textView );
+//        extract_temperature_textView = ( TextView ) findViewById ( R.id.extract_temperature_textView );
+//        extract_pressure_textView = ( TextView ) findViewById ( R.id.extract_pressure_textView );
+//        extract_quantity_textView = ( TextView ) findViewById ( R.id.extract_quantity_textView );
+//        extract_planStatus_textView = ( TextView ) findViewById ( R.id.extract_planStatus_textView );
+//        extract_waterQuantity1_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity1_textView );
+//        extract_soakTime_textView = ( TextView ) findViewById ( R.id.extract_soakTime_textView );
+//        extract_extractTime1_textView = ( TextView ) findViewById ( R.id.extract_extractTime1_textView );
+//        extract_waterQuantity2_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity2_textView );
+//        extract_extractTime2_textView = ( TextView ) findViewById ( R.id.extract_extractTime2_textView );
+//        extract_waterQuantity3_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity3_textView );
+//        extract_extractTime3_textView = ( TextView ) findViewById ( R.id.extract_extractTime3_textView );
+//        extract_status_textView = ( TextView ) findViewById ( R.id.extract_status_textView );
+//        extract_pack_button = ( Button ) findViewById ( R.id.extract_pack_button );
+//        extract_extract1_button = ( Button ) findViewById ( R.id.extract_extract1_button );
+//        extract_extract2_button = ( Button ) findViewById ( R.id.extract_extract2_button );
+//        extract_extract3_button = ( Button ) findViewById ( R.id.extract_extract3_button );
+//    }
 
-    public void bindEvent() {
-        extract_extract1_button.setOnClickListener ( new Submit () );
-        extract_extract2_button.setOnClickListener ( new Submit () );
-        extract_pack_button.setOnClickListener ( new Submit () );
-//        extract_extract3_button.setOnClickListener ( new Sub());
-    }
+//    public void bindEvent() {
+//        extract_extract1_button.setOnClickListener ( new Submit () );
+//        extract_extract2_button.setOnClickListener ( new Submit () );
+//        extract_pack_button.setOnClickListener ( new Submit () );
+////        extract_extract3_button.setOnClickListener ( new Sub());
+//    }
 
-    class Submit implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
+  @Event(value = {R.id.extract_extract1_button,R.id.extract_extract1_button,R.id.extract_extract1_button},type = View.OnClickListener.class)
+        private void btnClick(View v) {
             switch (v.getId ()) {
                 case R.id.extract_extract1_button:
                     extractStatus = "一煎";
@@ -132,8 +163,6 @@ public class ExtractUI extends NFCActivity {
 //                case R.id.extract_extract3_button:
 //                    extractStatus="三煎";
             }
-
-        }
     }
     public void setWidget() {
         try {

@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * EquipManUI
  *
+ *消息管理
  * @author RongGuang
  * @date 2016/02/16
  */

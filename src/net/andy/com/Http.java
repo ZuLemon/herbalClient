@@ -28,7 +28,7 @@ public class Http {
         client.getParams().setParameter("http.connection.timeout",10000);
         client.getParams().setParameter("http.connection-manager.timeout",60*60L);
 //        client.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
-        HttpPost httpPost = new HttpPost("http://"+appOption.getOption(AppOption.APP_OPTION_SERVER)+"/herbal/" + url);
+        HttpPost httpPost = new HttpPost("http://"+Application.getServerIP().trim()+"/herbal/" + url);
 //        httpPost.setHeader("Content-Type", "text/html;charset=UTF-8");
         httpPost.setHeader("User-Agent", "boilingClient Of Android");
         httpPost.setHeader("userId", appOption.getOption(AppOption.APP_OPTION_USER));
@@ -52,7 +52,7 @@ public class Http {
         Log.e("请求路径", String.valueOf(url));
         HttpClient client = new DefaultHttpClient ();
 //        client.getParams().setParameter(h.HTTP_CONTENT_CHARSET, "UTF-8");
-        HttpGet httpGet = new HttpGet ("http://"+appOption.getOption(AppOption.APP_OPTION_SERVER)+"/herbal/" + url );
+        HttpGet httpGet = new HttpGet ("http://"+Application.getServerIP().trim()+"/herbal/" + url );
 //        httpGet.setHeader ( "userId", appOption.getOption ( AppOption.APP_OPTION_USER ) );
         httpGet.addHeader("Content-Type", "text/html;charset=UTF-8");
         httpGet.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");

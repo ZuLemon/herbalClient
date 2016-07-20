@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ProgressBar;
+import com.alibaba.fastjson.JSON;
 import net.andy.boiling.Login;
 import net.andy.boiling.R;
 import net.andy.com.AppOption;
@@ -56,7 +57,6 @@ public class UpdateUI {
     /* 更新进度条 */
     private ProgressBar mProgress;
     private Dialog mDownloadDialog;
-
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -114,7 +114,8 @@ public class UpdateUI {
             public void run() {
                 List<NameValuePair> pairs = new ArrayList<NameValuePair>();
                 try {
-                    Map<String, String> Map = (Map<String, String>) new Http().post("renew.txt",pairs,Map.class);
+//                    Map<String, String> Map = (Map<String, String>) new Http().post("renew.txt",pairs,Map.class);
+                    Map<String, String> Map= JSON.parseObject(String.valueOf(new Http().get("renew.txt")),Map.class);
                     System.out.println(">>" + Map);
                     updateMap = Map;
                     message.what = 0;

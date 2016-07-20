@@ -120,8 +120,8 @@ public class PrescriptionStatusUI extends Activity{
                         if(inspectionMap!=null){
                             prescriptionStatus_insPerson_textView.setVisibility(View.VISIBLE);
                             prescriptionStatus_insTime_textView.setVisibility(View.VISIBLE);
-                            prescriptionStatus_insPerson_textView.setText("  检验人："+inspectionMap.get("uname"));
-                            prescriptionStatus_insTime_textView.setText("检验时间："+inspectionMap.get("insTime"));
+                            prescriptionStatus_insPerson_textView.setText("  发药人："+inspectionMap.get("uname"));
+                            prescriptionStatus_insTime_textView.setText("发药时间："+inspectionMap.get("insTime"));
                         }
                     } catch (ParseException e) {
                         new CoolToast( getBaseContext () ).show ( "时间转换错误~!" );

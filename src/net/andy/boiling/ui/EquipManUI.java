@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +16,9 @@ import net.andy.boiling.domain.ReturnDomain;
 import net.andy.boiling.util.EquipmentUtil;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,39 +26,35 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * EquipManUI
+ * 设备管理
  *
  * @author RongGuang
  * @date 2015/12/2
  */
 public class EquipManUI extends NFCActivity {
     private ReturnDomain returnDomain = new ReturnDomain ();
-    private ListView equip_listView;
-
+    @ViewInject(R.id.equipman_list_listView)
+    private ListView equipman_list_listView;
+    @ViewInject(R.id.equipman_add_button)
+    private Button equip_add_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.equipman );
-        equip_listView = ( ListView ) findViewById ( R.id.equipman_list_listView );
-        Button equip_add_button = ( Button ) findViewById ( R.id.equipman_add_button );
-        equip_listView.setOnItemClickListener ( new OnListItemClick () );
-        equip_add_button.setOnClickListener ( new OnAddClick () );
+        x.view().inject(this);
         getEquipmentList ( "equipment/getEquipmentOfAll.do" );
     }
 
-    public class OnAddClick implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
+        @Event(value = R.id.equipman_add_button,type = View.OnClickListener.class)
+        private void btnClick(View v) {
             Intent intent = new Intent ();
             intent.setClass ( EquipManUI.this, EquipReviseUI.class );
             startActivity ( intent );
         }
-    }
 
     /*    监听ListView      */
-    public class OnListItemClick implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        @Event(value = R.id.equipman_list_listView,type = AdapterView.OnItemClickListener.class)
+        private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
             openReturnUI ( String.valueOf ( map.get ( "equip_equipId_textView" ) ) );
             //回传值
@@ -65,7 +65,6 @@ public class EquipManUI extends NFCActivity {
             intent.setClass ( EquipManUI.this, EquipReviseUI.class );
             EquipManUI.this.startActivity ( intent );
         }
-    }
 
     @Override
     protected void onNewIntent(final Intent intent) {
@@ -96,7 +95,7 @@ public class EquipManUI extends NFCActivity {
                         "equip_equipName_textView", "equip_tagId_textView", "equip_id_textView"},
                 new int[]{R.id.equip_equipId_textView, R.id.equip_equipType1_textView,
                         R.id.equip_equipName_textView, R.id.equip_tagId_textView, R.id.equip_id_textView} );
-        equip_listView.setAdapter ( adapter );
+        equipman_list_listView.setAdapter ( adapter );
     }
 
     public void getEquipment(final String tagId) {

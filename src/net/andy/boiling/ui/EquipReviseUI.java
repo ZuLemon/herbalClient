@@ -17,9 +17,12 @@ import net.andy.boiling.util.EquipmentUtil;
 import net.andy.boiling.util.TagUtil;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 /**
- * EquipReviseUI
+ * 设备修改
  *
  * @author RongGuang
  * @date 2015/12/2
@@ -27,30 +30,52 @@ import net.andy.com.NFCActivity;
 public class EquipReviseUI extends NFCActivity {
     private EquipmentDomain equipmentDomain;
     private EquipmentDomain equipmentDomainNew;
+    @ViewInject(R.id.equip_tagId_editText)
     private EditText equip_tagId_editText;
+    @ViewInject(R.id.equip_equipId_editText)
     private EditText equip_equipId_editText;
+    @ViewInject(R.id.equip_equipName_editText)
     private EditText equip_equipName_editText;
+    @ViewInject(R.id.equip_type_radioGroup)
     private RadioGroup equip_type_radioGroup;
+    @ViewInject(R.id.equip_type1_radioGroup)
     private RadioGroup equip_type1_radioGroup;
+    @ViewInject(R.id.equip_equipPurpose_radioGroup)
     private RadioGroup equip_equipPurpose_radioGroup;
+    @ViewInject(R.id.equip1_equipStatus_radioGroup)
     private RadioGroup equip1_equipStatus_radioGroup;
+    @ViewInject(R.id.equip2_equipStatus_radioGroup)
     private RadioGroup equip2_equipStatus_radioGroup;
+    @ViewInject(R.id.equip1_type_radioButton)
     private RadioButton equip1_type_radioButton;
+    @ViewInject(R.id.equip2_type_radioButton)
     private RadioButton equip2_type_radioButton;
+    @ViewInject(R.id.equip3_type_radioButton)
     private RadioButton equip3_type_radioButton;
+    @ViewInject(R.id.equip1_type1_radioButton)
     private RadioButton equip1_type1_radioButton;
+    @ViewInject(R.id.equip2_type1_radioButton)
     private RadioButton equip2_type1_radioButton;
+    @ViewInject(R.id.equip1_equipPurpose_radioButton)
     private RadioButton equip1_equipPurpose_radioButton;
+    @ViewInject(R.id.equip2_equipPurpose_radioButton)
     private RadioButton equip2_equipPurpose_radioButton;
+    @ViewInject(R.id.equip1_equipStatus_radioButton)
     private RadioButton equip1_equipStatus_radioButton;
+    @ViewInject(R.id.equip2_equipStatus_radioButton)
     private RadioButton equip2_equipStatus_radioButton;
+    @ViewInject(R.id.equip3_equipStatus_radioButton)
     private RadioButton equip3_equipStatus_radioButton;
+    @ViewInject(R.id.equip4_equipStatus_radioButton)
     private RadioButton equip4_equipStatus_radioButton;
+    @ViewInject(R.id.equip5_equipStatus_radioButton)
     private RadioButton equip5_equipStatus_radioButton;
+    @ViewInject(R.id.equip6_equipStatus_radioButton)
     private RadioButton equip6_equipStatus_radioButton;
     private String tagId;
     private String tagType;
     private String equipType;
+    @ViewInject(R.id.equip_ok_button)
     private Button equip_ok_button;
     private RadioButton[] equip_type_radioButtonList;
     private int[] equip_type_valueList;
@@ -68,15 +93,16 @@ public class EquipReviseUI extends NFCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.equiprevise );
-        equip_tagId_editText = ( EditText ) findViewById ( R.id.equip_tagId_editText );
-        equip_equipId_editText = ( EditText ) findViewById ( R.id.equip_equipId_editText );
-        equip_equipName_editText = ( EditText ) findViewById ( R.id.equip_equipName_editText );
-        equip_type_radioGroup = ( RadioGroup ) findViewById ( R.id.equip_type_radioGroup );
-        equip_type1_radioGroup = ( RadioGroup ) findViewById ( R.id.equip_type1_radioGroup );
-        equip_equipPurpose_radioGroup = ( RadioGroup ) findViewById ( R.id.equip_equipPurpose_radioGroup );
-        equip1_equipStatus_radioGroup = ( RadioGroup ) findViewById ( R.id.equip1_equipStatus_radioGroup );
-        equip2_equipStatus_radioGroup = ( RadioGroup ) findViewById ( R.id.equip2_equipStatus_radioGroup );
-        equip_ok_button = ( Button ) findViewById ( R.id.equip_ok_button );
+        x.view().inject(this);
+//        equip_tagId_editText = ( EditText ) findViewById ( R.id.equip_tagId_editText );
+//        equip_equipId_editText = ( EditText ) findViewById ( R.id.equip_equipId_editText );
+//        equip_equipName_editText = ( EditText ) findViewById ( R.id.equip_equipName_editText );
+//        equip_type_radioGroup = ( RadioGroup ) findViewById ( R.id.equip_type_radioGroup );
+//        equip_type1_radioGroup = ( RadioGroup ) findViewById ( R.id.equip_type1_radioGroup );
+//        equip_equipPurpose_radioGroup = ( RadioGroup ) findViewById ( R.id.equip_equipPurpose_radioGroup );
+//        equip1_equipStatus_radioGroup = ( RadioGroup ) findViewById ( R.id.equip1_equipStatus_radioGroup );
+//        equip2_equipStatus_radioGroup = ( RadioGroup ) findViewById ( R.id.equip2_equipStatus_radioGroup );
+//        equip_ok_button = ( Button ) findViewById ( R.id.equip_ok_button );
         equip_type_radioButtonList = new RadioButton[]{equip1_type_radioButton, equip2_type_radioButton, equip3_type_radioButton};
         equip_type_valueList = new int[]{R.id.equip1_type_radioButton, R.id.equip2_type_radioButton, R.id.equip3_type_radioButton};
         equip_type1_radioButtonList = new RadioButton[]{equip1_type1_radioButton, equip2_type1_radioButton};
@@ -94,10 +120,6 @@ public class EquipReviseUI extends NFCActivity {
         for (int i = 0; i < equip_equipStatus_radioButtonList.length; i++)
             equip_equipStatus_radioButtonList[i] = ( RadioButton ) findViewById ( equip_equipStatus_valueList[i] );
         equipmentDomain=new EquipmentDomain ();
-        equip1_equipStatus_radioGroup.setOnCheckedChangeListener ( new MyOnCheck1 () );
-        equip2_equipStatus_radioGroup.setOnCheckedChangeListener ( new MyOnCheck2 () );
-        equip_ok_button.setOnClickListener ( new Submit () );
-
         Intent intent = getIntent ();
         System.out.println ( "$>>" + intent.getStringExtra ( "id" ) );
         String id = intent.getStringExtra ( "id" );
@@ -199,9 +221,8 @@ public class EquipReviseUI extends NFCActivity {
             }
         }
     }
-    private class Submit implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
+         @Event(R.id.equip_ok_button)
+        private void btnClick(View v) {
             GetValues ();
             if ("".equals ( equipmentDomain.getTagId () )) {
                 new CoolToast ( getBaseContext () ).show ( "标签不能为空" );
@@ -230,7 +251,6 @@ public class EquipReviseUI extends NFCActivity {
                 }
             }.start ();
         }
-    }
     private void GetTagType(String tagId) {
         final Message message = new Message ();
         final Handler handler = new Handler () {
@@ -285,9 +305,9 @@ public class EquipReviseUI extends NFCActivity {
         equipmentDomain.setTagId ( String.valueOf ( equip_tagId_editText.getText () ) );
         equipmentDomain.setEquipName ( String.valueOf ( equip_equipName_editText.getText () ) );
     }
-    class MyOnCheck1 implements RadioGroup.OnCheckedChangeListener {
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
+    @Event(value = R.id.equip1_equipStatus_radioGroup,type = RadioGroup.OnCheckedChangeListener.class)
+    private void onChecked1Changed(RadioGroup group, int checkedId) {
+        Log.i(">>","onChecked1Changed");
             if ( radioGroup2Checked ) {
                 radioGroup2Checked = false;
                 radioGroup1Checked = false;
@@ -298,13 +318,11 @@ public class EquipReviseUI extends NFCActivity {
                 radioGroup1Checked = true;
             }
             equipmentDomain.setEquipStatus ( String.valueOf ( ( ( RadioButton ) findViewById ( checkedId ) ).getText () ));
-        }
     }
 
-    class MyOnCheck2 implements RadioGroup.OnCheckedChangeListener {
-
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
+        @Event(value = R.id.equip2_equipStatus_radioGroup,type = RadioGroup.OnCheckedChangeListener.class)
+        private void onChecked2Changed(RadioGroup group, int checkedId) {
+            Log.i(">>","onChecked2Changed");
             if ( radioGroup1Checked ) {
                 radioGroup2Checked = false;
                 radioGroup1Checked = false;
@@ -316,8 +334,6 @@ public class EquipReviseUI extends NFCActivity {
             }
             equipmentDomain.setEquipStatus ( String.valueOf ( ( ( RadioButton ) findViewById ( checkedId ) ).getText () ));
         }
-    }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent ( intent );
