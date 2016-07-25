@@ -20,6 +20,9 @@ import net.andy.dispensing.util.HerbalUtil;
 import net.andy.dispensing.util.ReplenishUtil;
 import net.andy.dispensing.util.ServerUtil;
 import net.andy.dispensing.util.ValidationUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -33,11 +36,15 @@ import java.util.Map;
  * Created by Guang on 2016/5/26.
  */
 public class ValidationUI extends Activity {
+    @ViewInject(R.id.validation_title)
     private TextView validation_title;
+    @ViewInject(R.id.validation_ready_list)
     private ListView validation_ready_list;
+    @ViewInject(R.id.validation_already_list)
     private ListView validation_already_list;
-    private ButtonListener buttonListener=new ButtonListener();
+    @ViewInject(R.id.validation_ready_button)
     private Button validation_ready_button;
+    @ViewInject(R.id.validation_already_button)
     private Button validation_already_button;
     private String begin;
     private String end;
@@ -53,20 +60,12 @@ public class ValidationUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.validation);
-        validation_title = (TextView) findViewById(R.id.validation_title);
-        validation_ready_list = (ListView) findViewById(R.id.validation_ready_list);
-        validation_already_list= (ListView) findViewById(R.id.validation_already_list);
-        validation_ready_button = (Button) findViewById(R.id.validation_ready_button);
-        validation_already_button = (Button) findViewById(R.id.validation_already_button);
+        x.view().inject(this);
         readyAdapter = new ReadyAdapter(this);
         validation_ready_list.setAdapter(readyAdapter);
-        validation_ready_list.setOnItemClickListener(new ReadyListItemClick());
         alreadyAdapter = new AlreadyAdapter(this);
         validation_already_list.setAdapter(alreadyAdapter);
-        validation_already_list.setOnItemClickListener(new AlreadyListItemClick());
         getList(0);
-        validation_ready_button.setOnClickListener(buttonListener);
-        validation_already_button.setOnClickListener(buttonListener);
     }
 
     @Override
@@ -75,11 +74,11 @@ public class ValidationUI extends Activity {
         validation_title.setText("待选复核");
         getList(0);
     }
-
-    private class ButtonListener implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
+    @Event(value = {
+            R.id.validation_ready_button,
+            R.id.validation_already_button
+    },type = View.OnClickListener.class)
+    private void btnClick(View v) {
             switch (v.getId()){
                 case R.id.validation_ready_button:
                     getList(0);
@@ -90,7 +89,6 @@ public class ValidationUI extends Activity {
                     validation_title.setText(((TextView) findViewById(R.id.validation_already_button)).getText());
                     break;
             }
-        }
     }
     Handler handler = new Handler() {
         @Override
@@ -155,9 +153,8 @@ public class ValidationUI extends Activity {
         }.start();
     }
     /*    监听ListView      */
-    public class ReadyListItemClick implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+   @Event(value = R.id.validation_ready_list,type = AdapterView.OnItemClickListener.class)
+        private void readyItemClick(AdapterView<?> parent, View view, int position, long id) {
 //            Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
 //            map.get("online_id_textView");
             Map map = (Map) list.get(position);
@@ -165,12 +162,10 @@ public class ValidationUI extends Activity {
             in.putExtra("disId",Integer.parseInt(String.valueOf(map.get("disId"))));
             in.putExtra("preId", Integer.parseInt(String.valueOf(map.get("id"))));
             startActivity(in);
-        }
     }
     /*    监听ListView      */
-    public class AlreadyListItemClick implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    @Event(value = R.id.validation_already_list,type = AdapterView.OnItemClickListener.class)
+    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //            Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
 //            map.get("online_id_textView");
             Map map = (Map) list.get(position);
@@ -179,7 +174,6 @@ public class ValidationUI extends Activity {
             in.putExtra("id", Integer.parseInt(String.valueOf(map.get("id"))));
             in.putExtra("pId", Integer.parseInt(String.valueOf(map.get("pId"))));
             startActivity(in);
-        }
     }
     public class ReadyAdapter extends BaseAdapter {
         private LayoutInflater inflater;

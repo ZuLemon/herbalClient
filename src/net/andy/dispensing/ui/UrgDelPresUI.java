@@ -23,6 +23,9 @@ import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.UrgentDelPresUtil;
 import org.w3c.dom.Text;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.List;
 
@@ -31,36 +34,36 @@ import java.util.List;
  * Created by Guang on 2016/3/16.
  */
 public class UrgDelPresUI extends Activity{
+    @ViewInject(R.id.urgdelpres_linearLayout)
     private LinearLayout urgdelpres_linearLayout;
+    @ViewInject(R.id.urgdelpres_urgpres_textView)
     private TextView urgdelpres_urgpres_textView;
+    @ViewInject(R.id.urgdelpres_delpres_textView)
     private TextView urgdelpres_delpres_textView;
+    @ViewInject(R.id.urgdelpres_noProcess_textView)
     private TextView urgdelpres_noProcess_textView;
+    @ViewInject(R.id.urgdelpres_process_textView)
     private TextView urgdelpres_process_textView;
     private String process="";
     private String passwd;
-    private ClickLis clickLis=new ClickLis();
     private String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.urgdelpres);
-        urgdelpres_linearLayout= (LinearLayout) findViewById(R.id.urgdelpres_linearLayout);
-        urgdelpres_urgpres_textView= (TextView) findViewById(R.id.urgdelpres_urgpres_textView);
-        urgdelpres_delpres_textView= (TextView) findViewById(R.id.urgdelpres_delpres_textView);
-        urgdelpres_noProcess_textView= (TextView) findViewById(R.id.urgdelpres_noProcess_textView);
-        urgdelpres_process_textView= (TextView) findViewById(R.id.urgdelpres_process_textView);
-        urgdelpres_linearLayout.setOnClickListener(clickLis);
-        urgdelpres_urgpres_textView.setOnClickListener(clickLis);
-        urgdelpres_delpres_textView.setOnClickListener(clickLis);
-        urgdelpres_noProcess_textView.setOnClickListener(clickLis);
-        urgdelpres_process_textView.setOnClickListener(clickLis);
+        x.view().inject(this);
         Intent in=getIntent();
         id=in.getStringExtra("id");
         Log.e("id",id);
     }
-    class ClickLis implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
+    @Event(value = {
+            R.id.urgdelpres_linearLayout,
+            R.id.urgdelpres_urgpres_textView,
+            R.id.urgdelpres_noProcess_textView,
+            R.id.urgdelpres_process_textView,
+            R.id.urgdelpres_delpres_textView
+    },type = View.OnClickListener.class)
+   private void btnClick(View v) {
             switch (v.getId()){
                 case R.id.urgdelpres_linearLayout:
                     finish();
@@ -93,10 +96,7 @@ public class UrgDelPresUI extends Activity{
                             }
                         }
                     }) .setNegativeButton("取消", null).show();
-
                     break;
-
-            }
         }
     }
     private void urgentPresThread(int what) {

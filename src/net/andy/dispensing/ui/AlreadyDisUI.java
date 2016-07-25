@@ -18,6 +18,9 @@ import net.andy.dispensing.util.AlreadyDisUtil;
 import net.andy.dispensing.util.HerbalUtil;
 import net.andy.dispensing.util.ServerUtil;
 import net.andy.dispensing.util.ValidationUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,10 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 已调剂处方
+ * 今日已调剂处方（个人）
  * Created by Guang on 2016/6/22.
  */
 public class AlreadyDisUI extends Activity {
+    @ViewInject(R.id.alreadydis_list)
     private ListView alreadydis_list;
     private List list = new ArrayList<>();
     private AlreadyAdapter alreadyAdapter;
@@ -41,10 +45,9 @@ public class AlreadyDisUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alreadydis);
-        alreadydis_list= (ListView) findViewById(R.id.alreadydis_list);
+        x.view().inject(this);
         alreadyAdapter = new AlreadyAdapter(this);
         alreadydis_list.setAdapter(alreadyAdapter);
-        alreadydis_list.setOnItemClickListener(new AlreadyListItemClick());
         startActivity(new Intent(AlreadyDisUI.this,LoadingUI.class));
         getList(0);
     }
@@ -94,9 +97,8 @@ public class AlreadyDisUI extends Activity {
         }.start();
     }
     /*    监听ListView      */
-    public class AlreadyListItemClick implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    @Event(value = R.id.alreadydis_list,type = AdapterView.OnItemClickListener.class)
+    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //            Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
 //            map.get("online_id_textView");
             Map map = (Map) list.get(position);
@@ -105,7 +107,6 @@ public class AlreadyDisUI extends Activity {
             in.putExtra("presId", String.valueOf(map.get("presId")));
 //            in.putExtra("pId", Integer.parseInt(String.valueOf(map.get("pId"))));
             startActivity(in);
-        }
     }
     public class AlreadyAdapter extends BaseAdapter {
         private LayoutInflater inflater;

@@ -21,6 +21,9 @@ import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.domain.ReplenishDomain;
 import net.andy.dispensing.util.ReplenishUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,13 +33,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 上药
  * Created by Guang on 2016/3/16.
  */
 public class ReplenishUI extends Activity {
+    @ViewInject(R.id.replenish_title)
     private TextView replenish_title;
+    @ViewInject(R.id.replenish_list)
     private ListView replenish_list;
+    @ViewInject(R.id.replenish_new)
     private Button replenish_new;
+    @ViewInject(R.id.replenish_accept)
     private Button replenish_accept;
+    @ViewInject(R.id.replenish_finish)
     private Button replenish_finish;
     private List list = new ArrayList<>();
     private Adapter adapter;
@@ -47,42 +56,35 @@ public class ReplenishUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.replenish);
-        replenish_title = (TextView) findViewById(R.id.replenish_title);
-        replenish_list = (ListView) findViewById(R.id.replenish_list);
-        replenish_new = (Button) findViewById(R.id.replenish_new);
-        replenish_accept = (Button) findViewById(R.id.replenish_accept);
-        replenish_finish = (Button) findViewById(R.id.replenish_finish);
+        x.view().inject(this);
         adapter = new Adapter(this);
         replenish_list.setAdapter(adapter);
         handler.sendEmptyMessage(what);
-        findViewById(R.id.replenish_new).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    }
+    @Event(value = {
+            R.id.replenish_finish,
+            R.id.replenish_accept,
+            R.id.replenish_new
+    },type = View.OnClickListener.class)
+    private void onClick(View view) {
+        switch (view.getId()){
+            case R.id.replenish_new:
                 what = 0;
                 handler.sendEmptyMessage(what);
-                replenish_title.setText(((TextView) findViewById(R.id.replenish_new)).getText());
-            }
-        });
-
-        findViewById(R.id.replenish_accept).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                replenish_title.setText(((TextView)view).getText());
+                break;
+            case R.id.replenish_accept:
                 what = 1;
                 handler.sendEmptyMessage(what);
-                replenish_title.setText(((TextView) findViewById(R.id.replenish_accept)).getText());
-            }
-        });
-
-        findViewById(R.id.replenish_finish).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                what = 2;
+                replenish_title.setText(((TextView)view).getText());
+                break;
+            case R.id.replenish_finish:
+                what =2;
                 handler.sendEmptyMessage(what);
-                replenish_title.setText(((TextView) findViewById(R.id.replenish_finish)).getText());
-            }
-        });
+                replenish_title.setText(((TextView)view).getText());
+                break;
+        }
     }
-
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

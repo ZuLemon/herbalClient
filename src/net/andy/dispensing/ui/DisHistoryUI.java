@@ -15,6 +15,9 @@ import net.andy.boiling.domain.PrescriptionDomain;
 import net.andy.com.AppOption;
 import net.andy.dispensing.domain.DispensingDetailDomain;
 import org.w3c.dom.Text;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,16 +26,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 回查
  * Created by Guang on 2016/3/18.
  */
 public class DisHistoryUI extends Activity{
+    @ViewInject(R.id.adjust_history_linearLayout)
     private LinearLayout adjust_history_linearLayout;
+    @ViewInject(R.id.dis_history_gridView)
     private GridView dis_history_gridView;
+    @ViewInject(R.id.disHistory_info_textView)
     private TextView disHistory_info_textView;
+    @ViewInject(R.id.disHistory_doctorName_textView)
     private TextView disHistory_doctorName_textView;
+    @ViewInject(R.id.disHistory_category_textView)
     private TextView disHistory_category_textView;
+    @ViewInject(R.id.disHistory_patientId_textView)
     private TextView disHistory_patientId_textView;
+    @ViewInject(R.id.disHistory_patientName_textView)
     private TextView disHistory_patientName_textView;
+    @ViewInject(R.id.disHistory_deptName_textView)
     private TextView disHistory_deptName_textView;
 
     private GridAdapter gridAdapter;
@@ -44,26 +56,7 @@ public class DisHistoryUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dis_history);
-        adjust_history_linearLayout= (LinearLayout) findViewById(R.id.adjust_history_linearLayout);
-        dis_history_gridView = (GridView) findViewById(R.id.dis_history_gridView);
-        disHistory_doctorName_textView= (TextView) findViewById(R.id.disHistory_doctorName_textView);
-        disHistory_info_textView= (TextView) findViewById(R.id.disHistory_info_textView);
-        disHistory_patientId_textView= (TextView) findViewById(R.id.disHistory_patientId_textView);
-        disHistory_category_textView= (TextView) findViewById(R.id.disHistory_category_textView);
-        disHistory_patientName_textView= (TextView) findViewById(R.id.disHistory_patientName_textView);
-        disHistory_deptName_textView= (TextView) findViewById(R.id.disHistory_deptName_textView);
-//        adjust_history_gridView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
-        adjust_history_linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        x.view().inject(this);
         Intent in=getIntent();
         dispensingDetailDomainList= (List<DispensingDetailDomain>) in.getSerializableExtra("dises");
         pre= (PrescriptionDomain) in.getSerializableExtra("pre");
@@ -73,13 +66,13 @@ public class DisHistoryUI extends Activity{
         disHistory_patientName_textView.setText(pre.getPatientName());
         disHistory_doctorName_textView.setText(pre.getDoctorName());
         disHistory_deptName_textView.setText(pre.getDeptName());
-//        disHistory_stationName_textView.setText(new AppOption().getOption(AppOption.APP_OPTION_STATION));
         gridAdapter = new GridAdapter(this);
         dis_history_gridView.setAdapter(gridAdapter);
-//        simpleAdapter = new SimpleAdapter(this,
-//                historyData, R.layout.dis_historygriditem, new String[]{"ItemNameView", "ItemNumView"}, new int[]{R.id.adjust_name_textView, R.id.adjust_num_textView});
-//        adjust_history_gridView.setAdapter(simpleAdapter);
         historyPre();
+    }
+    @Event(value = R.id.adjust_history_linearLayout)
+    private void btnClick(View view) {
+        finish();
     }
     private void historyPre() {
         boolean isEnd=true;

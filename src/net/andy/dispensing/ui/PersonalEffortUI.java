@@ -21,6 +21,9 @@ import net.andy.com.CoolToast;
 import net.andy.dispensing.domain.RulesDomain;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.util.*;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,18 +32,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 个人工作量
  * Created by Guang on 2016/6/6.
  */
 
 public class PersonalEffortUI extends Activity {
     private AppOption appOption = new AppOption();
-    private Submit submit = new Submit();
+    @ViewInject(R.id.personaleffort_startTime_editText)
     private EditText personaleffort_startTime_editText;
+    @ViewInject(R.id.personaleffort_endTime_editText)
     private EditText personaleffort_endTime_editText;
+    @ViewInject(R.id.personaleffort_today_button)
     private Button personaleffort_today_button;
+    @ViewInject(R.id.personaleffort_month_button)
     private Button personaleffort_month_button;
+    @ViewInject(R.id.personaleffort_preMonth_button)
     private Button personaleffort_preMonth_button;
+    @ViewInject(R.id.personaleffort_presNumTotal_textView)
     private TextView personaleffort_presNumTotal_textView;
+    @ViewInject(R.id.personaleffort_presTotal_textView)
     private TextView personaleffort_presTotal_textView;
     private Map effortMap;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -48,38 +58,25 @@ public class PersonalEffortUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.personaleffort);
-        Init();
+        x.view().inject(this);
         getTime("month");
         setMonitor();
         PersonalThread();
     }
 
-    private void Init() {
-        personaleffort_startTime_editText = (EditText) findViewById(R.id.personaleffort_startTime_editText);
-        personaleffort_endTime_editText = (EditText) findViewById(R.id.personaleffort_endTime_editText);
-        personaleffort_presNumTotal_textView = (TextView) findViewById(R.id.personaleffort_presNumTotal_textView);
-        personaleffort_presTotal_textView = (TextView) findViewById(R.id.personaleffort_presTotal_textView);
-        personaleffort_today_button = (Button) findViewById(R.id.personaleffort_today_button);
-        personaleffort_month_button = (Button) findViewById(R.id.personaleffort_month_button);
-        personaleffort_preMonth_button = (Button) findViewById(R.id.personaleffort_preMonth_button);
-//        personaleffort_startTime_editText.setText(initStartDateTime);
-//        personaleffort_endTime_editText.setText(initEndDateTime);
-
-    }
 
     private void setMonitor() {
-        personaleffort_startTime_editText.setOnClickListener(submit);
         personaleffort_startTime_editText.addTextChangedListener(textWatcher);
-        personaleffort_endTime_editText.setOnClickListener(submit);
         personaleffort_endTime_editText.addTextChangedListener(textWatcher);
-        personaleffort_today_button.setOnClickListener(submit);
-        personaleffort_month_button.setOnClickListener(submit);
-        personaleffort_preMonth_button.setOnClickListener(submit);
     }
-
-    private class Submit implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
+    @Event(value = {
+            R.id.personaleffort_startTime_editText,
+            R.id.personaleffort_endTime_editText,
+            R.id.personaleffort_today_button,
+            R.id.personaleffort_month_button,
+            R.id.personaleffort_preMonth_button
+    },type = View.OnClickListener.class)
+    private void onClick(View view) {
             switch (view.getId()) {
                 case R.id.personaleffort_startTime_editText:
                     DateTimePickDialogUtil startdateTimePicKDialog = new DateTimePickDialogUtil(
@@ -107,7 +104,6 @@ public class PersonalEffortUI extends Activity {
                     PersonalThread();
                     break;
             }
-        }
     }
 
 

@@ -8,20 +8,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import net.andy.boiling.R;
 import net.andy.boiling.domain.PrescriptionDomain;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 /**
+ * 患者信息
  * Created by Guang on 2016/3/16.
  */
 public class PatientInfoUI extends Activity{
+    @ViewInject(R.id.adjustPatientInfo_linearLayout)
     private LinearLayout adjustPatientInfo_linearLayout;
+    @ViewInject(R.id.adjustPatientinfo_drugstoreName_textView)
     private TextView adjustPatientinfo_drugstoreName_textView;
+    @ViewInject(R.id.adjustPatientInfo_classification_textView)
     private TextView adjustPatientInfo_classification_textView;
+    @ViewInject(R.id.adjustPatientInfo_info_textView)
     private TextView adjustPatientInfo_info_textView;
+    @ViewInject(R.id.adjustPatient_date_textView)
     private TextView adjustPatient_date_textView;
+    @ViewInject(R.id.adjustPatient_patientNo_textView)
     private TextView adjustPatient_patientNo_textView;
+    @ViewInject(R.id.adjustPatientInfo_patientName_textView)
     private TextView adjustPatientInfo_patientName_textView;
+    @ViewInject(R.id.adjustPatient_deptName_textView)
     private TextView adjustPatient_deptName_textView;
+    @ViewInject(R.id.adjustPatient_doctorName_textView)
     private TextView adjustPatient_doctorName_textView;
+    @ViewInject(R.id.adjustPatientInfo_diagnosis_textView)
     private TextView adjustPatientInfo_diagnosis_textView;
     private PrescriptionDomain prescriptionDomain;
 
@@ -29,25 +43,14 @@ public class PatientInfoUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hospitalpatinfo);
-        adjustPatientInfo_linearLayout= (LinearLayout) findViewById(R.id.adjustPatientInfo_linearLayout);
-        adjustPatientinfo_drugstoreName_textView= (TextView) findViewById(R.id.adjustPatientinfo_drugstoreName_textView);
-        adjustPatientInfo_classification_textView= (TextView) findViewById(R.id.adjustPatientInfo_classification_textView);
-        adjustPatientInfo_info_textView= (TextView) findViewById(R.id.adjustPatientInfo_info_textView);
-        adjustPatient_date_textView= (TextView) findViewById(R.id.adjustPatient_date_textView);
-        adjustPatient_patientNo_textView= (TextView) findViewById(R.id.adjustPatient_patientNo_textView);
-        adjustPatientInfo_patientName_textView= (TextView) findViewById(R.id.adjustPatientInfo_patientName_textView);
-        adjustPatient_deptName_textView= (TextView) findViewById(R.id.adjustPatient_deptName_textView);
-        adjustPatient_doctorName_textView= (TextView) findViewById(R.id.adjustPatient_doctorName_textView);
-        adjustPatientInfo_diagnosis_textView= (TextView) findViewById(R.id.adjustPatientInfo_diagnosis_textView);
-        adjustPatientInfo_linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        x.view().inject(this);
         Intent in=getIntent();
         prescriptionDomain= (PrescriptionDomain) in.getSerializableExtra("pre");
         setValue();
+    }
+    @Event(R.id.adjustPatientInfo_linearLayout)
+    private void btnClick(View view) {
+        finish();
     }
     private void setValue(){
         System.out.println(prescriptionDomain.getDoctorName());

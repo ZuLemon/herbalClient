@@ -16,6 +16,9 @@ import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.SelectPresUtil;
 import net.andy.dispensing.util.UrgentDelPresUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +32,11 @@ import java.util.Map;
  */
 public class SelectPresUI extends Activity{
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    @ViewInject(R.id.selectPres_patient_listView)
     private ListView selectPres_patient_listView;
+    @ViewInject(R.id.selectPres_search_button)
     private Button selectPres_search_button;
+    @ViewInject(R.id.selectPres_patientId_editText)
     private EditText selectPres_patientId_editText;
     private String patId;
     private Integer Id;
@@ -40,18 +46,13 @@ public class SelectPresUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selectpres);
-        selectPres_patient_listView= (ListView) findViewById(R.id.selectPres_patient_listView);
-        selectPres_search_button= (Button) findViewById(R.id.selectPres_search_button);
-        selectPres_patientId_editText= (EditText) findViewById(R.id.selectPres_patientId_editText);
+        x.view().inject(this);
         urgDelAdapter=new UrgDelAdapter(this);
         selectPres_patient_listView.setAdapter ( urgDelAdapter );
-        selectPres_patient_listView.setOnItemClickListener ( new ItemClick() );
-        selectPres_search_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                confirm();
-            }
-        });
+    }
+    @Event(value =R.id.selectPres_search_button )
+    private void onClick(View view) {
+        confirm();
     }
     private void confirm(){
         urgList.clear();
@@ -63,14 +64,12 @@ public class SelectPresUI extends Activity{
             selectPresThread(0);
         }
     }
-    private class ItemClick implements AdapterView.OnItemClickListener{
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    @Event(value = R.id.selectPres_patient_listView,type = AdapterView.OnItemClickListener.class)
+    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = (Map) urgList.get(position);
             Intent in=new Intent(SelectPresUI.this,PrescriptionStatusUI.class);
             in.putExtra("id",String.valueOf(map.get("id")));
             startActivity(in);
-        }
     }
     public void setListView(List presList) {
         urgDelAdapter.notifyDataSetChanged();

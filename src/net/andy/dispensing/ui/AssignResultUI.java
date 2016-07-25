@@ -15,34 +15,36 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.support.odps.udf.CodecCheck;
 import net.andy.boiling.R;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 分配工作量结果
  * Created by Guang on 2016/6/22.
  */
 public class AssignResultUI extends Activity {
+    @ViewInject(R.id.assignresult_linearLayout)
     private LinearLayout assignresult_linearLayout;
+    @ViewInject(R.id.assignresult_gridView)
     private GridView assignresult_gridView;
     private List resultList ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assignresult);
-        assignresult_linearLayout= (LinearLayout) findViewById(R.id.assignresult_linearLayout);
-        assignresult_gridView= (GridView) findViewById(R.id.assignresult_gridView);
+        x.view().inject(this);
         Intent in=getIntent();
         resultList = JSONArray.parseArray(in.getStringExtra("result"));
-
         assignresult_gridView.setAdapter(new GridAdapter(this));
-        assignresult_linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+    }
+    @Event(value = R.id.assignresult_linearLayout)
+    private void btnClick(View v) {
+        finish();
     }
     private class GridAdapter extends BaseAdapter {
         private LayoutInflater mInflater;

@@ -14,6 +14,9 @@ import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.dispensing.ui.LoadingUI;
 import net.andy.hos.util.ExtInpatientUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +28,13 @@ import java.util.Map;
 public class ExtInPatientUI extends Activity{
     private SimpleAdapter adapter;
     private String deptId;
+    @ViewInject(R.id.deptName)
     private TextView deptName;
+    @ViewInject(R.id.patName)
     private EditText patName;
+    @ViewInject(R.id.patList)
     private ListView patList;
+    @ViewInject(R.id.search)
     private Button search;
     private List list=new ArrayList();
     private ContentAdapter contentAdapter;
@@ -37,18 +44,15 @@ public class ExtInPatientUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ext_inpatient);
-        deptName= (TextView) findViewById(R.id.deptName);
-        patName= (EditText) findViewById(R.id.patName);
-        patList= (ListView) findViewById(R.id.patList);
-        search= (Button) findViewById(R.id.search);
-        search.setOnClickListener(new ButtonListerner());
-        deptName.setOnClickListener(new ButtonListerner());
+        x.view().inject(this);
         contentAdapter=new ContentAdapter(this);
         patList.setAdapter(contentAdapter);
     }
-    private class ButtonListerner implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
+    @Event(value = {
+            R.id.deptName,
+            R.id.search
+    },type = View.OnClickListener.class)
+    private void onClick(View v) {
             switch (v.getId()){
                 case R.id.deptName:
                     Intent intn = new Intent(ExtInPatientUI.this,ExtInPatientDeptUI.class);
@@ -59,7 +63,6 @@ public class ExtInPatientUI extends Activity{
                     HospitalThread(0);
                     break;
             }
-        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

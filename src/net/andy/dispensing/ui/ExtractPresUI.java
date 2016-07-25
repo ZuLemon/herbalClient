@@ -18,6 +18,9 @@ import net.andy.com.CoolToast;
 import net.andy.com.Http;
 import net.andy.dispensing.util.ExtPreUtil;
 import org.w3c.dom.Text;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.Map;
 
@@ -26,29 +29,28 @@ import java.util.Map;
  * Created by Guang on 2016/5/12.
  */
 public class ExtractPresUI extends Activity{
+    @ViewInject(R.id.extractpres_extPre_button)
     private Button extractpres_extPre_button;
+    @ViewInject(R.id.extractpres_update_button)
     private Button extractpres_update_button;
+    @ViewInject(R.id.extractpres_time_editText)
     private EditText extractpres_time_editText;
+    @ViewInject(R.id.extractpres_description_textView)
     private TextView extractpres_description_textView;
     private Integer intevalId=0;
     private Integer extTime;
     private boolean isClick;
-    private ButtonListener buttonListener=new ButtonListener();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.extractpres);
-        extractpres_extPre_button= (Button) findViewById(R.id.extractpres_extPre_button);
-        extractpres_update_button= (Button) findViewById(R.id.extractpres_update_button);
-        extractpres_time_editText= (EditText) findViewById(R.id.extractpres_time_editText);
-        extractpres_description_textView= (TextView) findViewById(R.id.extractpres_description_textView);
-        extractpres_extPre_button.setOnClickListener(buttonListener);
-        extractpres_update_button.setOnClickListener(buttonListener);
+        x.view().inject(this);
     }
-    private class ButtonListener implements View.OnClickListener{
-
-        @Override
-        public void onClick(View view) {
+    @Event(value = {
+        R.id.extractpres_update_button,
+            R.id.extractpres_extPre_button
+    },type = View.OnClickListener.class)
+    private void btnClick(View view) {
             switch (view.getId()){
                 case R.id.extractpres_update_button:
                     if(isClick){
@@ -69,7 +71,6 @@ public class ExtractPresUI extends Activity{
                     extractPresThread(0);
                     break;
             }
-        }
     }
     /**
      * 刷新处方子线程

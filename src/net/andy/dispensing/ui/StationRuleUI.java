@@ -20,12 +20,16 @@ import net.andy.boiling.R;
 import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 工位、规则设置
  * Created by Guang on 2016/3/9.
  */
 
@@ -36,9 +40,13 @@ public class StationRuleUI extends Activity {
     private ArrayAdapter<SpinnerItem> shelfAdapter;
     private ArrayAdapter<SpinnerItem> stationAdapter;
     private ArrayAdapter<SpinnerItem> rlueAdapter;
+    @ViewInject(R.id.stationrule_stationName_editText)
     private EditText stationrule_stationName_editText;
+    @ViewInject(R.id.stationrule_driver_editText)
     private EditText stationrule_driver_editText;
+    @ViewInject(R.id.stationrule_rule_spinner)
     private Spinner stationrule_rule_spinner;
+    @ViewInject(R.id.stationrule_shelf_spinner)
     private Spinner stationrule_shelf_spinner;
     private StationDomain stationDomain;
     private StationUtil stationUtil = new StationUtil();
@@ -46,7 +54,9 @@ public class StationRuleUI extends Activity {
     private List<RulesDomain> rulesDomainList;
     private RulesDomain rulesDomain;
     private SpinnerItem spinnerItem;
+    @ViewInject(R.id.stationrule_description_textView)
     private TextView stationrule_description_textView;
+    @ViewInject(R.id.stationrule_type_textView)
     private TextView stationrule_type_textView;
     private List stationAll;
     private List ruleAll;
@@ -54,6 +64,7 @@ public class StationRuleUI extends Activity {
     private Integer selectedStationId;
     private Integer selectedRuleId;
     private Integer selectedShelfId;
+    @ViewInject(R.id.stationrule_submit_button)
     private Button stationrule_submit_button;
     private AppOption appOption = new AppOption();
 
@@ -61,13 +72,7 @@ public class StationRuleUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.stationrule);
-        stationrule_stationName_editText = (EditText) findViewById(R.id.stationrule_stationName_editText);
-        stationrule_driver_editText = (EditText) findViewById(R.id.stationrule_driver_editText);
-        stationrule_rule_spinner = (Spinner) findViewById(R.id.stationrule_rule_spinner);
-        stationrule_shelf_spinner = (Spinner) findViewById(R.id.stationrule_shelf_spinner);
-        stationrule_description_textView = (TextView) findViewById(R.id.stationrule_description_textView);
-        stationrule_type_textView = (TextView) findViewById(R.id.stationrule_type_textView);
-        stationrule_submit_button = (Button) findViewById(R.id.stationrule_submit_button);
+        x.view().inject(this);
         WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         if (wifiManager == null) {
             new CoolToast(getBaseContext()).show("请先打开无线网络");
@@ -84,21 +89,11 @@ public class StationRuleUI extends Activity {
         stationrule_rule_spinner.setAdapter(rlueAdapter);
         stationrule_rule_spinner.setOnItemSelectedListener(new RuSpinnerListener());
         stationrule_shelf_spinner.setOnItemSelectedListener(new ShSpinnerListener());
-        stationrule_submit_button.setOnClickListener(new Submit());
 //        StationThread(1);
         StationThread(0);
     }
-
-    private class Submit implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-//            stationDomain.setId(selectedStationId);
-//            for(int i=0;i<stationAll.size();i++){
-//                if(Integer.parseInt(String.valueOf(((Map)stationAll.get(i)).get("id")))==selectedStationId) {
-//                    stationDomain.setName(String.valueOf(((Map) stationAll.get(i)).get("name")));
-//                    stationDomain.setDevice(String.valueOf(((Map) stationAll.get(i)).get("device")));
-//                }
-//            }
+    @Event(value = R.id.stationrule_submit_button)
+    private void btnClick(View view) {
             if(stationrule_stationName_editText.getText().toString().length()==0){
                 new CoolToast(getBaseContext()).show("工位名称不能为空");
                 return;
@@ -117,16 +112,13 @@ public class StationRuleUI extends Activity {
                 stationDomain.setShelfId(selectedShelfId);
                 StationThread(3);
             }
-        }
     }
 
     private class ShSpinnerListener implements AdapterView.OnItemSelectedListener {
-
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             selectedShelfId = ((SpinnerItem) stationrule_shelf_spinner.getSelectedItem()).GetID();
         }
-
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
         }

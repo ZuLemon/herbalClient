@@ -13,49 +13,48 @@ import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.ChineseToSpeech;
 import net.andy.com.CoolToast;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 /**
  * Created by Administrator on 2014-11-10.
  * 设置系统参数
  */
 public class Option extends Activity {
-    EditText server;
-    Button button;
-    Button speech;
-    CheckBox checkBox;
-    AppOption appOption = new AppOption();
-    ChineseToSpeech chineseToSpeech = new ChineseToSpeech();
+    @ViewInject(R.id.option_server_editText)
+    private EditText option_server_editText;
+    @ViewInject(R.id.option_server_button)
+    private Button option_server_button;
+    @ViewInject(R.id.option_speech_button)
+    private Button option_speech_button;
+    @ViewInject(R.id.option_state_check)
+    private CheckBox option_state_check;
+    private AppOption appOption = new AppOption();
+    private ChineseToSpeech chineseToSpeech = new ChineseToSpeech();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.option);
-
-        server = (EditText) findViewById(R.id.option_server_editText);
-        button = (Button) findViewById(R.id.option_server_button);
-        checkBox = (CheckBox) findViewById(R.id.option_state_check);
-        server.setText(appOption.getOption(appOption.APP_OPTION_SERVER));
-//        server.setText(Application.getServerIP());
-        checkBox.setChecked(appOption.getOption(AppOption.APP_OPTION_STATE).equals("YES"));
-
-        button.setOnClickListener(new ButtonOnClick());
-        speech = (Button) findViewById(R.id.option_speech_button);
-        speech.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chineseToSpeech.speech("成功朗读");
-            }
-        });
+        x.view().inject(this);
+        option_server_editText.setText(appOption.getOption(appOption.APP_OPTION_SERVER));
+        option_state_check.setChecked(appOption.getOption(AppOption.APP_OPTION_STATE).equals("YES"));
     }
 
-    public class ButtonOnClick implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Application.setServerIP(String.valueOf(server.getText()));
-            appOption.setOption(AppOption.APP_OPTION_SERVER,String.valueOf(server.getText()) );
-            appOption.setOption(AppOption.APP_OPTION_STATE,checkBox.isChecked()?"YES":"NO");
-            new CoolToast(getBaseContext()).show("保存成功");
+    @Event(value = {R.id.option_server_button, R.id.option_speech_button}, type = View.OnClickListener.class)
+    private void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.option_server_button:
+                Application.setServerIP(String.valueOf(option_server_editText.getText()));
+                appOption.setOption(AppOption.APP_OPTION_SERVER, String.valueOf(option_server_editText.getText()));
+                appOption.setOption(AppOption.APP_OPTION_STATE, option_state_check.isChecked() ? "YES" : "NO");
+                new CoolToast(getBaseContext()).show("保存成功");
+                break;
+            case R.id.option_speech_button:
+                chineseToSpeech.speech("成功朗读");
+                break;
         }
     }
 

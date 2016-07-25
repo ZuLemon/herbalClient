@@ -12,6 +12,9 @@ import android.widget.TextView;
 import net.andy.boiling.R;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.PrescriptionStatusUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,14 +27,23 @@ import java.util.Map;
  * Date: 2016/7/1
  */
 public class PrescriptionStatusUI extends Activity{
+    @ViewInject(R.id.prescriptionStatus_linearLayout)
     private LinearLayout prescriptionStatus_linearLayout;
+    @ViewInject(R.id.prescriptionStatus_status_textView)
     private TextView prescriptionStatus_status_textView;
+    @ViewInject(R.id.prescriptionStatus_waitCount_textView)
     private TextView prescriptionStatus_waitCount_textView;
+    @ViewInject(R.id.prescriptionStatus_waitTime_textView)
     private TextView prescriptionStatus_waitTime_textView;
+    @ViewInject(R.id.prescriptionStatus_dispensingTime_textView)
     private TextView prescriptionStatus_dispensingTime_textView;
+    @ViewInject(R.id.prescriptionStatus_tagCode_textView)
     private TextView prescriptionStatus_tagCode_textView;
+    @ViewInject(R.id.prescriptionStatus_insTime_textView)
     private TextView prescriptionStatus_insTime_textView;
+    @ViewInject(R.id.prescriptionStatus_dispensingPerson_textView)
     private TextView prescriptionStatus_dispensingPerson_textView;
+    @ViewInject(R.id.prescriptionStatus_insPerson_textView)
     private TextView prescriptionStatus_insPerson_textView;
     private String pId;
     private Map statusMap;
@@ -43,25 +55,15 @@ public class PrescriptionStatusUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.prescriptionstatus);
-        prescriptionStatus_linearLayout= (LinearLayout) findViewById(R.id.prescriptionStatus_linearLayout);
-        prescriptionStatus_status_textView= (TextView) findViewById(R.id.prescriptionStatus_status_textView);
-        prescriptionStatus_waitCount_textView= (TextView) findViewById(R.id.prescriptionStatus_waitCount_textView);
-        prescriptionStatus_waitTime_textView= (TextView) findViewById(R.id.prescriptionStatus_waitTime_textView);
-        prescriptionStatus_dispensingTime_textView= (TextView) findViewById(R.id.prescriptionStatus_dispensingTime_textView);
-        prescriptionStatus_tagCode_textView= (TextView) findViewById(R.id.prescriptionStatus_tagCode_textView);
-        prescriptionStatus_insTime_textView= (TextView) findViewById(R.id.prescriptionStatus_insTime_textView);
-        prescriptionStatus_dispensingPerson_textView= (TextView) findViewById(R.id.prescriptionStatus_dispensingPerson_textView);
-        prescriptionStatus_insPerson_textView= (TextView) findViewById(R.id.prescriptionStatus_insPerson_textView);
-        prescriptionStatus_linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        x.view().inject(this);
         Intent in=getIntent();
         pId=in.getStringExtra("id");
         PrescriptionStausThread(0);
         Log.e("id",pId);
+    }
+    @Event(R.id.prescriptionStatus_linearLayout)
+    private void btnClick(View view) {
+        finish();
     }
     private void praseData() {
         prescriptionMap= (Map) statusMap.get("prescription");

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import net.andy.boiling.R;
 
 /**
+ * 正在加载
  * Created by Guang on 2016/6/22.
  */
 public class LoadingUI extends Activity {

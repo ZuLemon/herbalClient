@@ -21,6 +21,9 @@ import net.andy.dispensing.domain.DispensingDetailDomain;
 import net.andy.dispensing.util.Arith;
 import net.andy.dispensing.util.DispensingDetailUtil;
 import net.andy.dispensing.util.ValidationUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -36,20 +39,30 @@ import java.util.Map;
  * Created by Guang on 2016/3/18.
  */
 public class ValidationDetailUI extends Activity{
+    @ViewInject(R.id.validationdetail_linearLayout)
     private LinearLayout validationdetail_linearLayout;
+    @ViewInject(R.id.validationdetail_gridView)
     private GridView validationdetail_gridView;
+    @ViewInject(R.id.validationdetail_info_textView)
     private TextView validationdetail_info_textView;
+    @ViewInject(R.id.validationdetail_doctorName_textView)
     private TextView validationdetail_doctorName_textView;
+    @ViewInject(R.id.validationdetail_confirm_button)
     private Button validationdetail_confirm_button;
+    @ViewInject(R.id.validationdetail_return_button)
     private Button validationdetail_return_button;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private ButtonListener buttonListener=new ButtonListener();
     private List listDis;
     private boolean isReady=false;
+    @ViewInject(R.id.validationdetail_category_textView)
     private TextView validationdetail_category_textView;
+    @ViewInject(R.id.validationdetail_patientId_textView)
     private TextView validationdetail_patientId_textView;
+    @ViewInject(R.id.validationdetail_patientName_textView)
     private TextView validationdetail_patientName_textView;
+    @ViewInject(R.id.validationdetail_deptName_textView)
     private TextView validationdetail_deptName_textView;
+    @ViewInject(R.id.validationdetail_globalNum_textView)
     private TextView validationdetail_globalNum_textView;
     private Integer preId;
     private Integer disId;
@@ -65,19 +78,7 @@ public class ValidationDetailUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.validationdetail);
-        validationdetail_linearLayout= (LinearLayout) findViewById(R.id.validationdetail_linearLayout);
-        validationdetail_gridView = (GridView) findViewById(R.id.validationdetail_gridView);
-        validationdetail_doctorName_textView= (TextView) findViewById(R.id.validationdetail_doctorName_textView);
-        validationdetail_info_textView= (TextView) findViewById(R.id.validationdetail_info_textView);
-        validationdetail_patientId_textView= (TextView) findViewById(R.id.validationdetail_patientId_textView);
-        validationdetail_category_textView= (TextView) findViewById(R.id.validationdetail_category_textView);
-        validationdetail_patientName_textView= (TextView) findViewById(R.id.validationdetail_patientName_textView);
-        validationdetail_deptName_textView= (TextView) findViewById(R.id.validationdetail_deptName_textView);
-        validationdetail_globalNum_textView= (TextView) findViewById(R.id.validationdetail_globalNum_textView);
-        validationdetail_return_button= (Button) findViewById(R.id.validationdetail_return_button);
-        validationdetail_confirm_button= (Button) findViewById(R.id.validationdetail_confirm_button);
-        validationdetail_return_button.setOnClickListener(buttonListener);
-        validationdetail_confirm_button.setOnClickListener(buttonListener);
+        x.view().inject(this);
         gridAdapter = new GridAdapter(this);
         validationdetail_gridView.setAdapter(gridAdapter);
         Intent in=getIntent();
@@ -98,10 +99,11 @@ public class ValidationDetailUI extends Activity{
             ValidationDetailThread(2);
         }
     }
-    private class ButtonListener implements View.OnClickListener{
-
-        @Override
-        public void onClick(View v) {
+    @Event(value = {
+            R.id.validationdetail_confirm_button,
+            R.id.validationdetail_return_button
+    },type = View.OnClickListener.class)
+    private void onClick(View v) {
             switch (v.getId()){
                 case R.id.validationdetail_confirm_button:
                     if(isReady) {
@@ -115,7 +117,6 @@ public class ValidationDetailUI extends Activity{
                 case R.id.validationdetail_return_button:
                     finish();
                     break;
-            }
         }
     }
     private void showDisList() {

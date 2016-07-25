@@ -21,6 +21,9 @@ import net.andy.com.CoolToast;
 import net.andy.dispensing.util.SelectPresUtil;
 import net.andy.dispensing.util.UrgentDelPresUtil;
 import net.andy.hos.ui.ExtInPatientUI;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,8 +38,11 @@ import java.util.Map;
  */
 public class UrgentPresUI extends Activity{
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    @ViewInject(R.id.urgentPres_patient_listView)
     private ListView urgentPres_patient_listView;
+    @ViewInject(R.id.urgentPres_search_button)
     private Button urgentPres_search_button;
+    @ViewInject(R.id.urgentPres_patientId_editText)
     private EditText urgentPres_patientId_editText;
     private String patId;
     private Integer Id;
@@ -46,18 +52,13 @@ public class UrgentPresUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.urgentpres);
-        urgentPres_patient_listView= (ListView) findViewById(R.id.urgentPres_patient_listView);
-        urgentPres_search_button= (Button) findViewById(R.id.urgentPres_search_button);
-        urgentPres_patientId_editText= (EditText) findViewById(R.id.urgentPres_patientId_editText);
+        x.view().inject(this);
         urgDelAdapter=new UrgDelAdapter(this);
         urgentPres_patient_listView.setAdapter ( urgDelAdapter );
-        urgentPres_patient_listView.setOnItemClickListener ( new ItemClick() );
-        urgentPres_search_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                confirm();
-            }
-        });
+    }
+    @Event(value =R.id.urgentPres_search_button )
+    private void btnClick(View view) {
+        confirm();
     }
     private void confirm(){
         urgList.clear();
@@ -69,15 +70,13 @@ public class UrgentPresUI extends Activity{
             urgentPresThread(0);
         }
     }
-    private class ItemClick implements AdapterView.OnItemClickListener{
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    @Event(value = R.id.urgentPres_patient_listView,type = AdapterView.OnItemClickListener.class)
+    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = (Map) urgList.get(position);
 //            dialog(Integer.parseInt(String.valueOf(map.get("urgentPres_id_textView"))),map.get("urgentPres_name_textView")+"");
             Intent in=new Intent(UrgentPresUI.this,UrgDelPresUI.class);
             in.putExtra("id",String.valueOf(map.get("id")));
             startActivity(in);
-        }
     }
 
     public void setListView(List presList) {

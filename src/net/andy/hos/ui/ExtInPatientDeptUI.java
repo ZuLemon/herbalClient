@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.hos.util.ExtInpatientUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +21,17 @@ import java.util.Map;
  * Created by mac on 16-六月-8.
  */
 public class ExtInPatientDeptUI extends Activity {
+    @ViewInject(R.id.dept)
     private ListView dept;
     private SimpleAdapter adapter;
     private List list=new ArrayList();
     public ExtInPatientDeptUI() {
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ext_inpatient_dept);
-        dept = (ListView) findViewById(R.id.dept);
-        dept.setOnItemClickListener(new ListItemClick());
+        x.view().inject(this);
         HospitalThread(0);
     }
 
@@ -41,9 +43,8 @@ public class ExtInPatientDeptUI extends Activity {
     }
 
     /*    监听ListView      */
-    public class ListItemClick implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    @Event(value = R.id.dept,type = AdapterView.OnItemClickListener.class)
+    private void deptItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
             Intent intent2 = new Intent();
             intent2.putExtra("id", (String) map.get("当前所在护理单元id"));
@@ -52,22 +53,7 @@ public class ExtInPatientDeptUI extends Activity {
             ExtInPatientDeptUI.this.finish();
 //            Map map = (Map) userList.get(position);
 //            dialog(Integer.parseInt(String.valueOf(map.get("id"))),map.get("name")+"");
-        }
     }
-//    public void getDept() {
-//        ReturnDomain returnDomain = null;
-//        try {
-//            returnDomain = (ReturnDomain) new Http().post("rules/getRulesList.do", new ArrayList<>(), ReturnDomain.class);
-//            if (returnDomain.getSuccess()) {
-//                list = (List) returnDomain.getObject();
-//                adapter.notifyDataSetChanged();
-//            } else {
-//                new CoolToast(getBaseContext()).show(returnDomain.getException());
-//            }
-//        } catch (Exception e) {
-//            new CoolToast(getBaseContext()).show(e.getMessage());
-//        }
-//    }
     private void HospitalThread(int what) {
         final Message message = new Message ();
         final Handler handler = new Handler () {

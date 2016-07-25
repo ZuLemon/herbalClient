@@ -24,42 +24,43 @@ import net.andy.dispensing.domain.DispensingDetailDomain;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.util.ReplenishUtil;
 import net.andy.dispensing.util.StationUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
+ * 确认上药申请
  * Created by Guang on 2016/4/20.
  */
 
 public class AckReplenishUI extends Activity {
+    @ViewInject(R.id.acklinearLayout)
     private LinearLayout acklinearLayout;
+    @ViewInject(R.id.ackreplenish_ackMechine_linearLayout)
     private LinearLayout ackreplenish_ackMechine_linearLayout;
+    @ViewInject(R.id.ackreplenish_info_textView)
     private TextView ackreplenish_info_textView;
+    @ViewInject(R.id.ackreplenish_listView)
     private ListView ackreplenish_listView;
+    @ViewInject(R.id.ackreplenish_confirm_button)
+    private Button ackreplenish_confirm_button;
+    @ViewInject(R.id.ackreplenish_cancel_button)
+    private Button ackreplenish_cancel_button;
+    @ViewInject(R.id.ackreplenish_ack_linearLayout)
+    private LinearLayout ackreplenish_ack_linearLayout;
     private List list = new ArrayList<>();
     private ReplenishUtil util = new ReplenishUtil();
-    private Button ackreplenish_confirm_button;
-    private Button ackreplenish_cancel_button;
-    private LinearLayout ackreplenish_ack_linearLayout;
-    private AckButtonListener ackButtonListener=new AckButtonListener();
     private Adapter ackAdapter;
     private DispensingDetailDomain dis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ackreplenish);
-        ackreplenish_listView= (ListView) findViewById(R.id.ackreplenish_listView);
-        acklinearLayout= (LinearLayout) findViewById(R.id.acklinearLayout);
-        ackreplenish_ackMechine_linearLayout= (LinearLayout) findViewById(R.id.ackreplenish_ackMechine_linearLayout);
-        ackreplenish_info_textView= (TextView) findViewById(R.id.ackreplenish_info_textView);
-        ackreplenish_cancel_button= (Button) findViewById(R.id.ackreplenish_cancel_button);
-        ackreplenish_confirm_button= (Button) findViewById(R.id.ackreplenish_confirm_button);
-        ackreplenish_ack_linearLayout= (LinearLayout) findViewById(R.id.ackreplenish_ack_linearLayout);
-        acklinearLayout.setOnClickListener(ackButtonListener);
-        ackreplenish_confirm_button.setOnClickListener(ackButtonListener);
-        ackreplenish_cancel_button.setOnClickListener(ackButtonListener);
+        x.view().inject(this);
         Intent in=getIntent();
         dis= (DispensingDetailDomain) in.getSerializableExtra("dis");
         if(dis!=null) {
@@ -81,10 +82,12 @@ public class AckReplenishUI extends Activity {
         }
 //        getData();
     }
-
-    class AckButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
+    @Event(value = {
+            R.id.acklinearLayout,
+            R.id.ackreplenish_confirm_button,
+            R.id.ackreplenish_cancel_button
+    },type = View.OnClickListener.class)
+   private void btnClick(View view) {
             switch (view.getId()){
                 case R.id.acklinearLayout:
                     finish();
@@ -96,7 +99,6 @@ public class AckReplenishUI extends Activity {
                     finish();
                     break;
             }
-        }
     }
     final Message message = new Message();
     Handler handler = new Handler() {

@@ -19,6 +19,9 @@ import net.andy.com.Http;
 import net.andy.com.NFCActivity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +31,24 @@ import java.util.List;
  * 取桶操作
  */
 public class TakeUI extends NFCActivity {
+    @ViewInject(R.id.take_patientNO_textView)
     private TextView take_patientNO_textView;
+    @ViewInject(R.id.take_patientName_textView)
     private TextView take_patientName_textView;
+    @ViewInject(R.id.take_category_textView)
     private TextView take_category_textView;
+    @ViewInject(R.id.take_classification_textView)
     private TextView take_classification_textView;
+    @ViewInject(R.id.take_diagnosis_textView)
     private TextView take_diagnosis_textView;
+    @ViewInject(R.id.take_presNumber_textView)
     private TextView take_presNumber_textView;
+    @ViewInject(R.id.take_code_textView)
     private TextView take_code_textView;
+    @ViewInject(R.id.take_hint_textView)
     private TextView take_hint_textView;
+    @ViewInject(R.id.take_get_button)
+    private Button take_get_button;
     private String equipId;
     private ExtractingDomain extracting = new ExtractingDomain();
     private PrescriptionDomain prescription = new PrescriptionDomain();
@@ -46,28 +59,13 @@ public class TakeUI extends NFCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.take);
-
-        take_patientNO_textView = (TextView) findViewById(R.id.take_patientNO_textView);
-        take_patientName_textView = (TextView) findViewById(R.id.take_patientName_textView);
-        take_category_textView = (TextView) findViewById(R.id.take_category_textView);
-        take_classification_textView = (TextView) findViewById(R.id.take_classification_textView);
-        take_diagnosis_textView = (TextView) findViewById(R.id.take_diagnosis_textView);
-        take_presNumber_textView = (TextView) findViewById(R.id.take_presNumber_textView);
-        take_code_textView = (TextView) findViewById(R.id.take_code_textView);
-        take_hint_textView = (TextView) findViewById(R.id.take_hint_textView);
-        Button take_get_button = (Button) findViewById(R.id.take_get_button);
-
-        take_get_button.setOnClickListener(new OnGetClick());
-
+        x.view().inject(this);
     }
-
-    public class OnGetClick implements Button.OnClickListener{
-        @Override
-        public void onClick(View v) {
+ @Event(value = R.id.take_get_button)
+  private void onClick(View v) {
             Intent intent = new Intent(TakeUI.this,EquipmentUI.class);
             startActivityForResult(intent, 0);
         }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

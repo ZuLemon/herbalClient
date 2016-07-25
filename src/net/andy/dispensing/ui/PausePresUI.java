@@ -26,6 +26,9 @@ import net.andy.dispensing.domain.DispensingDetailDomain;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.util.ReplenishUtil;
 import net.andy.dispensing.util.StationUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,26 +37,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 暂停处方
  * Created by Guang on 2016/4/20.
  */
 public class PausePresUI extends NFCActivity {
     private Integer disId;
     private String tagId;
     private String sign;
+    @ViewInject(R.id.pauselinearLayout)
     private LinearLayout pauselinearLayout;
+    @ViewInject(R.id.pause_bindingTag_button)
     private Button pause_bindingTag_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pause_pres);
-        pauselinearLayout= (LinearLayout) findViewById(R.id.pauselinearLayout);
-        pause_bindingTag_button= (Button) findViewById(R.id.pause_bindingTag_button);
-        pauselinearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        x.view().inject(this);
         Intent intent = getIntent();
         sign=intent.getStringExtra("sign");
         if("set".equals(sign)) {
@@ -64,7 +63,10 @@ public class PausePresUI extends NFCActivity {
             pause_bindingTag_button.setText("读取暂停处方标签");
         }
     }
-
+    @Event(R.id.pauselinearLayout)
+    private void btnClick(View view) {
+        finish();
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

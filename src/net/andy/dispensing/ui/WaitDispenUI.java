@@ -21,6 +21,9 @@ import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.OnlineUtil;
 import net.andy.dispensing.util.ReportUtil;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,7 +34,9 @@ import java.util.Map;
  * Created by Guang on 2016/6/6.
  */
 public class WaitDispenUI extends Activity{
+    @ViewInject(R.id.waitdispen_title_textView)
     private TextView waitdispen_title_textView;
+    @ViewInject(R.id.waitdispen_listView)
     private ListView waitdispen_listView;
     private WaitDispenAdapter waitDispenAdapter;
     private Integer userId;
@@ -40,16 +45,13 @@ public class WaitDispenUI extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.waitdispen);
-        waitdispen_title_textView= (TextView) findViewById(R.id.waitdispen_title_textView);
-        waitdispen_listView= (ListView) findViewById(R.id.waitdispen_listView);
+        x.view().inject(this);
         waitDispenAdapter=new WaitDispenAdapter(this);
-        waitdispen_title_textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(WaitDispenUI.this,LoadingUI.class));
-                waitThread(0);
-            }
-        });
+        startActivity(new Intent(WaitDispenUI.this,LoadingUI.class));
+        waitThread(0);
+    }
+    @Event(value = R.id.waitdispen_title_textView,type = View.OnClickListener.class)
+    private void btnClick(View v) {
         startActivity(new Intent(WaitDispenUI.this,LoadingUI.class));
         waitThread(0);
     }

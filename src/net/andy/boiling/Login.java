@@ -23,6 +23,9 @@ import net.andy.dispensing.util.RuleUtil;
 import net.andy.dispensing.util.StationUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +37,14 @@ import java.util.regex.Pattern;
  * 登陆窗口
  */
 public class Login extends Activity {
-    private EditText userId;
-    private EditText password;
+    @ViewInject(R.id.login_userId_editText)
+    private EditText login_userId_editText;
+    @ViewInject(R.id.login_password_editText)
+    private EditText login_password_editText;
+    @ViewInject(R.id.login_option_button)
+    private  Button login_option_button;
+    @ViewInject(R.id.login_submit_button)
+    private  Button login_submit_button;
     AppOption appOption = new AppOption();
     Message message = new Message();
     public static Login instance = null;
@@ -58,13 +67,10 @@ public class Login extends Activity {
         // 检查软件更新
         manager.checkUpdate();
         setContentView(R.layout.login);
-        userId = (EditText) this.findViewById(R.id.login_userId_editText);
-        password = (EditText) this.findViewById(R.id.login_password_editText);
-        Button option = (Button) this.findViewById(R.id.login_option_button);
-        Button submit = (Button) this.findViewById(R.id.login_submit_button);
+        x.view().inject(this);
         if (appOption.getOption(AppOption.APP_OPTION_STATE).equals("YES")) {
-            userId.setText(appOption.getOption(AppOption.APP_OPTION_USER));
-            password.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
+            login_userId_editText.setText(appOption.getOption(AppOption.APP_OPTION_USER));
+            login_password_editText.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
         }
 //        TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
 //        deviceid= tm.getDeviceId();
@@ -84,7 +90,6 @@ public class Login extends Activity {
 
         appOption.setOption(AppOption.APP_OPTION_STATE, "YES");
 //        tag_code_editText.setText(deviceid);
-        submit.setOnClickListener(new SubmitOnclick());
         //设置
 //        option.setOnClickListener(new OptionOnClick());
 //        try {
@@ -122,20 +127,19 @@ public class Login extends Activity {
         }
         return true;
     }
-
-    public class SubmitOnclick implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
-
+    @Event(value = R.id.login_submit_button)
+   private void onClick(View v) {
+            String userId=login_userId_editText.getText().toString().trim();
+             String password=login_password_editText.getText().toString().trim();
             //管理员修改服务器地址
-            if ("admin".equals(userId.getText().toString()) && "wlbgs".equals(password.getText().toString())) {
-                userId.setText(appOption.getOption(AppOption.APP_OPTION_USER));
-                password.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
+            if ("admin".equals(userId) && "wlbgs".equals(password)) {
+                login_userId_editText.setText(appOption.getOption(AppOption.APP_OPTION_USER));
+                login_password_editText.setText(appOption.getOption(AppOption.APP_OPTION_PASSWORD));
                 Intent intent = new Intent(Login.this, Option.class);
                 startActivity(intent);
                 return;
             }
-            if (!isNumeric(userId.getText().toString())) {
+            if (!isNumeric(userId)) {
                 new CoolToast(getBaseContext()).show("用户编号错误");
                 return;
             }
@@ -156,10 +160,10 @@ public class Login extends Activity {
                 @Override
                 public void run() {
                     try {
-                        String info = new UserUtil().confirmPasswd(userId.getText().toString(), password.getText().toString());
+                        String info = new UserUtil().confirmPasswd(userId, password);
                         if (info.equals("success")) {
-                            appOption.setOption(AppOption.APP_OPTION_USER, userId.getText().toString());
-                            appOption.setOption(AppOption.APP_OPTION_PASSWORD, password.getText().toString());
+                            appOption.setOption(AppOption.APP_OPTION_USER, userId);
+                            appOption.setOption(AppOption.APP_OPTION_PASSWORD, password);
                             //获取登录用户详细信息
                             new LogUserInfo().setLogUsers();
                             //检查推送服务是否运行
@@ -192,7 +196,6 @@ public class Login extends Activity {
                     }
                 }
             }.start();
-        }
     }
 
     private void StationThread() {
@@ -236,13 +239,13 @@ public class Login extends Activity {
         }.start();
     }
 
-    public class OptionOnClick implements Button.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(Login.this, Option.class);
-            startActivity(intent);
-        }
-    }
+//    public class OptionOnClick implements Button.OnClickListener {
+//        @Override
+//        public void onClick(View v) {
+//            Intent intent = new Intent(Login.this, Option.class);
+//            startActivity(intent);
+//        }
+//    }
 
     public void checkService() {
         boolean isRun = false;

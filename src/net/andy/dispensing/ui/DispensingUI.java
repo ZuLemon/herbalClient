@@ -25,6 +25,9 @@ import net.andy.boiling.util.PrescriptionUtil;
 import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -35,60 +38,95 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
+ * 按味调剂
  * Created by Guang on 2016/2/18.
  */
 public class DispensingUI extends NFCActivity {
     private PowerManager.WakeLock mWakeLock;
-    public static final String ACTION_DISPENSING= "net.andy.com.MqttNotification";
-    private Date date=new Date(new Date().getTime()-60*1000);
-    private  UpdateUIBroadcastReceiver broadcastReceiver;
+    public static final String ACTION_DISPENSING = "net.andy.com.MqttNotification";
+    private Date date = new Date(new Date().getTime() - 60 * 1000);
+    private UpdateUIBroadcastReceiver broadcastReceiver;
     private final static int SCANNIN_GREQUEST_CODE = 1000;
     private final static int PAUSE_PRESITION_CODE = 2000;
     private final static int PAUSE_GETPRESITION_CODE = 3000;
+    @ViewInject(R.id.dispensing_patientInfo_linearLayout)
     private LinearLayout dispensing_patientInfo_linearLayout;
+    @ViewInject(R.id.dispensing_medicineInfo_linearLayout)
     private LinearLayout dispensing_medicineInfo_linearLayout;
+    @ViewInject(R.id.dispensing_readNextMedicine_linearLayout)
     private LinearLayout dispensing_readNextMedicine_linearLayout;
+    @ViewInject(R.id.dispensing_banding_linearLayout)
     private LinearLayout dispensing_banding_linearLayout;
+    @ViewInject(R.id.dispensing_tagInfo_linearLayout)
     private LinearLayout dispensing_tagInfo_linearLayout;
+    @ViewInject(R.id.dispensing_herspecAndTotal_linearLayout)
     private LinearLayout dispensing_herspecAndTotal_linearLayout;
+    @ViewInject(R.id.dispensing_otherButton_linearLayout)
     private LinearLayout dispensing_otherButton_linearLayout;
+    @ViewInject(R.id.dispensing_warning_linearLayout)
     private LinearLayout dispensing_warning_linearLayout;
+    @ViewInject(R.id.dispensing_adjust_linearLayout)
     private LinearLayout dispensing_adjust_linearLayout;
+    @ViewInject(R.id.dispensing_adjust_button)
     private Button dispensing_adjust_button;
+    @ViewInject(R.id.dispensing_sum_textView)
     private TextView dispensing_sum_textView;
+    @ViewInject(R.id.dispensing_category_textView)
     private TextView dispensing_category_textView;
+    @ViewInject(R.id.dispensing_patientNo_textView)
     private TextView dispensing_patientNo_textView;
+    @ViewInject(R.id.dispensing_patientName_textView)
     private TextView dispensing_patientName_textView;
+    @ViewInject(R.id.dispensing_drugstoreName_textView)
     private TextView dispensing_drugstoreName_textView;
+    @ViewInject(R.id.dispensing_doctorName_textView)
     private TextView dispensing_doctorName_textView;
+    @ViewInject(R.id.dispensing_nowCount_textView)
     private TextView dispensing_nowCount_textView;
+    @ViewInject(R.id.dispensing_presName_textView)
     private TextView dispensing_presName_textView;
+    @ViewInject(R.id.dispensing_nextMedicine_textView)
     private TextView dispensing_nextMedicine_textView;
+    @ViewInject(R.id.dispensing_way_textView)
     private TextView dispensing_way_textView;
+    @ViewInject(R.id.dispensing_special_textView)
     private TextView dispensing_special_textView;
+    @ViewInject(R.id.dispensing_herbSpec_textView)
     private TextView dispensing_herbSpec_textView;
+    @ViewInject(R.id.dispensing_total_textView)
     private TextView dispensing_total_textView;
+    @ViewInject(R.id.dispensing_preNumber_textView)
     private TextView dispensing_preNumber_textView;
+    @ViewInject(R.id.dispensing_tagInfo_textView)
     private TextView dispensing_tagInfo_textView;
+    @ViewInject(R.id.dispensing_sysinfo_textView)
     private TextView dispensing_sysinfo_textView;
-    private TextView dispensing_tagColor_textView;
+    @ViewInject(R.id.dispensing_timeText_textView)
     private TextView dispensing_timeText_textView;
+    @ViewInject(R.id.dispensing_noDispensing_textView)
     private TextView dispensing_noDispensing_textView;
+    @ViewInject(R.id.dispensing_alreadyDispensing_textView)
     private TextView dispensing_alreadyDispensing_textView;
+    @ViewInject(R.id.dispensing_image_gridView)
     private GridView dispensing_image_gridView;
+    @ViewInject(R.id.dispensing_grid_linearLayout)
     private LinearLayout dispensing_grid_linearLayout;
-    //    private ImageView dispensing_category_imageView;
-//    private ImageView dispensing_process_imageView;
-//    private ImageView dispensing_classification_imageView;
-//    private ImageView dispensing_xiyao_imageView;
-//    private ImageView dispensing_heshi_imageView;
+    @ViewInject(R.id.dispensing_stop_imageView)
     private ImageView dispensing_stop_imageView;
+    @ViewInject(R.id.dispensing_warning_imageView)
     private ImageView dispensing_warning_imageView;
+    @ViewInject(R.id.dispensing_readNextMedicine_button)
     private Button dispensing_readNextMedicine_button;
+    @ViewInject(R.id.dispensing_applyMedicine_button)
     private Button dispensing_applyMedicine_button;
+    @ViewInject(R.id.dispensing_history_button)
     private Button dispensing_history_button;
+    @ViewInject(R.id.dispensing_pause_button)
     private Button dispensing_pause_button;
-    private MyButtonListener myButtonListener;
+    @ViewInject(R.id.dispensing_show_button)
+    private ImageButton dispensing_show_button;
+    @ViewInject(R.id.dispensing_history_gridView)
+    private GridView dispensing_history_gridView;
     private PrescriptionDomain prescriptionDomain;
     private DispensingDomain dispensingDomain;
     private ReadyDomain readyDomain;
@@ -99,14 +137,13 @@ public class DispensingUI extends NFCActivity {
     private List<DispensingDetailDomain> historyDisDetailList;
     private DispensingDetailUtil dispensingDetailUtil = new DispensingDetailUtil();
     private DispensingUtil dispensingUtil = new DispensingUtil();
-    private ReportUtil reportUtil=new ReportUtil();
+    private ReportUtil reportUtil = new ReportUtil();
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private ImageButton dispensing_show_button;
     private List<HashMap<String, Object>> historyData;
     private List listDis;
     private String barcode = "";
     private SimpleAdapter imageAdapter;
-    private GridView dispensing_history_gridView;
+
     private GridAdapter gridAdapter;
     private Integer count;
     private long minInt;
@@ -118,7 +155,7 @@ public class DispensingUI extends NFCActivity {
     private Integer restCount;
     private int disCount;
     private BigDecimal totalWeight;
-    private int valCount=0;
+    private int valCount = 0;
     private boolean isEnd;
     private boolean isFinish;
     private boolean isRead;
@@ -128,25 +165,25 @@ public class DispensingUI extends NFCActivity {
     private boolean isShow;
     private boolean hasDownTimer;
     private boolean hasValidateion;
-    private boolean isGetPresTime=true;
+    private boolean isGetPresTime = true;
     private long serverTime;
     private boolean hasReady;
-    private List<Map> sumList=new ArrayList();
-    private int clickCount=0;
+    private List<Map> sumList = new ArrayList();
+    private int clickCount = 0;
     private TagDomain tagDomain;
-    private DispensingValidationDomain dispensingValidationDomain=new DispensingValidationDomain();
+    private DispensingValidationDomain dispensingValidationDomain = new DispensingValidationDomain();
     private String settingHerbspec = new AppOption().getOption(AppOption.APP_OPTION_HERSPEC);
     private DecimalFormat df1 = new DecimalFormat("#.##");
     private List<HashMap<String, Object>> imageData = new ArrayList<HashMap<String, Object>>();
     private CountDownTimer getPresTime = new CountDownTimer(10 * 1000, 200) {
         @Override
         public void onTick(long l) {
-            isGetPresTime=false;
+            isGetPresTime = false;
         }
 
         @Override
         public void onFinish() {
-            isGetPresTime=true;
+            isGetPresTime = true;
         }
     };
 
@@ -207,7 +244,7 @@ public class DispensingUI extends NFCActivity {
             dispensing_medicineInfo_linearLayout.setClickable(true);
         }
     };
-//    public boolean run;
+    //    public boolean run;
     private final Handler handler = new Handler();
     private final Runnable task = new Runnable() {
         @Override
@@ -220,10 +257,12 @@ public class DispensingUI extends NFCActivity {
 //            }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dispensing);
+        x.view().inject(this);
         // 动态注册广播
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_DISPENSING);
@@ -232,60 +271,6 @@ public class DispensingUI extends NFCActivity {
         //屏幕常亮
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         mWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Lock");
-        myButtonListener = new MyButtonListener();
-        dispensing_patientInfo_linearLayout = (LinearLayout) findViewById(R.id.dispensing_patientInfo_linearLayout);
-        dispensing_medicineInfo_linearLayout = (LinearLayout) findViewById(R.id.dispensing_medicineInfo_linearLayout);
-        dispensing_banding_linearLayout = (LinearLayout) findViewById(R.id.dispensing_banding_linearLayout);
-        dispensing_readNextMedicine_linearLayout = (LinearLayout) findViewById(R.id.dispensing_readNextMedicine_linearLayout);
-        dispensing_tagInfo_linearLayout = (LinearLayout) findViewById(R.id.dispensing_tagInfo_linearLayout);
-        dispensing_herspecAndTotal_linearLayout = (LinearLayout) findViewById(R.id.dispensing_herspecAndTotal_linearLayout);
-        dispensing_warning_linearLayout = (LinearLayout) findViewById(R.id.dispensing_warning_linearLayout);
-        dispensing_adjust_linearLayout= (LinearLayout) findViewById(R.id.dispensing_adjust_linearLayout);
-        dispensing_adjust_button = (Button) findViewById(R.id.dispensing_adjust_button);
-        dispensing_applyMedicine_button = (Button) findViewById(R.id.dispensing_applyMedicine_button);
-        dispensing_category_textView = (TextView) findViewById(R.id.dispensing_category_textView);
-        dispensing_patientNo_textView = (TextView) findViewById(R.id.dispensing_patientNo_textView);
-        dispensing_patientName_textView = (TextView) findViewById(R.id.dispensing_patientName_textView);
-        dispensing_drugstoreName_textView = (TextView) findViewById(R.id.dispensing_drugstoreName_textView);
-        dispensing_doctorName_textView = (TextView) findViewById(R.id.dispensing_doctorName_textView);
-        dispensing_nowCount_textView = (TextView) findViewById(R.id.dispensing_nowCount_textView);
-        dispensing_presName_textView = (TextView) findViewById(R.id.dispensing_presName_textView);
-        dispensing_nextMedicine_textView = (TextView) findViewById(R.id.dispensing_nextMedicine_textView);
-        dispensing_preNumber_textView = (TextView) findViewById(R.id.dispensing_preNumber_textView);
-        dispensing_way_textView = (TextView) findViewById(R.id.dispensing_way_textView);
-        dispensing_special_textView = (TextView) findViewById(R.id.dispensing_special_textView);
-        dispensing_image_gridView = (GridView) findViewById(R.id.dispensing_image_gridView);
-        dispensing_herbSpec_textView = (TextView) findViewById(R.id.dispensing_herbSpec_textView);
-        dispensing_total_textView = (TextView) findViewById(R.id.dispensing_total_textView);
-        dispensing_timeText_textView = (TextView) findViewById(R.id.dispensing_timeText_textView);
-        dispensing_tagInfo_textView = (TextView) findViewById(R.id.dispensing_tagInfo_textView);
-        dispensing_sysinfo_textView = (TextView) findViewById(R.id.dispensing_sysinfo_textView);
-        dispensing_alreadyDispensing_textView= (TextView) findViewById(R.id.dispensing_alreadyDispensing_textView);
-        dispensing_noDispensing_textView= (TextView) findViewById(R.id.dispensing_noDispensing_textView);
-        dispensing_sum_textView= (TextView) findViewById(R.id.dispensing_sum_textView);
-        dispensing_grid_linearLayout = (LinearLayout) findViewById(R.id.dispensing_grid_linearLayout);
-        dispensing_otherButton_linearLayout = (LinearLayout) findViewById(R.id.dispensing_otherButton_linearLayout);
-        dispensing_show_button = (ImageButton) findViewById(R.id.dispensing_show_button);
-        dispensing_history_gridView = (GridView) findViewById(R.id.dispensing_history_gridView);
-//        dispensing_category_imageView = (ImageView) findViewById(R.id.dispensing_category_imageView);
-//        dispensing_process_imageView = (ImageView) findViewById(R.id.dispensing_process_imageView);
-//        dispensing_classification_imageView = (ImageView) findViewById(R.id.dispensing_classification_imageView);
-//        dispensing_xiyao_imageView = (ImageView) findViewById(R.id.dispensing_xiyao_imageView);
-//        dispensing_heshi_imageView = (ImageView) findViewById(R.id.dispensing_heshi_imageView);
-        dispensing_stop_imageView = (ImageView) findViewById(R.id.dispensing_stop_imageView);
-        dispensing_warning_imageView = (ImageView) findViewById(R.id.dispensing_warning_imageView);
-        dispensing_readNextMedicine_button = (Button) findViewById(R.id.dispensing_readNextMedicine_button);
-        dispensing_history_button = (Button) findViewById(R.id.dispensing_history_button);
-        dispensing_pause_button = (Button) findViewById(R.id.dispensing_pause_button);
-        dispensing_medicineInfo_linearLayout.setOnClickListener(myButtonListener);
-        dispensing_patientInfo_linearLayout.setOnClickListener(myButtonListener);
-        dispensing_tagInfo_linearLayout.setOnClickListener(myButtonListener);
-        dispensing_adjust_button.setOnClickListener(myButtonListener);
-        dispensing_readNextMedicine_button.setOnClickListener(myButtonListener);
-        dispensing_history_button.setOnClickListener(myButtonListener);
-        dispensing_applyMedicine_button.setOnClickListener(myButtonListener);
-        dispensing_pause_button.setOnClickListener(myButtonListener);
-        dispensing_show_button.setOnClickListener(myButtonListener);
         prescriptionDomain = new PrescriptionDomain();
         readyDomain = new ReadyDomain();
         dispensingDomain = new DispensingDomain();
@@ -298,12 +283,13 @@ public class DispensingUI extends NFCActivity {
         historyData = new ArrayList<HashMap<String, Object>>();
         gridAdapter = new GridAdapter(this);
         dispensing_history_gridView.setAdapter(gridAdapter);
-        hasHistory=false;
+        hasHistory = false;
         herbalUtil(12);
         reset();
         getReadyPre();
 //        setImage();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -312,6 +298,7 @@ public class DispensingUI extends NFCActivity {
         handler.removeCallbacks(task);
         handler.postDelayed(task, 10);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -319,6 +306,7 @@ public class DispensingUI extends NFCActivity {
         unregisterReceiver(broadcastReceiver);
 //        run = false;
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -376,15 +364,17 @@ public class DispensingUI extends NFCActivity {
         }
         imageAdapter.notifyDataSetChanged();
     }
-    private void showValidationImage(){
-        if(dispensingValidationDomain!=null) {
+
+    private void showValidationImage() {
+        if (dispensingValidationDomain != null) {
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("imageItem", R.drawable.fuhe);
-            hasValidateion=true;
+            hasValidateion = true;
             imageData.add(map);
             imageAdapter.notifyDataSetChanged();
         }
     }
+
     /**
      * 无预调剂处方时
      */
@@ -393,15 +383,15 @@ public class DispensingUI extends NFCActivity {
         nowDis = dispensingDetailDomainList.get(disCount);
         if (!"".equals(nowDis.getSpecial())) {
             dispensing_special_textView.setVisibility(View.VISIBLE);
-            dispensing_special_textView.setText((++valCount)+""+nowDis.getSpecial());
+            dispensing_special_textView.setText((++valCount) + "" + nowDis.getSpecial());
             dispensing_presName_textView.setTextColor(Color.RED);
         } else {
             dispensing_presName_textView.setTextColor(Color.BLACK);
             dispensing_special_textView.setVisibility(View.INVISIBLE);
         }
         if ("饮片".equals(prescriptionDomain.getClassification()) || "膏方".equals(prescriptionDomain.getClassification())) {
-            dispensing_nowCount_textView.setText("第" + (disCount + 1) + "味  共" + dispensingDetailDomainList.size() + "味  计" + df1.format(Arith.mul(totalWeight , prescriptionDomain.getPresNumber())) + nowDis.getHerbUnit());
-            dispensing_presName_textView.setText(nowDis.getHerbName() + " " + Arith.mul( nowDis.getQuantity(), prescriptionDomain.getPresNumber()) + nowDis.getHerbUnit());
+            dispensing_nowCount_textView.setText("第" + (disCount + 1) + "味  共" + dispensingDetailDomainList.size() + "味  计" + df1.format(Arith.mul(totalWeight, prescriptionDomain.getPresNumber())) + nowDis.getHerbUnit());
+            dispensing_presName_textView.setText(nowDis.getHerbName() + " " + Arith.mul(nowDis.getQuantity(), prescriptionDomain.getPresNumber()) + nowDis.getHerbUnit());
             dispensing_total_textView.setText(nowDis.getQuantity() + nowDis.getHerbUnit());
         } else if ("免煎".equals(prescriptionDomain.getClassification())) {
             dispensing_nowCount_textView.setText("第" + (disCount + 1) + "味  共" + dispensingDetailDomainList.size() + "味  计" + df1.format(totalWeight) + nowDis.getHerbUnit());
@@ -448,148 +438,157 @@ public class DispensingUI extends NFCActivity {
 
     /**
      * 刷新待调处方数
-     *
      */
-    private void getReadyPre(){
+    private void getReadyPre() {
 //        clickCount++;
 //        if(clickCount%3==0){
 //            herbalUtil(12);
 //        }
     }
-    private  synchronized void getPres(){
-        Date nowDate=new Date();
-        long sec=(nowDate.getTime()-date.getTime())/1000;
-        Log.e("<<",sec+"");
-        if(sec>5){
+
+    private synchronized void getPres() {
+        Date nowDate = new Date();
+        long sec = (nowDate.getTime() - date.getTime()) / 1000;
+        Log.e("<<", sec + "");
+        if (sec > 5) {
             isFinish = false;
             //正常流程
 //            Log.e(">>","点击");
             herbalUtil(0);
-        }else{
-            if(sec>0) {
+        } else {
+            if (sec > 0) {
                 new CoolToast(getBaseContext()).show("点击无效，请不要频繁点击！");
             }
         }
-        date=new Date();
+        date = new Date();
     }
-    class MyButtonListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.dispensing_medicineInfo_linearLayout:
-                    getReadyPre();
-                    dispensing_medicineInfo_linearLayout.setClickable(false);
-                    Log.e("dis tagId", dispensingDomain.getTagId());
-                    if (hasReady) {
-                        herbalUtil(11);
+
+    @Event(value = {
+            R.id.dispensing_medicineInfo_linearLayout,
+            R.id.dispensing_readNextMedicine_button,
+            R.id.dispensing_tagInfo_linearLayout,
+            R.id.dispensing_applyMedicine_button,
+            R.id.dispensing_patientInfo_linearLayout,
+            R.id.dispensing_history_button,
+            R.id.dispensing_show_button,
+            R.id.dispensing_pause_button,
+            R.id.dispensing_adjust_button
+    }, type = View.OnClickListener.class)
+    private void btnClick(View view) {
+        switch (view.getId()) {
+            case R.id.dispensing_medicineInfo_linearLayout:
+                getReadyPre();
+                dispensing_medicineInfo_linearLayout.setClickable(false);
+                Log.e("dis tagId", dispensingDomain.getTagId());
+                if (hasReady) {
+                    herbalUtil(11);
+                } else {
+                    if (!isEnd) {
+                        //提交调剂处方状态
+                        herbalUtil(2);
                     } else {
-                        if (!isEnd) {
-                            //提交调剂处方状态
-                            herbalUtil(2);
-                        } else {
 //                        if("".equals(dispensingDomain.getTagId())) {
-                            herbalUtil(3);
+                        herbalUtil(3);
 
 //                        }else{
 //                            herbalUtil(10);
 //                            isEnd = false;
 //                            isFinish = false;
 //                        }
-                        }
                     }
-                    break;
-                case R.id.dispensing_readNextMedicine_button:
-                    getPres();
-                    //开启读条码功能
+                }
+                break;
+            case R.id.dispensing_readNextMedicine_button:
+                getPres();
+                //开启读条码功能
 //                    Intent intent = new Intent();
 //                    intent.setClass(DispensingUI.this, MipcaActivityCapture.class);
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
-                    break;
-                case R.id.dispensing_tagInfo_linearLayout:
-                    //正常流程
-                    getPres();
-                    //开启读条码功能
+                break;
+            case R.id.dispensing_tagInfo_linearLayout:
+                //正常流程
+                getPres();
+                //开启读条码功能
 //                    Intent i = new Intent();
 //                    i.setClass(DispensingUI.this, MipcaActivityCapture.class);
 //                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //                    startActivityForResult(i, SCANNIN_GREQUEST_CODE);
 //                            .setVisibility(View.VISIBLE);
-                    break;
-                case R.id.dispensing_applyMedicine_button:
-                    if (hasPre) {
-                        //上药
-                        Intent reIntent = new Intent();
-                        reIntent.setClass(DispensingUI.this, AckReplenishUI.class);
-                        reIntent.putExtra("dis", nowDis);
-                        startActivity(reIntent);
+                break;
+            case R.id.dispensing_applyMedicine_button:
+                if (hasPre) {
+                    //上药
+                    Intent reIntent = new Intent();
+                    reIntent.setClass(DispensingUI.this, AckReplenishUI.class);
+                    reIntent.putExtra("dis", nowDis);
+                    startActivity(reIntent);
 //                        herbalUtil(7);
-                    } else {
-                        Intent reIntent = new Intent();
-                        reIntent.setClass(DispensingUI.this, AckReplenishUI.class);
-                        startActivity(reIntent);
-                    }
-                    break;
-                case R.id.dispensing_patientInfo_linearLayout:
-                    if (hasHistory) {
-                        Intent in = new Intent(DispensingUI.this, PatientInfoUI.class);
-                        in.putExtra("pre", prescriptionDomain);
-                        startActivity(in);
-                    } else {
-                        new CoolToast(getBaseContext()).show("请先获取处方");
-                    }
-                    break;
-                case R.id.dispensing_history_button:
-                    if (hasHistory) {
-                        Intent in = new Intent(DispensingUI.this, DisHistoryUI.class);
-                        in.putExtra("dises", (Serializable) historyDisDetailList);
-                        in.putExtra("pre", (Serializable)prescriptionDomain);
-                        startActivity(in);
-                    } else {
-                        new CoolToast(getBaseContext()).show("请先获取处方");
-                    }
-                    break;
-                case R.id.dispensing_show_button:
-                    if (isShow) {
-                        isShow = false;
-                        dispensing_otherButton_linearLayout.setVisibility(View.VISIBLE);
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) dispensing_show_button.getLayoutParams();
-                        layoutParams.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        dispensing_show_button.setLayoutParams(layoutParams);
-                    } else {
-                        isShow = true;
-                        dispensing_otherButton_linearLayout.setVisibility(View.GONE);
-                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) dispensing_show_button.getLayoutParams();
-                        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1);
-                        dispensing_show_button.setLayoutParams(layoutParams);
-                    }
-                    break;
-                /**
-                 * 暂停调剂
-                 */
-                case R.id.dispensing_pause_button:
-                    if (isHer) {
-                        Intent im = new Intent();
-                        im.setClass(DispensingUI.this, PausePresUI.class);
-                        im.putExtra("sign", "set");
-                        im.putExtra("disId", nowDis.getDisId());
-                        startActivityForResult(im, PAUSE_PRESITION_CODE);
-                    } else {
-                        Intent im = new Intent();
-                        im.putExtra("sign", "get");
-                        im.setClass(DispensingUI.this, PausePresUI.class);
-                        startActivityForResult(im, PAUSE_GETPRESITION_CODE);
-                    }
-                    break;
+                } else {
+                    Intent reIntent = new Intent();
+                    reIntent.setClass(DispensingUI.this, AckReplenishUI.class);
+                    startActivity(reIntent);
+                }
+                break;
+            case R.id.dispensing_patientInfo_linearLayout:
+                if (hasHistory) {
+                    Intent in = new Intent(DispensingUI.this, PatientInfoUI.class);
+                    in.putExtra("pre", prescriptionDomain);
+                    startActivity(in);
+                } else {
+                    new CoolToast(getBaseContext()).show("请先获取处方");
+                }
+                break;
+            case R.id.dispensing_history_button:
+                if (hasHistory) {
+                    Intent in = new Intent(DispensingUI.this, DisHistoryUI.class);
+                    in.putExtra("dises", (Serializable) historyDisDetailList);
+                    in.putExtra("pre", (Serializable) prescriptionDomain);
+                    startActivity(in);
+                } else {
+                    new CoolToast(getBaseContext()).show("请先获取处方");
+                }
+                break;
+            case R.id.dispensing_show_button:
+                if (isShow) {
+                    isShow = false;
+                    dispensing_otherButton_linearLayout.setVisibility(View.VISIBLE);
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) dispensing_show_button.getLayoutParams();
+                    layoutParams.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    dispensing_show_button.setLayoutParams(layoutParams);
+                } else {
+                    isShow = true;
+                    dispensing_otherButton_linearLayout.setVisibility(View.GONE);
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) dispensing_show_button.getLayoutParams();
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, -1);
+                    dispensing_show_button.setLayoutParams(layoutParams);
+                }
+                break;
+            /**
+             * 暂停调剂
+             */
+            case R.id.dispensing_pause_button:
+                if (isHer) {
+                    Intent im = new Intent();
+                    im.setClass(DispensingUI.this, PausePresUI.class);
+                    im.putExtra("sign", "set");
+                    im.putExtra("disId", nowDis.getDisId());
+                    startActivityForResult(im, PAUSE_PRESITION_CODE);
+                } else {
+                    Intent im = new Intent();
+                    im.putExtra("sign", "get");
+                    im.setClass(DispensingUI.this, PausePresUI.class);
+                    startActivityForResult(im, PAUSE_GETPRESITION_CODE);
+                }
+                break;
                 /*按味调剂*/
-                case R.id.dispensing_adjust_button:
-                    Log.e("按味调剂按钮","点击");
-                    dispensing_adjust_linearLayout.setVisibility(View.GONE);
-                    dispensing_warning_linearLayout.setVisibility(View.VISIBLE);
-                    hasReady=false;
-                    setValue();
-                    break;
-            }
+            case R.id.dispensing_adjust_button:
+                Log.e("按味调剂按钮", "点击");
+                dispensing_adjust_linearLayout.setVisibility(View.GONE);
+                dispensing_warning_linearLayout.setVisibility(View.VISIBLE);
+                hasReady = false;
+                setValue();
+                break;
         }
     }
 
@@ -598,7 +597,7 @@ public class DispensingUI extends NFCActivity {
         int now = 0;
         for (; now < dispensingDetailDomainList.size(); now++
                 ) {
-            System.out.println("setNowAdjust:" +dispensingDetailDomainList.get(now).getStatus());
+            System.out.println("setNowAdjust:" + dispensingDetailDomainList.get(now).getStatus());
             if ("未调剂".equals(dispensingDetailDomainList.get(now).getStatus())) {
                 disCount = now;
                 break;
@@ -608,7 +607,7 @@ public class DispensingUI extends NFCActivity {
             nowDis.setStatus("完成");
             historyDisDetailList.add(nowDis);
         }
-        Log.e("Now:",now+"");
+        Log.e("Now:", now + "");
         System.out.println("<>" + historyDisDetailList.size());
         if (now == dispensingDetailDomainList.size()) {
 //            dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
@@ -702,26 +701,27 @@ public class DispensingUI extends NFCActivity {
         return Color.parseColor(color);
     }
 
-private  void setGlobalView(){
-    hasPre = true;
-    isHer = true;
-    hasHistory=true;
-    historyDisDetailList.clear();
-    setStatus(true);
-    setView();
-    dispensing_sysinfo_textView.setVisibility(View.GONE);
-    dispensing_grid_linearLayout.setVisibility(View.VISIBLE);
-    parseObject(listDis);
-    setNowAdjust();
-    long temp = serverTime - dispensingDomain.getBeginTime().getTime();
-    socInt = temp / 1000;
-    Log.e("socInt", serverTime + ""+dispensingDomain.getBeginTime().getTime());
+    private void setGlobalView() {
+        hasPre = true;
+        isHer = true;
+        hasHistory = true;
+        historyDisDetailList.clear();
+        setStatus(true);
+        setView();
+        dispensing_sysinfo_textView.setVisibility(View.GONE);
+        dispensing_grid_linearLayout.setVisibility(View.VISIBLE);
+        parseObject(listDis);
+        setNowAdjust();
+        long temp = serverTime - dispensingDomain.getBeginTime().getTime();
+        socInt = temp / 1000;
+        Log.e("socInt", serverTime + "" + dispensingDomain.getBeginTime().getTime());
         cDTimer.start();
-    if(!hasDownTimer) {
-        downTimer.start();
-        hasDownTimer=true;
+        if (!hasDownTimer) {
+            downTimer.start();
+            hasDownTimer = true;
+        }
     }
-}
+
     /**
      * 获取待调剂处方
      **/
@@ -734,7 +734,7 @@ private  void setGlobalView(){
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case -1:
-                        isRead=false;
+                        isRead = false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
                         break;
                     case 0:
@@ -756,17 +756,17 @@ private  void setGlobalView(){
                         dispensing_adjust_linearLayout.setVisibility(View.GONE);
                         dispensing_warning_linearLayout.setVisibility(View.VISIBLE);
                         setValue();
-                        if(!hasValidateion) {
+                        if (!hasValidateion) {
                             herbalUtil(14);
                         }
                         break;
                     case 3:
                         cDTimer.start();
-                        String sum="";
-                        for(int i=0;i<sumList.size();i++) {
-                            if(i>0){
-                                sum =sum +"\n"+sumList.get(i).get("sum")+sumList.get(i).get("herbUnit");
-                            }else {
+                        String sum = "";
+                        for (int i = 0; i < sumList.size(); i++) {
+                            if (i > 0) {
+                                sum = sum + "\n" + sumList.get(i).get("sum") + sumList.get(i).get("herbUnit");
+                            } else {
                                 sum = sum + sumList.get(i).get("sum") + sumList.get(i).get("herbUnit");
                             }
                         }
@@ -779,12 +779,12 @@ private  void setGlobalView(){
                     case 4:
                         hasPre = false;
                         isHer = false;
-                        isRead=false;
+                        isRead = false;
                         isFinish = false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
-                        dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M",""));
+                        dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M", ""));
                         dispensing_tagInfo_textView.setBackgroundColor(HextoColor(tagDomain.getColorValue()));
-                    //自动隐藏标签绑定信息
+                        //自动隐藏标签绑定信息
 //                        showButtonTimer.start();
                         dispensing_banding_linearLayout.setVisibility(View.GONE);
                         dispensing_tagInfo_linearLayout.setVisibility(View.VISIBLE);
@@ -819,7 +819,7 @@ private  void setGlobalView(){
                         isHer = false;
                         new CoolToast(getBaseContext()).show("已绑定标签");
                         dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
-                        dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M",""));
+                        dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M", ""));
                         dispensing_tagInfo_textView.setBackgroundColor(HextoColor(tagDomain.getColorValue()));
                         //自动隐藏标签绑定信息
 //                        showButtonTimer.start();
@@ -838,11 +838,11 @@ private  void setGlobalView(){
                         setReadyValue();
                         break;
                     case 12:
-                        dispensing_noDispensing_textView.setText("待调："+restCount);
-                        dispensing_alreadyDispensing_textView.setText("完成："+alreadyDisCount);
+                        dispensing_noDispensing_textView.setText("待调：" + restCount);
+                        dispensing_alreadyDispensing_textView.setText("完成：" + alreadyDisCount);
                         break;
                     case 13:
-                        dispensing_alreadyDispensing_textView.setText("完成："+alreadyDisCount);
+                        dispensing_alreadyDispensing_textView.setText("完成：" + alreadyDisCount);
                         break;
                     case 14:
                         showValidationImage();
@@ -871,10 +871,10 @@ private  void setGlobalView(){
                                 message.obj = "暂无处方可调剂，请稍后再试！";
                                 handler.sendMessage(message);
                             } else {
-                                hasDownTimer=false;
+                                hasDownTimer = false;
                                 prescriptionDomain = JSON.parseObject(alldis.get("prescription").toString(), PrescriptionDomain.class);
                                 dispensingDomain = JSON.parseObject(alldis.get("dispensing").toString(), DispensingDomain.class);
-                                listDis= JSON.parseObject(alldis.get("dispensingDetail").toString(), List.class);
+                                listDis = JSON.parseObject(alldis.get("dispensingDetail").toString(), List.class);
                                 if (prescriptionDomain.getReady() != 0) {
                                     Log.e("预调剂", String.valueOf(prescriptionDomain.getReady()));
                                     readyDomain = JSON.parseObject(alldis.get("ready").toString(), ReadyDomain.class);
@@ -891,16 +891,16 @@ private  void setGlobalView(){
                             break;
                         //提交第一味药开始调剂时间
                         case 1:
-                            Log.e("1",nowDis.getHerbName());
+                            Log.e("1", nowDis.getHerbName());
                             dispensingDetailUtil.start(String.valueOf(nowDis.getId()));
                             message.what = 1;
                             handler.sendMessage(message);
                             break;
                         //更新调剂药的状态
                         case 2:
-                            Log.e("22",nowDis.getHerbName());
+                            Log.e("22", nowDis.getHerbName());
                             dispensingDetailUtil.finish(String.valueOf(nowDis.getId()));
-                            Log.e("2",nowDis.getHerbName());
+                            Log.e("2", nowDis.getHerbName());
                             dispensingDetailUtil.start(String.valueOf(nextDis.getId()));
 
                             message.what = 2;
@@ -908,9 +908,9 @@ private  void setGlobalView(){
                             break;
                         //提交最后一味结束
                         case 3:
-                            Log.e("3",nowDis.getHerbName());
+                            Log.e("3", nowDis.getHerbName());
                             dispensingDetailUtil.finish(String.valueOf(nowDis.getId()));
-                            sumList =dispensingDetailUtil.getQuantityForUnit(dispensingDomain.getId());
+                            sumList = dispensingDetailUtil.getQuantityForUnit(dispensingDomain.getId());
                             message.what = 3;
                             handler.sendMessage(message);
                             break;
@@ -922,7 +922,7 @@ private  void setGlobalView(){
                             handler.sendMessage(message);
                             break;
                         case 5:
-                           wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
                             if (wifiManager == null) {
                                 message.what = -1;
                                 message.obj = "请先打开无线网络";
@@ -937,10 +937,10 @@ private  void setGlobalView(){
                                 message.obj = "暂无处方可用，请稍后再试！";
                                 handler.sendMessage(message);
                             } else {
-                                hasDownTimer=false;
+                                hasDownTimer = false;
                                 prescriptionDomain = JSON.parseObject(all.get("prescription").toString(), PrescriptionDomain.class);
                                 dispensingDomain = JSON.parseObject(all.get("dispensing").toString(), DispensingDomain.class);
-                                listDis= JSON.parseObject(all.get("dispensingDetail").toString(), List.class);
+                                listDis = JSON.parseObject(all.get("dispensingDetail").toString(), List.class);
                                 if (prescriptionDomain.getReady() != 0) {
                                     readyDomain = JSON.parseObject(all.get("ready").toString(), ReadyDomain.class);
                                     hasReady = true;
@@ -1008,22 +1008,22 @@ private  void setGlobalView(){
                             handler.sendMessage(message);
                             break;
                         case 12:
-                            new OnlineUtil().online(Application.getUsers().getId(),Application.getRulesDomain().getId());
-                            StationDomain tempSd=new StationUtil().getStationByDevice();
-                            restCount=reportUtil.getNoDispensingByRule(tempSd.getRulesId());
-                            alreadyDisCount=reportUtil.getDispensingByUser(String.valueOf(Application.getUsers().getId()));
+                            new OnlineUtil().online(Application.getUsers().getId(), Application.getRulesDomain().getId());
+                            StationDomain tempSd = new StationUtil().getStationByDevice();
+                            restCount = reportUtil.getNoDispensingByRule(tempSd.getRulesId());
+                            alreadyDisCount = reportUtil.getDispensingByUser(String.valueOf(Application.getUsers().getId()));
                             message.obj = "";
                             message.what = 12;
                             handler.sendMessage(message);
                             break;
                         case 13:
-                            alreadyDisCount=reportUtil.getDispensingByUser(String.valueOf(Application.getUsers().getId()));
+                            alreadyDisCount = reportUtil.getDispensingByUser(String.valueOf(Application.getUsers().getId()));
                             message.obj = "";
                             message.what = 13;
                             handler.sendMessage(message);
                             break;
                         case 14:
-                            dispensingValidationDomain=new ValidationUtil().getValidationByDis(String.valueOf(nowDis.getDisId()));
+                            dispensingValidationDomain = new ValidationUtil().getValidationByDis(String.valueOf(nowDis.getDisId()));
                             message.what = 14;
                             handler.sendMessage(message);
                             break;
@@ -1051,8 +1051,8 @@ private  void setGlobalView(){
         hasPre = false;
         hasReady = false;
         totalWeight = new BigDecimal(0);
-        valCount=0;
-        hasValidateion=false;
+        valCount = 0;
+        hasValidateion = false;
     }
 
     private void setView() {
@@ -1071,7 +1071,7 @@ private  void setGlobalView(){
     //ListMap 转为 List<Bean>
     private void parseObject(List listDis) {
         dispensingDetailDomainList = new ArrayList<DispensingDetailDomain>();
-        if(listDis.size()!=0) {
+        if (listDis.size() != 0) {
             for (Object obj : listDis) {
                 dispensingDetailDomain = new DispensingDetailDomain();
                 dispensingDetailDomain.setId((Integer) ((Map) obj).get("id"));
@@ -1145,8 +1145,8 @@ private  void setGlobalView(){
         Log.e("Dispensing", isFinish + "");
         tagId = getNfc().readID(intent);
         if (isFinish) {
-            if(!isRead) {
-                isRead=true;
+            if (!isRead) {
+                isRead = true;
                 herbalUtil(4);
             }
         } else {
@@ -1208,6 +1208,7 @@ private  void setGlobalView(){
             gridAdapter.notifyDataSetChanged();
         }
     }
+
     private class GridAdapter extends BaseAdapter {
         private LayoutInflater inflater;
 
@@ -1236,8 +1237,8 @@ private  void setGlobalView(){
             if (view == null) {
                 view = inflater.inflate(R.layout.dis_historyitem, viewGroup, false);
                 dis = new Dis();
-                dis.historyItem_linearLayout= (LinearLayout) view.findViewById(R.id.historyItem_linearLayout);
-                dis.historyItem_name_textView= (TextView) view.findViewById(R.id.historyItem_name_textView);
+                dis.historyItem_linearLayout = (LinearLayout) view.findViewById(R.id.historyItem_linearLayout);
+                dis.historyItem_name_textView = (TextView) view.findViewById(R.id.historyItem_name_textView);
                 dis.historyItem_waring_imageView = (ImageView) view.findViewById(R.id.historyItem_waring_imageView);
                 dis.historyItem_num_textView = (TextView) view.findViewById(R.id.historyItem_num_textView);
                 view.setTag(dis);
@@ -1246,23 +1247,23 @@ private  void setGlobalView(){
             }
             Map map = (Map) historyData.get(i);
 //            Log.e("map", map.toString());
-            if("true".equals(map.get("ItemWaringView"))){
+            if ("true".equals(map.get("ItemWaringView"))) {
                 dis.historyItem_waring_imageView.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 dis.historyItem_waring_imageView.setVisibility(View.INVISIBLE);
             }
-            if(map.get("ItemSpecialView").toString().length()>0){
+            if (map.get("ItemSpecialView").toString().length() > 0) {
                 dis.historyItem_linearLayout.setBackgroundColor(Color.parseColor("#D2691E"));
                 dis.historyItem_name_textView.setTextColor(Color.WHITE);
                 dis.historyItem_num_textView.setTextColor(Color.WHITE);
-                dis.historyItem_name_textView .setText(""+map.get("ItemNameView")+map.get("ItemSpecialView"));
-            }else {
+                dis.historyItem_name_textView.setText("" + map.get("ItemNameView") + map.get("ItemSpecialView"));
+            } else {
                 dis.historyItem_linearLayout.setBackgroundColor(Color.WHITE);
                 dis.historyItem_name_textView.setTextColor(Color.BLACK);
                 dis.historyItem_num_textView.setTextColor(Color.BLACK);
                 dis.historyItem_name_textView.setText("" + map.get("ItemNameView"));
             }
-            dis.historyItem_num_textView .setText(""+map.get("ItemNumView"));
+            dis.historyItem_num_textView.setText("" + map.get("ItemNumView"));
             return view;
         }
 
@@ -1274,14 +1275,15 @@ private  void setGlobalView(){
             private TextView historyItem_num_textView;
         }
     }
+
     private class UpdateUIBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String bindId=intent.getStringExtra("bindId");
-            String message=intent.getStringExtra("message");
-            if(Application.getRulesDomain().getId().equals(Integer.parseInt(bindId))){
-                dispensing_noDispensing_textView.setText("待调："+message);
-                Log.i("待调更新",message);
+            String bindId = intent.getStringExtra("bindId");
+            String message = intent.getStringExtra("message");
+            if (Application.getRulesDomain().getId().equals(Integer.parseInt(bindId))) {
+                dispensing_noDispensing_textView.setText("待调：" + message);
+                Log.i("待调更新", message);
             }
         }
     }

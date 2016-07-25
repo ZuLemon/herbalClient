@@ -29,6 +29,9 @@ import net.andy.dispensing.util.PersonalEffortUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+import org.xutils.view.annotation.Event;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,15 +42,25 @@ import java.util.*;
 
 public class AssignOtherWayUI extends Activity {
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    @ViewInject(R.id.assignotherway_gridView)
     private GridView assignotherway_gridView;
+    @ViewInject(R.id.assignotherway_startTime_editText)
     private EditText assignotherway_startTime_editText;
+    @ViewInject(R.id.assignotherway_endTime_editText)
     private EditText assignotherway_endTime_editText;
+    @ViewInject(R.id.assignotherway_category_radioGroup)
     private RadioGroup assignotherway_category_radioGroup;
+    @ViewInject(R.id.assignotherway_classification_radioGroup)
     private RadioGroup assignotherway_classification_radioGroup;
+    @ViewInject(R.id.assignotherway_search_button)
     private Button assignotherway_search_button;
+    @ViewInject(R.id.assignotherway_assign_button)
     private Button assignotherway_assign_button;
+    @ViewInject(R.id.assignotherway_result_button)
     private Button assignotherway_result_button;
+    @ViewInject(R.id.assignotherway_total_textView)
     private TextView assignotherway_total_textView;
+    @ViewInject(R.id.assignotherway_assign_textView)
     private TextView assignotherway_assign_textView;
     private String assignCategory="门诊";
     private String assignClassification="免煎";
@@ -56,7 +69,6 @@ public class AssignOtherWayUI extends Activity {
     private String beginDate;
     private String endDate;
     private AssignUtil assignUtil=new AssignUtil();
-    private Submit submit=new Submit();
     private Integer total;
     private Integer count;
     private String assignJson;
@@ -69,26 +81,9 @@ public class AssignOtherWayUI extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.assignotherway);
-        assignotherway_gridView= (GridView) findViewById(R.id.assignotherway_gridView);
-        assignotherway_startTime_editText= (EditText) findViewById(R.id.assignotherway_startTime_editText);
-        assignotherway_endTime_editText= (EditText) findViewById(R.id.assignotherway_endTime_editText);
-        assignotherway_category_radioGroup= (RadioGroup) findViewById(R.id.assignotherway_category_radioGroup);
-        assignotherway_classification_radioGroup= (RadioGroup) findViewById(R.id.assignotherway_classification_radioGroup);
-        assignotherway_total_textView= (TextView) findViewById(R.id.assignotherway_total_textView);
-        assignotherway_assign_textView= (TextView) findViewById(R.id.assignotherway_assign_textView);
-        assignotherway_search_button= (Button) findViewById(R.id.assignotherway_search_button);
-        assignotherway_assign_button= (Button) findViewById(R.id.assignotherway_assign_button);
-        assignotherway_result_button= (Button) findViewById(R.id.assignotherway_result_button);
+        x.view().inject(this);
         assignotherway_startTime_editText.setText(dateFormat.format(HerbalUtil.getTime("Month")));
         assignotherway_endTime_editText.setText(dateFormat.format(new Date()));
-        assignotherway_startTime_editText.setOnClickListener(submit);
-        assignotherway_endTime_editText.setOnClickListener(submit);
-        assignotherway_search_button.setOnClickListener(submit);
-        assignotherway_result_button.setOnClickListener(submit);
-//        listLine=new ArrayList();
-//        gridAdapter=new GridAdapter(listLine,this);
-//        assignotherway_gridView.setAdapter(gridAdapter);
-        assignotherway_assign_button.setOnClickListener(submit);
         assignotherway_category_radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -102,9 +97,14 @@ public class AssignOtherWayUI extends Activity {
             }
         });
     }
-    private class Submit implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
+    @Event(value = {
+            R.id.assignotherway_startTime_editText,
+            R.id.assignotherway_endTime_editText,
+            R.id.assignotherway_search_button,
+            R.id.assignotherway_assign_button,
+            R.id.assignotherway_result_button
+    },type = View.OnClickListener.class)
+    private void btnClick(View view) {
             switch (view.getId()) {
                 case R.id.assignotherway_startTime_editText:
                     DateTimePickDialogUtil startdateTimePicKDialog = new DateTimePickDialogUtil(
@@ -144,7 +144,6 @@ public class AssignOtherWayUI extends Activity {
                     AssignThread(2);
                     break;
             }
-        }
     }
     private boolean compare(){
         listAssgin=new ArrayList<>();

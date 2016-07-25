@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ *
  * Created by Guang on 2016/6/23.
  */
 public class AlreadyDisDetailUI extends Activity {
@@ -38,14 +39,17 @@ public class AlreadyDisDetailUI extends Activity {
     private LinearLayout alreadydisdetail_patientInfo_linearLayout;
     @ViewInject(R.id.alreadydisdetail_gridView)
     private GridView alreadydisdetail_gridView;
-    private GridAdapter gridAdapter;
+    @ViewInject(R.id.alreadydisdetail_doctorName_textView)
     private TextView alreadydisdetail_doctorName_textView;
+    @ViewInject(R.id.alreadydisdetail_info_textView)
     private TextView alreadydisdetail_info_textView;
+    @ViewInject(R.id.alreadydisdetail_deptName_textView)
     private TextView alreadydisdetail_deptName_textView;
+    @ViewInject(R.id.alreadydisdetail_patientName_textView)
     private TextView alreadydisdetail_patientName_textView;
+    private GridAdapter gridAdapter;
     private String presId = "";
     private List presDetailList = new ArrayList();
-    //    private GridAdapter gridAdapter;
     private PrescriptionDomain pre;
     private DecimalFormat df1 = new DecimalFormat("#.##");
     private List<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
@@ -55,38 +59,14 @@ public class AlreadyDisDetailUI extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alreadydisdetail);
         x.view().inject(this);
-//        alreadydisdetail_patientInfo_linearLayout= (LinearLayout) findViewById(R.id.alreadydisdetail_patientInfo_linearLayout);
         gridAdapter = new GridAdapter(this);
         alreadydisdetail_gridView.setAdapter(gridAdapter);
-        alreadydisdetail_doctorName_textView = (TextView) findViewById(R.id.alreadydisdetail_doctorName_textView);
-        alreadydisdetail_info_textView = (TextView) findViewById(R.id.alreadydisdetail_info_textView);
-        alreadydisdetail_deptName_textView = (TextView) findViewById(R.id.alreadydisdetail_deptName_textView);
-        alreadydisdetail_patientName_textView = (TextView) findViewById(R.id.alreadydisdetail_patientName_textView);
-//        alreadydisdetail_patientInfo_linearLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                finish();
-//            }
-//        });
         Intent in = getIntent();
         presId = in.getStringExtra("presId");
         if ("".equals(presId)) {
             finish();
         }
         AlreadyDisThread(0);
-//        historyPre();
-//        pre= (PrescriptionDomain) in.getSerializableExtra("pre");
-//        disHistory_info_textView.setText(pre.getClassification()+" "+pre.getPresNumber()+"付 "+pre.getWay()+pre.getManufacture()+pre.getFrequency());
-//        disHistory_patientName_textView.setText(pre.getPatientName());
-//        disHistory_doctorName_textView.setText(pre.getDoctorName());
-//        disHistory_deptName_textView.setText(pre.getDeptName());
-////        disHistory_stationName_textView.setText(new AppOption().getOption(AppOption.APP_OPTION_STATION));
-//        gridAdapter = new GridAdapter(this);
-//        dis_history_gridView.setAdapter(gridAdapter);
-////        simpleAdapter = new SimpleAdapter(this,
-////                historyData, R.layout.dis_historygriditem, new String[]{"ItemNameView", "ItemNumView"}, new int[]{R.id.adjust_name_textView, R.id.adjust_num_textView});
-////        adjust_history_gridView.setAdapter(simpleAdapter);
-//        historyPre();
     }
 
     @Event(value = R.id.alreadydisdetail_patientInfo_linearLayout, type = View.OnClickListener.class)
@@ -137,34 +117,6 @@ public class AlreadyDisDetailUI extends Activity {
         }.start();
     }
 
-    //    private void historyPre() {
-//        boolean isEnd=true;
-//        HashMap<String, Object> map;
-//        int count=dispensingDetailDomainList.size();
-//        int m=0;
-//        if(count%2==0){m=count/2;}else{m=count/2+1;}
-//        for (int i=count-1; i >=0 ; i--) {
-//            map = new HashMap<String, Object>();
-//            map.put("ItemNameView", dispensingDetailDomainList.get(i).getHerbName());
-//            map.put("ItemNumView", (df1.format(dispensingDetailDomainList.get(i).getQuantity())) +dispensingDetailDomainList.get(i).getHerbUnit());
-//            map.put("ItemWaringView", (dispensingDetailDomainList.get(i).getWarning()));
-//            map.put("ItemSpecialView", (dispensingDetailDomainList.get(i).getSpecial()));
-//            historyData.add(map);
-//            gridAdapter.notifyDataSetChanged();
-//            if((i-m)<0){break;}
-//                map = new HashMap<String, Object>();
-//                map.put("ItemNameView", dispensingDetailDomainList.get((i - m)).getHerbName());
-//                map.put("ItemNumView", (df1.format(dispensingDetailDomainList.get((i - m)).getQuantity())) + dispensingDetailDomainList.get((i - m)).getHerbUnit());
-//                map.put("ItemWaringView", (dispensingDetailDomainList.get(i - m).getWarning()));
-//                map.put("ItemSpecialView", (dispensingDetailDomainList.get(i - m).getSpecial()));
-//            historyData.add(map);
-//            gridAdapter.notifyDataSetChanged();
-//                if((i-m)==0&&count%2==0){break;}
-////            }
-//
-//        }
-//
-//    }
     private class GridAdapter extends BaseAdapter {
         private LayoutInflater inflater;
 
