@@ -1,6 +1,7 @@
 package net.andy.dispensing.ui;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,10 +15,15 @@ import android.view.ViewGroup;
 import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.boiling.domain.PrescriptionDomain;
+import net.andy.boiling.domain.TagDomain;
 import net.andy.boiling.util.PrescriptionDetailUtil;
 import net.andy.boiling.util.PrescriptionUtil;
+import net.andy.boiling.util.TagUtil;
+import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.domain.DispensingDetailDomain;
+import net.andy.dispensing.domain.DispensingDomain;
+import net.andy.dispensing.util.DispensingUtil;
 import org.xutils.ViewInjector;
 import org.xutils.view.ViewInjectorImpl;
 import org.xutils.view.annotation.Event;
@@ -31,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ *已调剂明细
  * Created by Guang on 2016/6/23.
  */
 public class AlreadyDisDetailUI extends Activity {
@@ -47,10 +53,15 @@ public class AlreadyDisDetailUI extends Activity {
     private TextView alreadydisdetail_deptName_textView;
     @ViewInject(R.id.alreadydisdetail_patientName_textView)
     private TextView alreadydisdetail_patientName_textView;
+    @ViewInject(R.id.alreadydisdetail_patientNo_textView)
+    private TextView alreadydisdetail_patientNo_textView;
+    @ViewInject(R.id.alreadydisdetail_mainTag_textView)
+    private TextView alreadydisdetail_mainTag_textView;
     private GridAdapter gridAdapter;
     private String presId = "";
     private List presDetailList = new ArrayList();
     private PrescriptionDomain pre;
+    private TagDomain tagDomain;
     private DecimalFormat df1 = new DecimalFormat("#.##");
     private List<HashMap<String, Object>> data = new ArrayList<HashMap<String, Object>>();
 
@@ -86,9 +97,13 @@ public class AlreadyDisDetailUI extends Activity {
                         break;
                     case 0:
                         alreadydisdetail_info_textView.setText(pre.getCategory() + " " + pre.getPresNumber() + "付" + pre.getClassification() + pre.getManufacture() + pre.getFrequency());
+                        alreadydisdetail_patientNo_textView.setText(pre.getPatientNo());
                         alreadydisdetail_patientName_textView.setText(pre.getPatientName());
                         alreadydisdetail_deptName_textView.setText(pre.getDeptName());
                         alreadydisdetail_doctorName_textView.setText(pre.getDoctorName());
+                        if(tagDomain!=null) {
+                            alreadydisdetail_mainTag_textView.setText(tagDomain.getColor()+tagDomain.getCode().replace("M",""));
+                        }
                         gridAdapter.notifyDataSetChanged();
 //                        new CoolToast( getBaseContext () ).show ( ((Map)statusMap.get("main")).get("status").toString());
                         break;
@@ -104,6 +119,10 @@ public class AlreadyDisDetailUI extends Activity {
                         case 0:
                             message.what = 0;
                             pre = new PrescriptionUtil().getPrescriptionByPresId(presId);
+                            DispensingDomain dispensingDomain=new DispensingUtil().getDispensingByPlanId(new AppOption().getOption(AppOption.APP_DEVICE_ID),pre.getPlanId());
+                            if(dispensingDomain!=null&&!"".equals(dispensingDomain.getTagId())) {
+                                tagDomain = new TagUtil().getTagByTagId(dispensingDomain.getTagId());
+                            }
                             presDetailList = new PrescriptionDetailUtil().getPrescriptionDetailByPresId(presId);
                             handler.sendMessage(message);
                             break;

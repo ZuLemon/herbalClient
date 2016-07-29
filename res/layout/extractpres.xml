@@ -56,28 +56,43 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10.0dip"
-                            android:text="提取时间："/>
+                            android:text="开始时间："/>
                     <EditText android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
                               android:background="@android:drawable/editbox_background_normal"
                               android:layout_weight="1"
-                              android:text="10"
-                              android:id="@+id/extractpres_time_editText"
-                              android:numeric="integer"/>
-                    <TextView
-                            android:textSize="18.0sp"
-                            android:textColor="#ff545454"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10.0dip"
-                            android:text="分钟"/>
+                              android:id="@+id/extractpres_startTime_editText"
+                              android:focusable="false"
+                              android:singleLine="true"
+                              android:textSize="16sp" />
                 </LinearLayout>
                 <View
-                        android:background="@drawable/shape_line"
+                    android:background="@drawable/shape_line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"/>
+                <LinearLayout
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
                         android:layout_width="fill_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="wrap_content"
+                        android:padding="10.0dip"
+                        android:minHeight="50.0dip">
+                <TextView
+                        android:textSize="18.0sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0dip"
+                        android:text="结束时间："/>
+                <EditText android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:background="@android:drawable/editbox_background_normal"
+                          android:layout_weight="1"
+                          android:id="@+id/extractpres_endTime_editText"
+                          android:focusable="false"
+                          android:singleLine="true"
+                          android:textSize="16sp" />
+                    </LinearLayout>
             </LinearLayout>
             <LinearLayout
                     android:gravity="center_vertical"
@@ -88,6 +103,29 @@
                     android:layout_marginLeft="10.0dip"
                     android:layout_marginTop="7.0dip"
                     android:layout_marginRight="10.0dip">
+                <LinearLayout
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10.0dip"
+                        android:minHeight="50.0dip">
+                    <TextView
+                            android:textSize="18sp"
+                            android:textColor="#ff545454"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10.0dip"
+                            android:text="处方号："/>
+                    <EditText
+                            android:id="@+id/extractpres_presId_editText"
+                            android:textColor="#ff545454"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3.0dip"
+                            android:text=" "
+                            android:layout_weight="1"/>
+                </LinearLayout>
                 <LinearLayout
                         android:gravity="center_vertical"
                         android:orientation="horizontal"

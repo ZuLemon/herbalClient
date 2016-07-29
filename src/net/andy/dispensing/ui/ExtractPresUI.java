@@ -16,13 +16,18 @@ import com.alibaba.fastjson.JSON;
 import net.andy.boiling.R;
 import net.andy.com.CoolToast;
 import net.andy.com.Http;
+import net.andy.dispensing.util.DatePickDialogUtil;
+import net.andy.dispensing.util.DateTimePickDialogUtil;
 import net.andy.dispensing.util.ExtPreUtil;
 import org.w3c.dom.Text;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 提取处方
@@ -33,22 +38,36 @@ public class ExtractPresUI extends Activity{
     private Button extractpres_extPre_button;
     @ViewInject(R.id.extractpres_update_button)
     private Button extractpres_update_button;
-    @ViewInject(R.id.extractpres_time_editText)
-    private EditText extractpres_time_editText;
+    @ViewInject(R.id.extractpres_startTime_editText)
+    private EditText extractpres_startTime_editText;
+    @ViewInject(R.id.extractpres_endTime_editText)
+    private EditText extractpres_endTime_editText;
+    @ViewInject(R.id.extractpres_presId_editText)
+    private EditText extractpres_presId_editText;
     @ViewInject(R.id.extractpres_description_textView)
     private TextView extractpres_description_textView;
     private Integer intevalId=0;
-    private Integer extTime;
+    private String beginTime;
+    private String endTime;
     private boolean isClick;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.extractpres);
         x.view().inject(this);
+        Init();
+    }
+    private void Init(){
+        Date now = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");//可以方便地修改日期格式
+        extractpres_startTime_editText.setText(dateFormat.format(now));
+        extractpres_endTime_editText.setText(dateFormat.format(now));
     }
     @Event(value = {
         R.id.extractpres_update_button,
-            R.id.extractpres_extPre_button
+            R.id.extractpres_extPre_button,
+            R.id.extractpres_startTime_editText,
+            R.id.extractpres_endTime_editText
     },type = View.OnClickListener.class)
     private void btnClick(View view) {
             switch (view.getId()){
@@ -62,13 +81,29 @@ public class ExtractPresUI extends Activity{
                     }
                     break;
                 case R.id.extractpres_extPre_button:
-                    if(extractpres_time_editText.getText().toString().length()==0){
-                        new CoolToast(getBaseContext()).show("时间不能为空！");
-                        return;
+                    if("".equals(extractpres_presId_editText.getText().toString().trim())) {
+                        if ("".equals(extractpres_startTime_editText.getText().toString().trim()) || "".equals(extractpres_endTime_editText.getText().toString().trim())) {
+                            new CoolToast(getBaseContext()).show("时间不能为空！");
+                            return;
+                        }
+                        beginTime = extractpres_startTime_editText.getText().toString();
+                        endTime = extractpres_endTime_editText.getText().toString();
+                        startActivity(new Intent(ExtractPresUI.this, LoadingUI.class));
+                        extractPresThread(0);
+                    }else{
+                        startActivity(new Intent(ExtractPresUI.this, LoadingUI.class));
+                        extractPresThread(3);
                     }
-                    extTime= Integer.valueOf(extractpres_time_editText.getText().toString());
-                    startActivity(new Intent(ExtractPresUI.this,LoadingUI.class));
-                    extractPresThread(0);
+                    break;
+                case R.id.extractpres_startTime_editText:
+                    DateTimePickDialogUtil startdateTimePicKDialog = new DateTimePickDialogUtil(
+                            ExtractPresUI.this,String.valueOf( extractpres_startTime_editText.getText()));
+                    startdateTimePicKDialog.dateTimePicKDialog(extractpres_startTime_editText);
+                    break;
+                case R.id.extractpres_endTime_editText:
+                    DateTimePickDialogUtil enddateTimePicKDialog = new DateTimePickDialogUtil(
+                            ExtractPresUI.this,String.valueOf( extractpres_endTime_editText.getText()));
+                    enddateTimePicKDialog.dateTimePicKDialog(extractpres_endTime_editText);
                     break;
             }
     }
@@ -94,7 +129,7 @@ public class ExtractPresUI extends Activity{
                         Map valMap= (Map) msg.obj;
                         intevalId=Integer.parseInt(String.valueOf(valMap.get("id")));
                         extractpres_update_button.setText("修改时间");
-                        extractpres_time_editText.setText(String.valueOf(valMap.get("loadInterval")));
+                        extractpres_presId_editText.setText(String.valueOf(valMap.get("loadInterval")));
 //                        extractpres_time_editText.setFocusable(true);
 //                        extractpres_time_editText.setFocusableInTouchMode(true);
 //                        extractpres_time_editText.requestFocus();
@@ -105,7 +140,7 @@ public class ExtractPresUI extends Activity{
                     case 2:
                         LoadingUI.instance.finish();
                         new CoolToast(getBaseContext()).show(String.valueOf(msg.obj));
-                        extractpres_description_textView.setText("修改为1分钟提取"+extractpres_time_editText.getText()+"分钟的处方");
+                        extractpres_description_textView.setText("修改为1分钟提取"+extractpres_presId_editText.getText()+"分钟的处方");
                         isClick=false;
                         extractpres_update_button.setText("更新时间");
                         break;
@@ -118,7 +153,7 @@ public class ExtractPresUI extends Activity{
                 try {
                     switch (what) {
                         case 0:
-                            Map map= new ExtPreUtil().importPres(extTime);
+                            Map map= new ExtPreUtil().importPresByTime(beginTime,endTime);
                             if(map!=null){
                                 message.obj="本次任务检索出("+map.get("begin")+"至"+map.get("end")+")的处方共"+map.get("count")+"条,导入系统"+map.get("import")+"条,消耗时间"+map.get("time")+"秒";
                             }else{
@@ -134,15 +169,30 @@ public class ExtractPresUI extends Activity{
                             handler.sendMessage(message);
                             break;
                         case 2:
-                            message.obj= new ExtPreUtil().setInterval(intevalId,Integer.parseInt(String.valueOf(extractpres_time_editText.getText())));
+                            message.obj= new ExtPreUtil().setInterval(intevalId,Integer.parseInt(String.valueOf(extractpres_presId_editText.getText())));
                             message.what = 2;
                             handler.sendMessage(message);
                             break;
+                        case 3:
+                            Map map1= new ExtPreUtil().importPresBypresId(extractpres_presId_editText.getText().toString().trim());
+                            if(map1!=null){
+                                message.obj="本次任务检索出("+map1.get("begin")+"至"+map1.get("end")+")的处方共"+map1.get("count")+"条,导入系统"+map1.get("import")+"条,消耗时间"+map1.get("time")+"秒";
+                            }else{
+                                message.obj="提取处方失败,请稍后再试。";
+                            }
+                            message.what = 0;
+                            handler.sendMessage(message);
+                            break;
                     }
-                } catch (Exception e) {
-                    Log.e("错误",e.getMessage());
+                }catch (TimeoutException ex){
                     message.what = -1;
-                    message.obj = e.getMessage();
+                    message.obj="提取处方超时,提取或许已经成功。";
+                    handler.sendMessage(message);
+                }
+                catch (Exception e) {
+                    message.what = -1;
+                    message.obj="提取处方失败,请稍后再试。";
+//                    message.obj = e.getMessage();
                     handler.sendMessage(message);
                 }
             }

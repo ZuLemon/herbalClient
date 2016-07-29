@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="647103966">
+  <component name="DataSourceManagerImpl" format="xml" hash="3082375622">
     <data-source source="LOCAL" name="正式库" uuid="6e254da2-4782-4b32-9608-c18635d1bb34">
       <driver-ref>sqlserver.jtds</driver-ref>
       <synchronize>true</synchronize>

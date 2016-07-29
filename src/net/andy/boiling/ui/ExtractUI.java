@@ -19,7 +19,7 @@ import org.xutils.x;
 
 /**
  * Created by Administrator on 2014-11-14.
- * 浸泡操作
+ * 煎制操作
  */
 public class ExtractUI extends NFCActivity {
     @ViewInject(R.id.extract_equipId_textView)

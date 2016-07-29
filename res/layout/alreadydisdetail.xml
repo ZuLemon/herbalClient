@@ -21,62 +21,124 @@
                   android:layout_gravity="center"
                   android:text="免煎 14付 口服水冲日二次"
                   android:id="@+id/alreadydisdetail_info_textView"/>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/alreadydisdetail_patientInfo_linearLayout"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/alreadydisdetail_patientInfo_linearLayout"
+                      android:orientation="horizontal">
             <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:layout_height="wrap_content">
-                <TextView style="@style/Custom20TextViewTheme"
-                          android:layout_weight="1"
-                          android:gravity="left"
-                          android:textColor="#ffffffff"
-                          android:text="姓名："/>
-                <TextView style="@style/Custom20TextViewTheme"
-                          android:layout_weight="1"
-                          android:gravity="left"
-                          android:textColor="#ffffffff"
-                          android:text="科室："/>
-                <TextView style="@style/Custom20TextViewTheme"
-                          android:layout_weight="1"
-                          android:gravity="left"
-                          android:textColor="#ffffffff"
-                          android:text="医生："/>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_height="wrap_content">
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text="编号："/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text="科室："/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text="标签："/>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_height="wrap_content">
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:id="@+id/alreadydisdetail_patientNo_textView"
+                              android:textColor="#ffffffff"
+                              android:text="测试用户"/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:id="@+id/alreadydisdetail_deptName_textView"
+                              android:textColor="#ffffffff"
+                              android:text="测试科室"/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:id="@+id/alreadydisdetail_mainTag_textView"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text=""/>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_height="wrap_content">
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text="姓名："/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text="医生："/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:textColor="#ffffffff"
+                              android:text="标签："
+                    android:visibility="invisible"/>
+                </LinearLayout>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:layout_height="wrap_content">
 
-                <TextView style="@style/Custom20TextViewTheme"
-                          android:layout_weight="1"
-                          android:gravity="left"
-                          android:id="@+id/alreadydisdetail_patientName_textView"
-                          android:textColor="#ffffffff"
-                          android:text="测试用户"/>
-                <TextView style="@style/Custom20TextViewTheme"
-                          android:layout_weight="1"
-                          android:gravity="left"
-                          android:id="@+id/alreadydisdetail_deptName_textView"
-                          android:textColor="#ffffffff"
-                          android:text="测试科室"/>
-                <TextView style="@style/Custom20TextViewTheme"
-                          android:layout_weight="1"
-                          android:id="@+id/alreadydisdetail_doctorName_textView"
-                          android:gravity="left"
-                          android:textColor="#ffffffff"
-                          android:text="测试医生"/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:id="@+id/alreadydisdetail_patientName_textView"
+                              android:textColor="#ffffffff"
+                              android:text="测试用户"/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:id="@+id/alreadydisdetail_doctorName_textView"
+                              android:textColor="#ffffffff"
+                              android:text="测试医生"/>
+                    <TextView style="@style/Custom15TextViewTheme"
+                              android:layout_weight="1"
+                              android:gravity="left"
+                              android:visibility="invisible"
+                              android:textColor="#ffffffff"
+                              android:text="Code"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
     <LinearLayout
             android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import net.andy.boiling.R;
 import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.CoolToast;
+import net.andy.dispensing.util.DatePickDialogUtil;
 import net.andy.dispensing.util.SelectPresUtil;
 import net.andy.dispensing.util.UrgentDelPresUtil;
 import net.andy.hos.ui.ExtInPatientUI;
@@ -27,10 +29,7 @@ import org.xutils.x;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 置顶处方
@@ -44,8 +43,14 @@ public class UrgentPresUI extends Activity{
     private Button urgentPres_search_button;
     @ViewInject(R.id.urgentPres_patientId_editText)
     private EditText urgentPres_patientId_editText;
+    @ViewInject(R.id.urgentPres_startTime_editText)
+    private EditText urgentPres_startTime_editText;
+    @ViewInject(R.id.urgentPres_endTime_editText)
+    private EditText urgentPres_endTime_editText;
     private String patId;
     private Integer Id;
+    private String startTime;
+    private String endTime;
     private List<Map<String, Object>> urgList = new ArrayList<Map<String, Object>>();
     private UrgDelAdapter urgDelAdapter;
     @Override
@@ -55,22 +60,53 @@ public class UrgentPresUI extends Activity{
         x.view().inject(this);
         urgDelAdapter=new UrgDelAdapter(this);
         urgentPres_patient_listView.setAdapter ( urgDelAdapter );
+        Init();
     }
-    @Event(value =R.id.urgentPres_search_button )
+    private void Init(){
+        Calendar cal_1 = Calendar.getInstance();//获取当前日期
+        urgentPres_startTime_editText.setText(dateFormat.format(cal_1.getTime()));
+        urgentPres_endTime_editText.setText(dateFormat.format(cal_1.getTime()));
+    }
+    @Event(value ={R.id.urgentPres_search_button ,
+            R.id.urgentPres_endTime_editText,
+            R.id.urgentPres_startTime_editText},
+            type = View.OnClickListener.class)
     private void btnClick(View view) {
-        confirm();
+        switch (view.getId()){
+            case R.id.urgentPres_search_button:
+                confirm();
+                break;
+            case R.id.urgentPres_startTime_editText:
+                DatePickDialogUtil startdateTimePicKDialog = new DatePickDialogUtil(
+                        UrgentPresUI.this,String.valueOf( urgentPres_startTime_editText.getText()));
+                startdateTimePicKDialog.dateTimePicKDialog(urgentPres_startTime_editText);
+                break;
+            case R.id.urgentPres_endTime_editText:
+                DatePickDialogUtil enddateTimePicKDialog = new DatePickDialogUtil(
+                        UrgentPresUI.this,String.valueOf( urgentPres_endTime_editText.getText()));
+                enddateTimePicKDialog.dateTimePicKDialog(urgentPres_endTime_editText);
+                break;
+        }
     }
     private void confirm(){
         urgList.clear();
         patId=urgentPres_patientId_editText.getText().toString().trim();
-        if("".equals(patId)){
-            new CoolToast(getBaseContext()).show("请输入门诊号或住院号");
+        startTime=urgentPres_startTime_editText.getText().toString().trim();
+        endTime=urgentPres_endTime_editText.getText().toString().trim();
+        if("".equals(startTime)||"".equals(endTime)){
+            new CoolToast(getBaseContext()).show("开始时间或结束时间不能为空");
         }else {
-            startActivity(new Intent(UrgentPresUI.this, LoadingUI.class));
-            urgentPresThread(0);
+            if ("".equals(patId)) {
+                new CoolToast(getBaseContext()).show("请输入门诊号或住院号");
+            } else {
+                startActivity(new Intent(UrgentPresUI.this, LoadingUI.class));
+                endTime+=" 23:59:59";
+                urgentPresThread(0);
+            }
         }
     }
-    @Event(value = R.id.urgentPres_patient_listView,type = AdapterView.OnItemClickListener.class)
+    @Event(value = R.id.urgentPres_patient_listView,
+            type = AdapterView.OnItemClickListener.class)
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = (Map) urgList.get(position);
 //            dialog(Integer.parseInt(String.valueOf(map.get("urgentPres_id_textView"))),map.get("urgentPres_name_textView")+"");
@@ -82,7 +118,7 @@ public class UrgentPresUI extends Activity{
     public void setListView(List presList) {
         urgDelAdapter.notifyDataSetChanged();
         if(presList.size()==0){
-            new CoolToast( getBaseContext () ).show ( "此卡号没有需调剂处方");
+            new CoolToast( getBaseContext () ).show ( "未查询到此卡号的相关信息");
             return;
         }
         urgList=presList;
@@ -115,7 +151,7 @@ public class UrgentPresUI extends Activity{
                     switch (what){
                         case 0:
                             message.what = 0;
-                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(patId, String.valueOf(Application.getUsers().getId()));
+                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(startTime,endTime,patId, String.valueOf(Application.getUsers().getId()));
                             handler.sendMessage ( message );
                             break;
                     }

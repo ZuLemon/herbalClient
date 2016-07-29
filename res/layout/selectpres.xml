@@ -25,8 +25,31 @@
                   android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:orientation="horizontal"
                       android:layout_marginTop="5dp"
-                      android:layout_marginBottom="5dp">
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginRight="10dp">
+            <EditText android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/selectPres_startTime_editText"
+                      android:layout_marginRight="5dp"
+                      android:layout_weight="1"
+                      android:focusable="false"
+                      android:singleLine="true"
+                      android:textSize="16sp" />
+            <EditText android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/selectPres_endTime_editText"
+                      android:layout_marginLeft="5dp"
+                      android:layout_weight="1"
+                      android:focusable="false"
+                      android:singleLine="true"
+                      android:textSize="16sp"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginLeft="10dp"
+                      android:layout_marginRight="10dp">
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

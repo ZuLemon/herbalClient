@@ -23,7 +23,7 @@ import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.AssignUtil;
-import net.andy.dispensing.util.DateTimePickDialogUtil;
+import net.andy.dispensing.util.DatePickDialogUtil;
 import net.andy.dispensing.util.HerbalUtil;
 import net.andy.dispensing.util.PersonalEffortUtil;
 import org.json.JSONArray;
@@ -107,12 +107,12 @@ public class AssignOtherWayUI extends Activity {
     private void btnClick(View view) {
             switch (view.getId()) {
                 case R.id.assignotherway_startTime_editText:
-                    DateTimePickDialogUtil startdateTimePicKDialog = new DateTimePickDialogUtil(
+                    DatePickDialogUtil startdateTimePicKDialog = new DatePickDialogUtil(
                             AssignOtherWayUI.this, String.valueOf(assignotherway_startTime_editText.getText()));
                     startdateTimePicKDialog.dateTimePicKDialog(assignotherway_startTime_editText);
                     break;
                 case R.id.assignotherway_endTime_editText:
-                    DateTimePickDialogUtil enddateTimePicKDialog = new DateTimePickDialogUtil(
+                    DatePickDialogUtil enddateTimePicKDialog = new DatePickDialogUtil(
                             AssignOtherWayUI.this, String.valueOf(assignotherway_endTime_editText.getText()));
                     enddateTimePicKDialog.dateTimePicKDialog(assignotherway_endTime_editText);
                     break;

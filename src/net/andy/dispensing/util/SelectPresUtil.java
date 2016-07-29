@@ -19,11 +19,13 @@ public class SelectPresUtil {
      获取处方列表
 
      */
-    public List getPrescriptionByPatientNo(String patientNo, String userId) throws Exception {
+    public List getPrescriptionByPatientNo(String begin,String end,String patientNo, String userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add ( new BasicNameValuePair( "begin", begin));
+        pairs.add ( new BasicNameValuePair( "end", end));
         pairs.add ( new BasicNameValuePair( "patientNo", "%"+patientNo+"%"));
         pairs.add ( new BasicNameValuePair( "userId", userId));
-        returnDomain = (ReturnDomain) new Http().post ( "prescription/getPrescriptionByPatientNo.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) new Http().post ( "prescription/getPrescriptionByPatientNoDate.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

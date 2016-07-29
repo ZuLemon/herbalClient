@@ -12,6 +12,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
 
 import java.io.*;
 import java.util.List;
@@ -48,6 +50,15 @@ public class Http {
         Log.i("返回数据:",json);
         return JSON.parseObject ( json, clzz );
     }
+//    public Object xUtilsPost(String url, List<NameValuePair> pairs,Class clzz){
+//        RequestParams params = new RequestParams(url);
+//        params.addParameter("http.socket.timeout",10000);
+//        params.addParameter("http.connection.timeout",10000);
+//        params.addParameter("http.connection-manager.timeout",60*60L);
+//        params.addHeader("User-Agent", "boilingClient Of Android"); //为当前请求添加一个头
+//        params.addHeader("userId", String.valueOf(Application.getUsers().getId())); //为当前请求添加一个头
+//
+//    }
     public Object get(String url) throws Exception {
         Log.e("请求路径", String.valueOf(url));
         HttpClient client = new DefaultHttpClient ();

@@ -106,6 +106,8 @@ public class ValidationDetailUI extends Activity{
     private void onClick(View v) {
             switch (v.getId()){
                 case R.id.validationdetail_confirm_button:
+                    Log.e("button","true");
+                    validationdetail_confirm_button.setEnabled(false);
                     if(isReady) {
                         //添加复核
                         ValidationDetailThread(1);
@@ -204,8 +206,6 @@ public class ValidationDetailUI extends Activity{
             dis.historyItem_num_textView .setText(""+map.get("ItemNumView"));
             return view;
         }
-
-
         private class Dis {
             private LinearLayout historyItem_linearLayout;
             private ImageView historyItem_waring_imageView;
@@ -240,6 +240,8 @@ public class ValidationDetailUI extends Activity{
                         break;
                     case 1:
                         new CoolToast( getBaseContext () ).show ((String) msg.obj);
+                        Log.e("button","true");
+                        validationdetail_confirm_button.setEnabled(true);
                         finish();
                         break;
                     case 2:

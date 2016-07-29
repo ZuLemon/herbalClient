@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
               android:background="@android:color/white"
@@ -37,7 +36,8 @@
                               android:width="60dp"
                               android:text="设备号"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipId_textView"/>
+                              android:id="@+id/extract_equipId_textView"
+                    android:text="2101000002"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
@@ -47,7 +47,8 @@
                               android:width="60dp"
                               android:text="设备名"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipName_textView"/>
+                              android:id="@+id/extract_equipName_textView"
+                    android:text="J018"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
@@ -61,7 +62,8 @@
                               android:width="60dp"
                               android:text="用途"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipPurpose_textView"/>
+                              android:id="@+id/extract_equipPurpose_textView"
+                    android:text="煎药"/>
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="match_parent"
@@ -72,7 +74,8 @@
                               android:width="60dp"
                               android:text="状态"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipStatus_textView"/>
+                              android:id="@+id/extract_equipStatus_textView"
+                    android:text="空闲"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -122,7 +125,8 @@
                                   android:width="50dp"
                                   android:text="编号"/>
                         <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_patientNo_textView"/>
+                                  android:id="@+id/extract_patientNo_textView"
+                                  android:text="133339"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="fill_parent"
@@ -133,7 +137,8 @@
                                   android:width="40dp"
                                   android:text="姓名"/>
                         <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_patientName_textView"/>
+                                  android:id="@+id/extract_patientName_textView"
+                        android:text="曹树荣"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent"
@@ -147,7 +152,8 @@
                                   android:width="50dp"
                                   android:text="类别"/>
                         <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_category_textView"/>
+                                  android:id="@+id/extract_category_textView"
+                        android:text="住院"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="fill_parent"
@@ -158,7 +164,9 @@
                                   android:width="40dp"
                                   android:text="剂型"/>
                         <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_classification_textView"/>
+                                  android:id="@+id/extract_classification_textView"
+                                  android:text="饮片"
+                        />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent"
@@ -172,7 +180,8 @@
                                   android:width="50dp"
                                   android:text="付数"/>
                         <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_presNumber_textView"/>
+                                  android:id="@+id/extract_presNumber_textView"
+                        android:text="3付"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="fill_parent"
@@ -183,7 +192,8 @@
                                   android:width="40dp"
                                   android:text="用法"/>
                         <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_way_textView"/>
+                                  android:id="@+id/extract_way_textView"
+                        android:text="口服"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -210,7 +220,8 @@
                               android:width="80dp"
                               android:text="温度"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_temperature_textView"/>
+                              android:id="@+id/extract_temperature_textView"
+                    android:text="100°"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent"
                               android:layout_height="wrap_content"
@@ -220,7 +231,8 @@
                               android:width="80dp"
                               android:text="压力"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_pressure_textView"/>
+                              android:id="@+id/extract_pressure_textView"
+                    android:text="1050pa"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"
@@ -234,7 +246,8 @@
                               android:width="80dp"
                               android:text="出液量"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_quantity_textView"/>
+                              android:id="@+id/extract_quantity_textView"
+                    android:text="1200ml"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent"
                               android:layout_height="wrap_content"
@@ -244,7 +257,8 @@
                               android:width="80dp"
                               android:text="状态"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_planStatus_textView"/>
+                              android:id="@+id/extract_planStatus_textView"
+                    android:text="浸泡完成"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"
@@ -258,7 +272,8 @@
                               android:width="80dp"
                               android:text="浸泡加液"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_waterQuantity1_textView"/>
+                              android:id="@+id/extract_waterQuantity1_textView"
+                    android:text="1582ml"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent"
                               android:layout_height="wrap_content"
@@ -268,7 +283,8 @@
                               android:width="80dp"
                               android:text="浸泡时间"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_soakTime_textView"/>
+                              android:id="@+id/extract_soakTime_textView"
+                    android:text="30分"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"
@@ -282,7 +298,8 @@
                               android:width="80dp"
                               android:text="一煎时间"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_extractTime1_textView"/>
+                              android:id="@+id/extract_extractTime1_textView"
+                    android:text="30分"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"
@@ -296,7 +313,8 @@
                               android:width="80dp"
                               android:text="二煎加液"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_waterQuantity2_textView"/>
+                              android:id="@+id/extract_waterQuantity2_textView"
+                    android:text="800ml"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="fill_parent"
                               android:layout_height="wrap_content"
@@ -306,7 +324,8 @@
                               android:width="80dp"
                               android:text="二煎时间"/>
                     <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_extractTime2_textView"/>
+                              android:id="@+id/extract_extractTime2_textView"
+                    android:text="30分"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="fill_parent"

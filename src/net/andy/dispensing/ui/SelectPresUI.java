@@ -14,6 +14,7 @@ import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.com.Application;
 import net.andy.com.CoolToast;
+import net.andy.dispensing.util.DatePickDialogUtil;
 import net.andy.dispensing.util.SelectPresUtil;
 import net.andy.dispensing.util.UrgentDelPresUtil;
 import org.xutils.view.annotation.Event;
@@ -23,6 +24,7 @@ import org.xutils.x;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -38,8 +40,14 @@ public class SelectPresUI extends Activity{
     private Button selectPres_search_button;
     @ViewInject(R.id.selectPres_patientId_editText)
     private EditText selectPres_patientId_editText;
+    @ViewInject(R.id.selectPres_startTime_editText)
+    private EditText selectPres_startTime_editText;
+    @ViewInject(R.id.selectPres_endTime_editText)
+    private EditText selectPres_endTime_editText;
     private String patId;
     private Integer Id;
+    private String startTime;
+    private String endTime;
     private List<Map<String, Object>> urgList = new ArrayList<Map<String, Object>>();
     private UrgDelAdapter urgDelAdapter;
     @Override
@@ -49,19 +57,49 @@ public class SelectPresUI extends Activity{
         x.view().inject(this);
         urgDelAdapter=new UrgDelAdapter(this);
         selectPres_patient_listView.setAdapter ( urgDelAdapter );
+        Init();
     }
-    @Event(value =R.id.selectPres_search_button )
+    private void Init(){
+        Calendar cal_1 = Calendar.getInstance();//获取当前日期
+        selectPres_startTime_editText.setText(dateFormat.format(cal_1.getTime()));
+        selectPres_endTime_editText.setText(dateFormat.format(cal_1.getTime()));
+    }
+    @Event(value ={R.id.selectPres_search_button,
+            R.id.selectPres_endTime_editText,
+            R.id.selectPres_startTime_editText},
+            type = View.OnClickListener.class)
     private void onClick(View view) {
-        confirm();
+        switch (view.getId()){
+            case R.id.selectPres_search_button:
+                confirm();
+                break;
+            case R.id.selectPres_startTime_editText:
+                DatePickDialogUtil startdateTimePicKDialog = new DatePickDialogUtil(
+                        SelectPresUI.this,String.valueOf( selectPres_startTime_editText.getText()));
+                startdateTimePicKDialog.dateTimePicKDialog(selectPres_startTime_editText);
+                break;
+            case R.id.selectPres_endTime_editText:
+                DatePickDialogUtil enddateTimePicKDialog = new DatePickDialogUtil(
+                        SelectPresUI.this,String.valueOf( selectPres_endTime_editText.getText()));
+                enddateTimePicKDialog.dateTimePicKDialog(selectPres_endTime_editText);
+                break;
+        }
     }
     private void confirm(){
         urgList.clear();
         patId=selectPres_patientId_editText.getText().toString().trim();
-        if("".equals(patId)){
-            new CoolToast(getBaseContext()).show("请输入门诊号或住院号");
+        startTime=selectPres_startTime_editText.getText().toString().trim();
+        endTime=selectPres_endTime_editText.getText().toString().trim();
+        if("".equals(startTime)||"".equals(endTime)){
+            new CoolToast(getBaseContext()).show("开始时间或结束时间不能为空");
         }else {
-            startActivity(new Intent(SelectPresUI.this, LoadingUI.class));
-            selectPresThread(0);
+            if ("".equals(patId)) {
+                new CoolToast(getBaseContext()).show("请输入门诊号或住院号");
+            } else {
+                startActivity(new Intent(SelectPresUI.this, LoadingUI.class));
+                endTime+=" 23:59:59";
+                selectPresThread(0);
+            }
         }
     }
     @Event(value = R.id.selectPres_patient_listView,type = AdapterView.OnItemClickListener.class)
@@ -74,7 +112,7 @@ public class SelectPresUI extends Activity{
     public void setListView(List presList) {
         urgDelAdapter.notifyDataSetChanged();
         if(presList.size()==0){
-            new CoolToast( getBaseContext () ).show ( "此卡号没有需调剂处方");
+            new CoolToast( getBaseContext () ).show ( "未查询到此卡号的相关信息");
             return;
         }
         urgList=presList;
@@ -107,7 +145,7 @@ public class SelectPresUI extends Activity{
                     switch (what){
                         case 0:
                             message.what = 0;
-                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(patId, String.valueOf(Application.getUsers().getId()));
+                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(startTime,endTime,patId, String.valueOf(Application.getUsers().getId()));
                             handler.sendMessage ( message );
                             break;
                     }
@@ -192,7 +230,7 @@ public class SelectPresUI extends Activity{
             private TextView selectPres_main_textView;
             private TextView selectPres_way_textView;
             private TextView selectPres_subTime_textView;
-}
+            }
     }
     @Override
     protected void onResume() {

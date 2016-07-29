@@ -79,12 +79,12 @@ public class PersonalEffortUI extends Activity {
     private void onClick(View view) {
             switch (view.getId()) {
                 case R.id.personaleffort_startTime_editText:
-                    DateTimePickDialogUtil startdateTimePicKDialog = new DateTimePickDialogUtil(
+                    DatePickDialogUtil startdateTimePicKDialog = new DatePickDialogUtil(
                             PersonalEffortUI.this,String.valueOf( personaleffort_startTime_editText.getText()));
                     startdateTimePicKDialog.dateTimePicKDialog(personaleffort_startTime_editText);
                      break;
                 case R.id.personaleffort_endTime_editText:
-                    DateTimePickDialogUtil enddateTimePicKDialog = new DateTimePickDialogUtil(
+                    DatePickDialogUtil enddateTimePicKDialog = new DatePickDialogUtil(
                             PersonalEffortUI.this, String.valueOf( personaleffort_endTime_editText.getText()));
                     enddateTimePicKDialog.dateTimePicKDialog(personaleffort_endTime_editText);
                     break;

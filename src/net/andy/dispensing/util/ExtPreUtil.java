@@ -30,6 +30,33 @@ public class ExtPreUtil {
         }
     }
     /**
+     提取处方
+     */
+    public Map importPresByTime(String beginTime,String endTime) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair( "begin", beginTime ));
+        pairs.add ( new BasicNameValuePair( "end", endTime ));
+        returnDomain = ( ReturnDomain ) new Http().post ( "extPres/importPresByTime.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+    /**
+     提取处方
+     */
+    public Map importPresBypresId(String presId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair( "presId", presId ));
+        returnDomain = ( ReturnDomain ) new Http().post ( "extPres/importPresByPresId.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+    /**
      提取处方时间
      */
     public Map getInterval() throws Exception {

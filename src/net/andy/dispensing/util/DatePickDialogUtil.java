@@ -8,6 +8,7 @@ import java.util.Date;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
@@ -30,12 +31,12 @@ import net.andy.boiling.R;
  *
  * @author
  */
-public class DateTimePickDialogUtil implements OnDateChangedListener,
+public class DatePickDialogUtil implements OnDateChangedListener,
 		OnTimeChangedListener {
 	private DatePicker datePicker;
-	private TimePicker timePicker;
 	private AlertDialog ad;
 	private String dateTime;
+	private TimePicker timePicker;
 	private String initDateTime;
 	private Activity activity;
 
@@ -47,30 +48,25 @@ public class DateTimePickDialogUtil implements OnDateChangedListener,
 	 * @param initDateTime
 	 *            初始日期时间值，作为弹出窗口的标题和日期时间初始值
 	 */
-	public DateTimePickDialogUtil(Activity activity, String initDateTime) {
+	public DatePickDialogUtil(Activity activity, String initDateTime) {
 		this.activity = activity;
 		this.initDateTime = initDateTime;
 
 	}
 
-	public void init(DatePicker datePicker, TimePicker timePicker) {
+	public void init(DatePicker datePicker) {
 		Calendar calendar = Calendar.getInstance();
 		if (!(null == initDateTime || "".equals(initDateTime))) {
 			calendar = this.getCalendarByInintData(initDateTime);
 		} else {
 			initDateTime = calendar.get(Calendar.YEAR) + "-"
 					+ calendar.get(Calendar.MONTH) + "-"
-					+ calendar.get(Calendar.DAY_OF_MONTH) + " "
-					+ calendar.get(Calendar.HOUR_OF_DAY) + ":"
-					+ calendar.get(Calendar.MINUTE)+":"
-                    + "00";
+					+ calendar.get(Calendar.DAY_OF_MONTH);
 		}
 
 		datePicker.init(calendar.get(Calendar.YEAR),
 				calendar.get(Calendar.MONTH),
 				calendar.get(Calendar.DAY_OF_MONTH), this);
-		timePicker.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
-		timePicker.setCurrentMinute(calendar.get(Calendar.MINUTE));
 	}
 
 	/**
@@ -82,14 +78,13 @@ public class DateTimePickDialogUtil implements OnDateChangedListener,
 	 */
 	public AlertDialog dateTimePicKDialog(final EditText inputDate) {
 		LinearLayout dateTimeLayout = (LinearLayout) activity
-				.getLayoutInflater().inflate(R.layout.common_datetime, null);
+				.getLayoutInflater().inflate(R.layout.common_date, null);
 		datePicker = (DatePicker) dateTimeLayout.findViewById(R.id.datepicker);
 		timePicker = (TimePicker) dateTimeLayout.findViewById(R.id.timepicker);
-		init(datePicker, timePicker);
+		init(datePicker);
 		timePicker.setIs24HourView(true);
 		timePicker.setOnTimeChangedListener(this);
-
-		ad = new AlertDialog.Builder(activity)
+				ad = new AlertDialog.Builder(activity)
 				.setTitle(initDateTime)
 				.setView(dateTimeLayout)
 				.setPositiveButton("设置", new DialogInterface.OnClickListener() {
@@ -117,9 +112,8 @@ public class DateTimePickDialogUtil implements OnDateChangedListener,
 		Calendar calendar = Calendar.getInstance();
 
 		calendar.set(datePicker.getYear(), datePicker.getMonth(),
-				datePicker.getDayOfMonth(), timePicker.getCurrentHour(),
-				timePicker.getCurrentMinute());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
+				datePicker.getDayOfMonth());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		dateTime = sdf.format(calendar.getTime());
 		ad.setTitle(dateTime);
@@ -134,14 +128,14 @@ public class DateTimePickDialogUtil implements OnDateChangedListener,
 	 */
 	private Calendar getCalendarByInintData(String initDateTime) {
 		Calendar calendar = Calendar.getInstance();
-        Date date=null;
-        // 将初始日期时间2012-07-02拆分成年 月 日
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:00");
-        try {
-            date= sdf.parse(initDateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+		Date date=null;
+		// 将初始日期时间2012-07-02拆分成年 月 日
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			date= sdf.parse(initDateTime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 //		String yearStr = spliteString(initDateTime, "-", "index", "front"); // 年份
 //		String monthStr = spliteString(initDateTime.substring(3), "-", "index", "front"); // 月日
 //		String dayStr = initDateTime.substring(5); // 日
@@ -149,9 +143,9 @@ public class DateTimePickDialogUtil implements OnDateChangedListener,
 //		int currentMonth = Integer.valueOf(monthStr.trim()).intValue() - 1;
 //		int currentDay = Integer.valueOf(dayStr.trim()).intValue();
 //		Log.e("日期",yearStr+monthStr+dayStr);
-        if(date!=null)
-            calendar.setTime(date);
-        return calendar;
+		if(date!=null)
+		calendar.setTime(date);
+		return calendar;
 	}
 
 	/**
