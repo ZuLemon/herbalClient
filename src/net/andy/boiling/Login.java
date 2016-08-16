@@ -83,7 +83,7 @@ public class Login extends Activity {
 ////        }
 //        //设备号
 //        appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
-//        appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");
+//        appOption.setOption(AppOption.APP_OPTION_WAITTIME,"3");2
         if ("".equals(appOption.getOption(AppOption.APP_OPTION_WAITTIME)))
             appOption.setOption(AppOption.APP_OPTION_WAITTIME, "3");
 //        appOption.setOption(AppOption.APP_OPTION_SERVER, "192.168.34.99");
@@ -108,17 +108,14 @@ public class Login extends Activity {
     protected void onResume() {
         super.onResume();
     }
-
     @Override
     public void onPause() {
         super.onPause();
     }
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
     }
-
     public boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
@@ -131,6 +128,10 @@ public class Login extends Activity {
    private void onClick(View v) {
             String userId=login_userId_editText.getText().toString().trim();
              String password=login_password_editText.getText().toString().trim();
+            if("".equals(userId) || "".equals(password)){
+                new CoolToast(getBaseContext()).show("用户编号和密码不允许为空");
+                return;
+            }
             //管理员修改服务器地址
             if ("admin".equals(userId) && "wlbgs".equals(password)) {
                 login_userId_editText.setText(appOption.getOption(AppOption.APP_OPTION_USER));
@@ -149,11 +150,30 @@ public class Login extends Activity {
             }
             //正在加载
             startActivity(new Intent(Login.this, LoadingUI.class));
-            StationThread();
             final Handler handler = new Handler() {
                 public void handleMessage(Message msg) {
-                    new CoolToast(getBaseContext()).show((String) msg.obj);
-                    LoadingUI.instance.finish();
+                    switch (msg.what){
+                        case -1:
+                            LoadingUI.instance.finish();
+                            new CoolToast(getBaseContext()).show((String) msg.obj);
+                            break;
+                        case 0:
+                            LoadingUI.instance.finish();
+                            Intent intent = new Intent(Login.this, Main.class);
+                            startActivity(intent);
+                            StationThread();
+                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                            if (wifiManager != null) {
+                                deviceid = wifiManager.getConnectionInfo().getMacAddress();
+                            }
+                            appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
+                            //检查推送服务是否运行
+                            checkService();
+                            //结束当前
+                            Login.this.finish();
+                            break;
+                    }
+
                 }
             };
             new Thread() {
@@ -166,24 +186,15 @@ public class Login extends Activity {
                             appOption.setOption(AppOption.APP_OPTION_PASSWORD, password);
                             //获取登录用户详细信息
                             new LogUserInfo().setLogUsers();
-                            //检查推送服务是否运行
-                            checkService();
-                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                            if (wifiManager != null) {
-                                deviceid = wifiManager.getConnectionInfo().getMacAddress();
-                            }
-                            appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
-                            //结束当前
-                            Login.this.finish();
-                            LoadingUI.instance.finish();
-                            Intent intent = new Intent(Login.this, Main.class);
-                            startActivity(intent);
+                            message.what=0;
+                            handler.sendMessage(message);
                         } else {
+                            message.what=-1;
                             message.obj = info;
                             handler.sendMessage(message);
                         }
                     } catch (Exception e) {
-                        Log.e("错误",e.getMessage());
+//                        Log.e("错误",e.getMessage());
                         if(handler.obtainMessage(message.what, message.obj) != null){
                             Message _msg = new Message();
                             _msg.what = message.what;
@@ -192,30 +203,30 @@ public class Login extends Activity {
                         }else{
                         message.obj = e.getMessage();
                         }
+                        message.what=-1;
+//                        message.obj = e.getMessage();
                         handler.sendMessage(message);
                     }
                 }
             }.start();
     }
-
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case -1:
+                    new AppOption().setOption(AppOption.APP_OPTION_STATION, "未设置队列");
+                    break;
+                case 0:
+                    Application.setRulesDomain((RulesDomain) msg.obj);
+                    new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(((RulesDomain) msg.obj).getName()));
+                    break;
+            }
+        }
+    };
     private void StationThread() {
         final Message message = new Message();
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage(msg);
-                switch (msg.what) {
-                    case -1:
-                        new AppOption().setOption(AppOption.APP_OPTION_STATION, "未设置队列");
-                        break;
-                    case 0:
-                        Application.setRulesDomain((RulesDomain) msg.obj);
-                        new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(((RulesDomain) msg.obj).getName()));
-                        break;
-                }
-            }
-        };
-
         new Thread() {
             @Override
             public void run() {
@@ -239,6 +250,7 @@ public class Login extends Activity {
         }.start();
     }
 
+
 //    public class OptionOnClick implements Button.OnClickListener {
 //        @Override
 //        public void onClick(View v) {
@@ -248,19 +260,40 @@ public class Login extends Activity {
 //    }
 
     public void checkService() {
-        boolean isRun = false;
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if ("net.andy.com.MqttService".equals(service.service.getClassName())) {
-                isRun = true;
-            }
-        }
-        if (isRun) {
-            MqttService.disconnect();
-            MqttService.connect();
-        } else {
-            //启动推送服务
-            startService(new Intent(Application.getContext(), MqttService.class));
-        }
+//        new Thread() {
+//            @Override
+//            public void run() {
+//                try {
+                    boolean isRun = false;
+                    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                    for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                        if ("net.andy.com.MqttService".equals(service.service.getClassName())) {
+                            isRun = true;
+                        }
+                    }
+                    if (isRun) {
+                        Log.e(">>已经存在此服务","#########");
+                        MqttService.disconnect();
+                        MqttService.connect();
+                    } else {
+                        Log.e(">>不存在服务新建","#########");
+
+//                        new Thread(){
+//                            @Override
+//                            public void run() {
+//                                super.run();
+                                //启动推送服务
+                                startService(new Intent(Application.getContext(), MqttService.class));
+//                            }
+//                        }.start();
+
+                    }
+//                } catch (Exception ex) {
+//                    message.what = -1;
+//                    message.obj = ex.getMessage();
+//                    handler.sendMessage(message);
+//                }
+//            }
+//        }.start();
     }
 }

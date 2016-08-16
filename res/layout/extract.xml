@@ -1,389 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
-              android:background="@android:color/white"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <fragment android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:name="net.andy.boiling.ui.MessageFragment"
-              android:id="@+id/messagefragment"
-              tools:layout="@layout/messagefragement"/>
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="1"
-                  android:orientation="vertical">
 
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:background="#F4F4F4"
-                      android:orientation="vertical">
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:layout_marginTop="10dp"
-                      android:gravity="center"
-                      android:textColor="@android:color/black"
-                      android:textSize="24sp"
-                      android:text="设备信息"/>
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="60dp"
-                              android:text="设备号"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipId_textView"
-                    android:text="2101000002"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical" android:background="@android:color/white" android:layout_width="match_parent" android:layout_height="match_parent">
+    <fragment android:layout_width="match_parent" android:layout_height="wrap_content" android:name="net.andy.boiling.ui.MessageFragment" android:id="@+id/messagefragment" tools:layout="@layout/messagefragement"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#F4F4F4" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:gravity="center" android:textColor="@android:color/black" android:textSize="24sp" android:text="设备信息"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="60dp" android:text="设备号"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_equipId_textView" android:text="2101000002"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="60dp"
-                              android:text="设备名"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipName_textView"
-                    android:text="J018"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="60dp" android:text="设备名"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_equipName_textView" android:text="J018"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="60dp"
-                              android:text="用途"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipPurpose_textView"
-                    android:text="煎药"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="60dp" android:text="用途"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_equipPurpose_textView" android:text="煎药"/>
                 </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="60dp"
-                              android:text="状态"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_equipStatus_textView"
-                    android:text="空闲"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="60dp" android:text="状态"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_equipStatus_textView" android:text="空闲"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout android:layout_width="fill_parent"
-                      android:layout_height="wrap_content"
-                      android:background="@android:color/white"
-                      android:orientation="horizontal">
-            <LinearLayout android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical">
-
-                <TextView style="@style/CustomTextViewTheme"
-                          android:gravity="center"
-                          android:width="90dp"
-                          android:background="#55aa66"
-                          android:textColor="@android:color/white"
-                          android:textSize="30sp"
-                          android:id="@+id/extract_presCode_textView"/>
-                <TextView style="@style/CustomTextViewTheme"
-                          android:gravity="center"
-                          android:width="90dp"
-                          android:background="#FF9900"
-                          android:textColor="@android:color/white"
-                          android:textSize="28sp"
-                          android:id="@+id/extract_presStatus_textView"/>
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:background="@android:color/white" android:orientation="horizontal">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical">
+                <TextView style="@style/CustomTextViewTheme" android:gravity="center" android:width="90dp" android:background="#55aa66" android:textColor="@android:color/white" android:textSize="30sp" android:id="@+id/extract_presCode_textView"/>
+                <TextView style="@style/CustomTextViewTheme" android:gravity="center" android:width="90dp" android:background="#FF9900" android:textColor="@android:color/white" android:textSize="28sp" android:id="@+id/extract_presStatus_textView"/>
             </LinearLayout>
-
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="vertical">
-
-                <TextView android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:gravity="center"
-                          android:textColor="@android:color/black"
-                          android:textSize="24sp"
-                          android:text="处方信息"/>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:orientation="horizontal">
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:width="50dp"
-                                  android:text="编号"/>
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_patientNo_textView"
-                                  android:text="133339"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:textColor="@android:color/black" android:textSize="24sp" android:text="处方信息"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView style="@style/CustomTextViewTheme" android:width="50dp" android:text="编号"/>
+                        <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_patientNo_textView" android:text="133339"/>
                     </LinearLayout>
-
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:orientation="horizontal">
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:width="40dp"
-                                  android:text="姓名"/>
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_patientName_textView"
-                        android:text="曹树荣"/>
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView style="@style/CustomTextViewTheme" android:width="40dp" android:text="姓名"/>
+                        <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_patientName_textView" android:text="曹树荣"/>
                     </LinearLayout>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:orientation="horizontal">
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:width="50dp"
-                                  android:text="类别"/>
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_category_textView"
-                        android:text="住院"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView style="@style/CustomTextViewTheme" android:width="50dp" android:text="类别"/>
+                        <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_category_textView" android:text="住院"/>
                     </LinearLayout>
-
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:orientation="horizontal">
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:width="40dp"
-                                  android:text="剂型"/>
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_classification_textView"
-                                  android:text="饮片"
-                        />
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView style="@style/CustomTextViewTheme" android:width="40dp" android:text="剂型"/>
+                        <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_classification_textView" android:text="饮片"/>
                     </LinearLayout>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:orientation="horizontal">
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:orientation="horizontal">
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:width="50dp"
-                                  android:text="付数"/>
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_presNumber_textView"
-                        android:text="3付"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView style="@style/CustomTextViewTheme" android:width="50dp" android:text="付数"/>
+                        <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_presNumber_textView" android:text="3付"/>
                     </LinearLayout>
-
-                    <LinearLayout android:layout_width="fill_parent"
-                                  android:layout_height="wrap_content"
-                                  android:layout_weight="1"
-                                  android:orientation="horizontal">
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:width="40dp"
-                                  android:text="用法"/>
-                        <TextView style="@style/CustomTextViewTheme"
-                                  android:id="@+id/extract_way_textView"
-                        android:text="口服"/>
+                    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                        <TextView style="@style/CustomTextViewTheme" android:width="40dp" android:text="用法"/>
+                        <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_way_textView" android:text="口服"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:background="#F4F4F4"
-                      android:orientation="vertical">
-            <TextView android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:gravity="center"
-                      android:textColor="@android:color/black"
-                      android:textSize="24sp"
-                      android:text="煎制信息"/>
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="温度"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_temperature_textView"
-                    android:text="100°"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:background="#F4F4F4" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:textColor="@android:color/black" android:textSize="24sp" android:text="煎制信息"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="温度"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_temperature_textView" android:text="100°"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="压力"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_pressure_textView"
-                    android:text="1050pa"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="压力"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_pressure_textView" android:text="1050pa"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="出液量"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_quantity_textView"
-                    android:text="1200ml"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="出液量"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_quantity_textView" android:text="1200ml"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="状态"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_planStatus_textView"
-                    android:text="浸泡完成"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="状态"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_planStatus_textView" android:text="浸泡完成"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="浸泡加液"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_waterQuantity1_textView"
-                    android:text="1582ml"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="浸泡加液"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_waterQuantity1_textView" android:text="1582ml"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="浸泡时间"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_soakTime_textView"
-                    android:text="30分"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="浸泡时间"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_soakTime_textView" android:text="30分"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="一煎时间"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_extractTime1_textView"
-                    android:text="30分"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="一煎时间"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_extractTime1_textView" android:text="30分"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="二煎加液"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_waterQuantity2_textView"
-                    android:text="800ml"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="二煎加液"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_waterQuantity2_textView" android:text="800ml"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="二煎时间"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_extractTime2_textView"
-                    android:text="30分"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="二煎时间"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_extractTime2_textView" android:text="30分"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="三煎加液"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_waterQuantity3_textView"/>
+            <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="三煎加液"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_waterQuantity3_textView"/>
                 </LinearLayout>
-                <LinearLayout android:layout_width="fill_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:width="80dp"
-                              android:text="三煎时间"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:id="@+id/extract_extractTime3_textView"/>
+                <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme" android:width="80dp" android:text="三煎时间"/>
+                    <TextView style="@style/CustomTextViewTheme" android:id="@+id/extract_extractTime3_textView"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        <TextView android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:gravity="center"
-                  android:textColor="@android:color/holo_red_light"
-                  android:textSize="48sp"
-                  android:text="请选择操作"
-                  android:id="@+id/extract_status_textView"/>
+        <TextView android:layout_width="fill_parent" android:layout_height="fill_parent" android:gravity="center" android:textColor="@android:color/holo_red_light" android:textSize="48sp" android:text="请选择操作" android:id="@+id/extract_status_textView"/>
     </LinearLayout>
-
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="wrap_content">
-        <Button style="@style/CustomButtonTheme"
-                android:background="#6DD6D6"
-                android:layout_weight="1"
-                android:text="一煎"
-                android:id="@+id/extract_extract1_button"/>
-        <Button style="@style/CustomButtonTheme"
-                android:background="#55aa66"
-                android:layout_weight="1"
-                android:text="二煎"
-                android:id="@+id/extract_extract2_button"/>
-        <Button style="@style/CustomButtonTheme"
-                android:background="#FF9900"
-                android:layout_weight="1"
-                android:text="三煎"
-                android:id="@+id/extract_extract3_button"/>
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button style="@style/CustomButtonTheme" android:background="#6DD6D6" android:layout_weight="1" android:text="一煎" android:id="@+id/extract_extract1_button"/>
+        <Button style="@style/CustomButtonTheme" android:background="#55aa66" android:layout_weight="1" android:text="二煎" android:id="@+id/extract_extract2_button"/>
+        <Button style="@style/CustomButtonTheme" android:background="#FF9900" android:layout_weight="1" android:text="三煎" android:id="@+id/extract_extract3_button"/>
     </LinearLayout>
-
-    <Button style="@style/CustomButtonTheme"
-            android:layout_width="match_parent"
-            android:background="#4f4f4f"
-            android:text="包装"
-            android:id="@+id/extract_pack_button"/>
+    <Button style="@style/CustomButtonTheme" android:layout_width="match_parent" android:background="#4f4f4f" android:text="包装" android:id="@+id/extract_pack_button"/>
 </LinearLayout>
