@@ -1,6 +1,8 @@
 package net.andy.boiling.domain;
 
-public class SolutionDomain {
+import java.io.Serializable;
+
+public class SolutionDomain implements Serializable{
     private Integer id;
     /*方案ID*/
     private String solutionId;
@@ -18,6 +20,7 @@ public class SolutionDomain {
     private Integer temperature;
     /*压力*/
     private String pressure;
+    private String efficacy;
     /*剂型(饮片，膏方)*/
     private String classification;
     /*煎药方式(机煎、传统煎制)*/
@@ -119,5 +122,13 @@ public class SolutionDomain {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getEfficacy() {
+        return efficacy;
+    }
+
+    public void setEfficacy(String efficacy) {
+        this.efficacy = efficacy;
     }
 }

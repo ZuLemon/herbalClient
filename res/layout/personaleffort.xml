@@ -9,13 +9,13 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:background="@color/button_unselected"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="44.0dp">
         <TextView
                 android:textSize="18.0sp"
                 android:textColor="@android:color/white"
                 android:padding="12.0dp"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="46.0dp"
                 android:gravity="center"
                 android:text="个人工作量"/>
@@ -24,21 +24,21 @@
     <ScrollView
             android:scrollbarThumbVertical="@drawable/scrollbar_handle_vertical"
             android:background="@color/info_panel_bg"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1">
         <LinearLayout
                 android:orientation="vertical"
                 android:paddingBottom="10.0dp"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:isScrollContainer="true">
             <!-- 第一个白框BEGIN -->
             <LinearLayout
                     android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:background="@drawable/dark_circular"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="7dp"
@@ -46,7 +46,7 @@
                 <LinearLayout
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:minHeight="50.0dp">
@@ -68,12 +68,12 @@
                 </LinearLayout>
                 <View
                         android:background="@drawable/shape_line"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="1dp"/>
                 <LinearLayout
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10.0dp"
                         android:minHeight="50.0dp">
@@ -95,14 +95,14 @@
                 </LinearLayout>
                 <View
                         android:background="@drawable/shape_line"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="1dp"/>
             </LinearLayout>
         <LinearLayout
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:background="@drawable/dark_circular"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10.0dp"
                 android:layout_marginTop="7.0dp"
@@ -147,7 +147,7 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:background="@drawable/dark_circular"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10.0dp"
                 android:layout_marginTop="7.0dp"
@@ -155,7 +155,7 @@
             <LinearLayout
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:minHeight="50dp">
@@ -178,7 +178,7 @@
             <LinearLayout
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:minHeight="50dp">

@@ -38,12 +38,12 @@ public class DispensingUtil {
     /**
      获取处方总量
      */
-    public List getDispensingByDisId(String disId) throws Exception {
+    public DispensingDomain getDispensing(String disId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        pairs.add ( new BasicNameValuePair ( "disId", disId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensing/getDispensingByPlanId.do", pairs, ReturnDomain.class );
+        pairs.add ( new BasicNameValuePair ( "id", disId ) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensing/getDispensing.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
-            return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
+            return JSON.parseObject ( returnDomain.getObject ().toString (),  DispensingDomain.class);
         } else {
             throw new Exception ( returnDomain.getException () );
         }

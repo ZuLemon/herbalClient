@@ -29,4 +29,16 @@ public class SoakUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
+    public String 	insert(Integer extId, Integer equipId, Integer userId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "id1", String.valueOf(extId )) );
+        pairs.add ( new BasicNameValuePair ( "id2", String.valueOf(equipId )) );
+        pairs.add ( new BasicNameValuePair ( "userId", String.valueOf(userId )) );
+        returnDomain = ( ReturnDomain ) ( new Http ().post ( "soak/insert.do", pairs, ReturnDomain.class ) );
+        if ( returnDomain.getSuccess () ) {
+            return "开始浸泡";
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
 }

@@ -14,15 +14,15 @@
                   android:orientation="horizontal"
                   android:padding="10dp">
         <CheckBox
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="上药"
                 android:id="@+id/replenish"
                 android:layout_gravity="center_horizontal"
                 style="@style/CustomCheckboxTheme"/>
 
-        <TextView android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
                   android:gravity="center"
                   android:textSize="18sp"
                   android:layout_marginRight="10dp"

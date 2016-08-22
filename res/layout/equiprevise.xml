@@ -20,7 +20,7 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/equip_tagId"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:editable="false"
@@ -41,7 +41,7 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/equip_equipId"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:id="@+id/equip_equipId_editText"/>
@@ -60,7 +60,7 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/equip_equipName"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:id="@+id/equip_equipName_editText"/>
@@ -215,8 +215,8 @@
                 android:id="@+id/equip6_equipStatus_radioButton"/>
     </RadioGroup>
     <Button style="@style/CustomButtonTheme"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:text="@string/app_submit"
             android:textSize="45sp"
             android:id="@+id/equip_ok_button"/>

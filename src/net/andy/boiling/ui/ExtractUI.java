@@ -1,37 +1,47 @@
 package net.andy.boiling.ui;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.boiling.domain.*;
 import net.andy.boiling.util.*;
+import net.andy.com.Application;
 import net.andy.com.ChineseToSpeech;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import net.andy.dispensing.domain.DispensingDomain;
+import net.andy.dispensing.util.DispensingUtil;
+import net.andy.dispensing.util.HerbalUtil;
+import net.andy.dispensing.util.ServerUtil;
+import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2014-11-14.
  * 煎制操作
  */
+@ContentView(R.layout.extract)
 public class ExtractUI extends NFCActivity {
-    @ViewInject(R.id.extract_equipId_textView)
-    private TextView extract_equipId_textView;
-    @ViewInject(R.id.extract_equipName_textView)
-    private TextView extract_equipName_textView;
-    @ViewInject(R.id.extract_equipPurpose_textView)
-    private TextView extract_equipPurpose_textView;
-    @ViewInject(R.id.extract_equipStatus_textView)
-    private TextView extract_equipStatus_textView;
-    @ViewInject(R.id.extract_presCode_textView)
-    private TextView extract_presCode_textView;
+    @ViewInject(R.id.extract_extractEquip_textView)
+    private TextView extract_extractEquip_textView;
+    @ViewInject(R.id.extract_soakEquip_textView)
+    private TextView extract_soakEquip_textView;
+
+    @ViewInject(R.id.extract_tagCode_textView)
+    private TextView extract_tagCode_textView;
     @ViewInject(R.id.extract_presStatus_textView)
     private TextView extract_presStatus_textView;
     @ViewInject(R.id.extract_patientNo_textView)
@@ -50,25 +60,22 @@ public class ExtractUI extends NFCActivity {
     private TextView extract_temperature_textView;
     @ViewInject(R.id.extract_pressure_textView)
     private TextView extract_pressure_textView;
-    @ViewInject(R.id.extract_quantity_textView)
-    private TextView extract_quantity_textView;
-    @ViewInject(R.id.extract_planStatus_textView)
-    private TextView extract_planStatus_textView;
+    //    @ViewInject(R.id.extract_planStatus_textView)
+//    private TextView extract_planStatus_textView;
     @ViewInject(R.id.extract_waterQuantity1_textView)
     private TextView extract_waterQuantity1_textView;
+    @ViewInject(R.id.extract_method_textView)
+    private TextView extract_method_textView;
     @ViewInject(R.id.extract_soakTime_textView)
     private TextView extract_soakTime_textView;
     @ViewInject(R.id.extract_extractTime1_textView)
     private TextView extract_extractTime1_textView;
-    @ViewInject(R.id.extract_waterQuantity2_textView)
-    private TextView extract_waterQuantity2_textView;
     @ViewInject(R.id.extract_extractTime2_textView)
     private TextView extract_extractTime2_textView;
-    @ViewInject(R.id.extract_waterQuantity3_textView)
-    private TextView extract_waterQuantity3_textView;
-    @ViewInject(R.id.extract_extractTime3_textView)
-    private TextView extract_extractTime3_textView;
-    @ViewInject(R.id.extract_status_textView)
+    @ViewInject(R.id.extract1_equiptype1_radioButton)
+    private RadioButton extract1_equiptype1_radioButton;
+    @ViewInject(R.id.extract2_equiptype1_radioButton)
+    private RadioButton extract2_equiptype1_radioButton;
     private TextView extract_status_textView;
     @ViewInject(R.id.extract_pack_button)
     private Button extract_pack_button;
@@ -78,222 +85,363 @@ public class ExtractUI extends NFCActivity {
     private Button extract_extract2_button;
     @ViewInject(R.id.extract_extract3_button)
     private Button extract_extract3_button;
+    @ViewInject(R.id.extract_soak_button)
+    private Button extract_soak_button;
+    @ViewInject(R.id.extract_equiptype1_radioGroup)
+    private RadioGroup extract_equiptype1_radioGroup;
+    @ViewInject(R.id.extract_startTime_textView)
+    private TextView extract_startTime_textView;
+    @ViewInject(R.id.extract_endTime_textView)
+    private TextView extract_endTime_textView;
+    @ViewInject(R.id.extract_extractbutton_linearLayout)
+    private LinearLayout extract_extractbutton_linearLayout;
+    @ViewInject(R.id.extract_soakbutton_linearLayout)
+    private LinearLayout extract_soakbutton_linearLayout;
+    @ViewInject(R.id.extract_out_textView)
+    private TextView extract_out_textView;
     private ReturnDomain returnDomain;
-    private TagDomain tagDomain = new TagDomain ();
-    private PrescriptionDomain prescriptionDomain = new PrescriptionDomain ();
-    private ExtractingDomain extractingDomain = new ExtractingDomain ();
-    private ExtractDomain extractDomain = new ExtractDomain ();
-    private EquipmentDomain equipmentDomain = new EquipmentDomain ();
-    private ChineseToSpeech speech = new ChineseToSpeech ();
+    private DispensingDomain dispensing = new DispensingDomain();
+    private TagDomain tagDomain = new TagDomain();
+    private TagDomain waterTag = new TagDomain();
+    private TagDomain extractTag = new TagDomain();
+    private PrescriptionDomain prescriptionDomain = null;
+    private ExtractingDomain extractingDomain = null;
+    private EquipmentDomain waterEquipment = null;
+    private EquipmentDomain extractEquipment =null;
+    private SoakDomain soakDomain = null;
+    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    private SoakUtil soakUtil=new SoakUtil();
+    private ChineseToSpeech speech = new ChineseToSpeech();
     private String extractStatus;
     private String equipId;
     private String tagId;
     private String code;
-    private boolean isPre;
-
+    private boolean hasPre;
+    private boolean hasWater;
+    private boolean hasExtract;
+    private boolean hasPack;
+    private String equipType1;
+    private Integer quantity;
+    private Message message;
+    private List ExtractList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate ( savedInstanceState );
-        setContentView ( R.layout.extract );
+        super.onCreate(savedInstanceState);
         x.view().inject(this);
-        Bundle bundle = this.getIntent().getExtras();
-        if(bundle!=null) {
-            String planStatus = bundle.getString("planStatus");
-            String planId = bundle.getString("planId");
-            code = bundle.getString("code");
-            System.out.println(planId + "planStatus:" + planStatus+code);
-            request ( 3 ,planId);
-        }
-//        getWidget ();
-//        bindEvent ();
+//        Bundle bundle = this.getIntent().getExtras();
+//        if(bundle!=null) {
+//            String planStatus = bundle.getString("planStatus");
+//            String planId = bundle.getString("planId");
+//            code = bundle.getString("code");
+//            System.out.println(planId + "planStatus:" + planStatus+code);
+//            extractThread ( 3 );
+//        }
     }
 
-//    public void getWidget() {
-//        extract_equipId_textView = ( TextView ) findViewById ( R.id.extract_equipId_textView );
-//        extract_equipName_textView = ( TextView ) findViewById ( R.id.extract_equipName_textView );
-//        extract_equipPurpose_textView = ( TextView ) findViewById ( R.id.extract_equipPurpose_textView );
-//        extract_equipStatus_textView = ( TextView ) findViewById ( R.id.extract_equipStatus_textView );
-//        extract_presCode_textView = ( TextView ) findViewById ( R.id.extract_presCode_textView );
-//        extract_presStatus_textView = ( TextView ) findViewById ( R.id.extract_presStatus_textView );
-//        extract_patientNo_textView = ( TextView ) findViewById ( R.id.extract_patientNo_textView );
-//        extract_patientName_textView = ( TextView ) findViewById ( R.id.extract_patientName_textView );
-//        extract_category_textView = ( TextView ) findViewById ( R.id.extract_category_textView );
-//        extract_classification_textView = ( TextView ) findViewById ( R.id.extract_classification_textView );
-//        extract_presNumber_textView = ( TextView ) findViewById ( R.id.extract_presNumber_textView );
-//        extract_way_textView = ( TextView ) findViewById ( R.id.extract_way_textView );
-//        extract_temperature_textView = ( TextView ) findViewById ( R.id.extract_temperature_textView );
-//        extract_pressure_textView = ( TextView ) findViewById ( R.id.extract_pressure_textView );
-//        extract_quantity_textView = ( TextView ) findViewById ( R.id.extract_quantity_textView );
-//        extract_planStatus_textView = ( TextView ) findViewById ( R.id.extract_planStatus_textView );
-//        extract_waterQuantity1_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity1_textView );
-//        extract_soakTime_textView = ( TextView ) findViewById ( R.id.extract_soakTime_textView );
-//        extract_extractTime1_textView = ( TextView ) findViewById ( R.id.extract_extractTime1_textView );
-//        extract_waterQuantity2_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity2_textView );
-//        extract_extractTime2_textView = ( TextView ) findViewById ( R.id.extract_extractTime2_textView );
-//        extract_waterQuantity3_textView = ( TextView ) findViewById ( R.id.extract_waterQuantity3_textView );
-//        extract_extractTime3_textView = ( TextView ) findViewById ( R.id.extract_extractTime3_textView );
-//        extract_status_textView = ( TextView ) findViewById ( R.id.extract_status_textView );
-//        extract_pack_button = ( Button ) findViewById ( R.id.extract_pack_button );
-//        extract_extract1_button = ( Button ) findViewById ( R.id.extract_extract1_button );
-//        extract_extract2_button = ( Button ) findViewById ( R.id.extract_extract2_button );
-//        extract_extract3_button = ( Button ) findViewById ( R.id.extract_extract3_button );
-//    }
-
-//    public void bindEvent() {
-//        extract_extract1_button.setOnClickListener ( new Submit () );
-//        extract_extract2_button.setOnClickListener ( new Submit () );
-//        extract_pack_button.setOnClickListener ( new Submit () );
-////        extract_extract3_button.setOnClickListener ( new Sub());
-//    }
-
-  @Event(value = {R.id.extract_extract1_button,R.id.extract_extract1_button,R.id.extract_extract1_button},type = View.OnClickListener.class)
-        private void btnClick(View v) {
-            switch (v.getId ()) {
-                case R.id.extract_extract1_button:
+    @Event(value = {R.id.extract_extract1_button,
+            R.id.extract_extract1_button,
+            R.id.extract_extract1_button,
+            R.id.extract_pack_button,
+            R.id.extract_soak_button},
+            type = View.OnClickListener.class)
+    private void btnClick(View v) {
+                if(prescriptionDomain==null){
+                    new CoolToast(getBaseContext()).show("请先选择处方");
+                    return;
+                }
+        switch (v.getId()) {
+            case R.id.extract_extract1_button:
+                if(hasExtract) {
                     extractStatus = "一煎";
-                    request ( 1,null );
-                    break;
-                case R.id.extract_extract2_button:
-                    extractStatus = "二煎";
-                    request ( 1 ,null);
-                    break;
-                case R.id.extract_pack_button:
-                    request ( 2,null );
-                    break;
-//                case R.id.extract_extract3_button:
-//                    extractStatus="三煎";
-            }
+                    extractThread(4);
+                }else{
+                    new CoolToast(getBaseContext()).show("请先选择煎药机");
+                }
+                break;
+            case R.id.extract_extract2_button:
+                if(hasExtract) {
+                extractStatus = "二煎";
+                extractThread(4);
+                    }else{
+                        new CoolToast(getBaseContext()).show("请先选择煎药机");
+                    }
+                break;
+            case R.id.extract_pack_button:
+                if("一煎".equals(extractingDomain.getPlanStatus())||"一煎".equals(extractingDomain.getPlanStatus())) {
+                    extractThread(5);
+                }else{
+                    new CoolToast(getBaseContext()).show("请先煎制处方");
+                }
+                break;
+            case R.id.extract_soak_button:
+                Log.e(">>", "浸泡");
+                if (hasPre && hasWater) {
+                    extractThread(3);
+                }else{
+                    new CoolToast(getBaseContext()).show("请先选择加液机");
+                    return;
+                }
+                break;
+        }
     }
+
     public void setWidget() {
         try {
-            extract_equipId_textView.setText ( equipmentDomain.getEquipId () );
-            extract_equipName_textView.setText ( equipmentDomain.getEquipName () );
-            extract_equipPurpose_textView.setText ( equipmentDomain.getEquipPurpose () );
-            extract_equipStatus_textView.setText ( equipmentDomain.getEquipStatus () );
-            if("".equals(tagDomain.getCode())){
-                extract_presCode_textView.setText(code);
-            }else {
-                extract_presCode_textView.setText(tagDomain.getCode());
-                extract_presStatus_textView.setText(tagDomain.getStatus());
+            if ("".equals(tagDomain.getCode())) {
+                Log.e("code", "code为空");
+            } else {
+                extract_tagCode_textView.setText(tagDomain.getCode().replace("M", ""));
             }
-                extract_patientNo_textView.setText ( prescriptionDomain.getPatientNo () );
-            extract_patientName_textView.setText ( prescriptionDomain.getPatientName () );
-            extract_category_textView.setText ( prescriptionDomain.getCategory () );
-            extract_classification_textView.setText ( prescriptionDomain.getClassification () );
-            extract_presNumber_textView.setText ( prescriptionDomain.getPresNumber ().toString () );
-            extract_way_textView.setText ( prescriptionDomain.getWay () );
-            extract_temperature_textView.setText ( extractingDomain.getTemperature ().toString () );
-            extract_pressure_textView.setText ( extractingDomain.getPressure () );
-            extract_quantity_textView.setText ( extractingDomain.getQuantity ().toString () );
-            extract_planStatus_textView.setText ( extractingDomain.getPlanStatus () );
-            extract_soakTime_textView.setText ( extractingDomain.getSoakTime ().toString () );
-            extract_extractTime1_textView.setText ( extractingDomain.getExtractTime1 ().toString () );
-            extract_extractTime2_textView.setText ( extractingDomain.getExtractTime2 ().toString () );
-            extract_extractTime3_textView.setText ( extractingDomain.getExtractTime3 ().toString () );
+            if (prescriptionDomain != null) {
+                extract_patientNo_textView.setText(prescriptionDomain.getPatientNo());
+                extract_patientName_textView.setText(prescriptionDomain.getPatientName().length() < 4 ? prescriptionDomain.getPatientName() : prescriptionDomain.getPatientName().substring(0, 4));
+                extract_category_textView.setText(prescriptionDomain.getCategory());
+                extract_classification_textView.setText(prescriptionDomain.getClassification());
+                extract_presNumber_textView.setText(prescriptionDomain.getPresNumber().toString() + "付");
+                extract_way_textView.setText(prescriptionDomain.getWay());
+            }
+            if (extractingDomain != null) {
+                extract_out_textView.setText(String.valueOf(extractingDomain.getOut()));
+                extract_method_textView.setText(extractingDomain.getMethod());
+                extract_waterQuantity1_textView.setText(String.valueOf(extractingDomain.getQuantity()));
+                extract_temperature_textView.setText(extractingDomain.getTemperature().toString() + " °");
+                extract_pressure_textView.setText(extractingDomain.getPressure());
+                extract_presStatus_textView.setText(extractingDomain.getPlanStatus());
+                extract_soakTime_textView.setText(extractingDomain.getSoakTime().toString() + " 分");
+                extract_extractTime1_textView.setText(extractingDomain.getExtractTime1().toString() + " 分");
+                extract_extractTime2_textView.setText(extractingDomain.getExtractTime2().toString() + " 分");
+            }
+            if (soakDomain != null) {
+                Log.e("soakDomain", String.valueOf(hasWater));
+                hasWater=true;
+                extract_startTime_textView.setText(simpleDateFormat.format(soakDomain.getBeginTime()));
+                extract_endTime_textView.setText(simpleDateFormat.format(soakDomain.getEndTime()));
+                extract_soakEquip_textView.setText(waterEquipment.getEquipId());
+                extract1_equiptype1_radioButton.setClickable(false);
+                extract2_equiptype1_radioButton.setClickable(false);
+            }else{
+                hasWater=false;
+                extract1_equiptype1_radioButton.setClickable(true);
+                extract2_equiptype1_radioButton.setClickable(true);
+            }
+            if(extractEquipment!=null){
+                extract_extractEquip_textView.setText(extractEquipment.getEquipId());
+            }
+
+            if(hasPack){
+                extract_extractbutton_linearLayout.setVisibility(View.GONE);
+                extract_soakbutton_linearLayout.setVisibility(View.GONE);
+            }else{
+                if (! "开始".equals(extractingDomain.getPlanStatus())) {
+                    extract_extractbutton_linearLayout.setVisibility(View.VISIBLE);
+                    extract_soakbutton_linearLayout.setVisibility(View.GONE);
+                }else{
+                    extract_extractbutton_linearLayout.setVisibility(View.GONE);
+                    extract_soakbutton_linearLayout.setVisibility(View.VISIBLE);
+                }
+            }
         } catch (Exception e) {
-            e.printStackTrace ();
+            e.printStackTrace();
+        }
+    }
+
+    @Event(value = R.id.extract_equiptype1_radioGroup,
+            type = RadioGroup.OnCheckedChangeListener.class)
+    private void onCheckedChanged(RadioGroup group, int checkedId) {
+        if (checkedId == extract1_equiptype1_radioButton.getId()) {
+            equipType1 = String.valueOf(extract1_equiptype1_radioButton.getText());
+        } else if (checkedId == extract2_equiptype1_radioButton.getId()) {
+            equipType1 = String.valueOf(extract2_equiptype1_radioButton.getText());
+        }
+        if (hasPre) {
+            Log.e("equipType1", equipType1);
+            extractThread(2);
         }
     }
 
     public void resetObject() {
-        tagDomain = new TagDomain ();
-        prescriptionDomain = new PrescriptionDomain ();
-        extractingDomain = new ExtractingDomain ();
-        equipmentDomain = new EquipmentDomain ();
+        tagDomain = new TagDomain();
+        prescriptionDomain = new PrescriptionDomain();
+        extractingDomain = new ExtractingDomain();
+        waterEquipment = new EquipmentDomain();
+        extractEquipment = new EquipmentDomain();
     }
 
-    public void request(int what,String planId) {
-        final Message message = new Message ();
-        final Handler handler = new Handler () {
-            @Override
-            public void handleMessage(Message msg) {
-                super.handleMessage ( msg );
-                switch (msg.what) {
-                    case -1:
-                        new CoolToast ( getBaseContext () ).show ( ( String ) msg.obj );
-                        resetObject ();
-                        setWidget ();
-                        break;
-                    case 0:
-                        setWidget ();
-                        break;
-                    case 1:
-                        speech.speech ( "开始" + extractStatus );
-                        break;
-                    case 2:
-                        speech.speech ( "开始包装" );
-                        break;
-                }
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case - 1:
+                    reset();
+                    resetObject();
+                    resetView();
+                    new CoolToast(getBaseContext()).show("异常：" + msg.obj);
+//                    setWidget ();
+                    break;
+                case 0:
+                    break;
+                case 1:
+                    resetView();
+                    setWidget();
+                    break;
+                case 2:
+                    if (quantity != null) {
+                        extractingDomain.setQuantity(quantity);
+                        extract_waterQuantity1_textView.setText(String.valueOf(quantity));
+                    }
+                    break;
+                case 3:
+                    new CoolToast(getBaseContext()).show((String) msg.obj);
+                    reset();
+                    resetObject();
+                    resetView();
+                    break;
+                case 4:
+                    new CoolToast(getBaseContext()).show("开始"+extractStatus);
+                    reset();
+                    resetObject();
+                    resetView();
+                    break;
+                case 5:
+                    new CoolToast(getBaseContext()).show("开始包装");
+                    reset();
+                    resetObject();
+                    resetView();
+                    break;
+                case 11:
+                    Log.e(">>", waterEquipment.getEquipId());
+                    hasWater=true;
+                    extract_soakEquip_textView.setText(waterEquipment.getEquipId());
+                    break;
+                case 12:
+                    Log.e(">>", extractEquipment.getEquipId());
+                    hasExtract=true;
+                    extract_extractEquip_textView.setText(extractEquipment.getEquipId());
+                    break;
             }
-        };
+        }
+    };
 
-        new Thread () {
+    public void extractThread(int what) {
+        message = new Message();
+        new Thread() {
             @Override
             public void run() {
-                super.run ();
+                super.run();
                 try {
                     switch (what) {
                         case 0:
-                            judge ();
-                            message.what = 0;
-                            handler.sendMessage ( message );
+                            tagDomain = new TagUtil().getTagByTagId(tagId);
+                            judgeTag();
+//                            message.what = 0;
+//                            handler.sendMessage ( message );
                             break;
+                        //查询煎制、处方信息
                         case 1:
-                            startExtract ();
-                            message.what = 1;
+                            extractingDomain = new ExtractingUtil().importExtracting(tagId, Application.getUsers().getId(), "");
+                            prescriptionDomain = new PrescriptionUtil().getPrescriptionByPlanId(extractingDomain.getPlanId());
+                            if (! "开始".equals(extractingDomain.getPlanStatus())) {
+                                soakDomain = soakUtil.getSoakByPlanId(extractingDomain.getPlanId());
+                                waterEquipment=new EquipmentUtil().getEquipment(soakDomain.getEquipId());
+                                if(!"浸泡".equals(extractingDomain.getPlanStatus())){
+                                    ExtractList=new ExtractUtil().getExtractByPlanId(extractingDomain.getPlanId());
+                                    extractEquipment=new EquipmentUtil().getEquipByEquipId(String.valueOf(((Map)ExtractList.get(0)).get("equipId")));
+                                }
+                                if("包装".equals(extractingDomain.getPlanStatus())){
+                                    hasPack=true;
+                                }
+                            }
                             message.obj = "";
-                            handler.sendMessage ( message );
+                            message.what = 1;
+//                            }
+                            handler.sendMessage(message);
                             break;
                         case 2:
-                            startPack ();
+                            quantity = new ExtractingUtil().calcWater(extractingDomain.getPlanId(), equipType1);
                             message.what = 2;
-                            message.obj = "";
-                            handler.sendMessage ( message );
+                            handler.sendMessage(message);
                             break;
+                        //开始浸泡
                         case 3:
-                            IsPre(planId);
-                            message.what = 0;
-                            handler.sendMessage ( message );
+                            new ExtractingUtil().subExtracting(extractingDomain,false);
+                            message.obj = soakUtil.insert(extractingDomain.getId(), waterEquipment.getId(), Application.getUsers().getId());
+                            message.what = 3;
+                            handler.sendMessage(message);
                             break;
+                        //开始煎制
                         case 4:
+                            Log.e(">>","煎制");
+                            SoakDomain tempSoak=soakUtil.getSoakByPlanId(extractingDomain.getPlanId());
+                           if(new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime()<tempSoak.getEndTime().getTime()){
+                               message.obj = HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎";
+                               message.what = -1;
+                               handler.sendMessage(message);
+                           }else {
+                               startExtract();
+                           }
+//                            IsPre(planId);
+                            message.what = 4;
+                            handler.sendMessage(message);
+                            break;
+                        case 5:
+                            Date endTime=HerbalUtil.String2Date(String.valueOf(((Map)ExtractList.get(ExtractList.size()-1)).get("endTime")),null);
+                            Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
+                            if(new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime()<endTime.getTime()){
+                                message.obj = HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装";
+                                message.what = -1;
+                                handler.sendMessage(message);
+                            }else{
+                            message.obj = new PackUtil().insert(extractingDomain.getPlanId());
+                            message.what = 5;
+                            handler.sendMessage(message);
+                            }
                             break;
                     }
                 } catch (Exception e) {
-                    message.what = -1;
-                    message.obj = e.getMessage ();
-                    handler.sendMessage ( message );
+                    message.what = - 1;
+                    message.obj = e.getMessage();
+                    handler.sendMessage(message);
                 }
             }
-        }.start ();
+        }.start();
     }
 
     private void startExtract() throws Exception {
-        new ExtractUtil ().insert ( extractingDomain.getPlanId (), equipmentDomain.getEquipId (), extractStatus );
+        new ExtractUtil().insert(extractingDomain.getPlanId(), extractEquipment.getEquipId(), extractStatus);
     }
+//    private void IsPre(String PlanId) throws Exception {
+//        tagDomain = new TagUtil().getTagByTagId(tagId);
+//        extractingDomain = new ExtractingUtil().getExtractingByPlanId(PlanId);
+//        String planStatus = extractingDomain.getPlanStatus();
+//        if ("浸泡".equals(planStatus)) {
+//            extract_extract1_button.setClickable(true);
+//            extract_pack_button.setClickable(false);
+//        }
+//        if ("一煎".equals(planStatus)) {
+//            extract_extract1_button.setClickable(false);
+//            extract_pack_button.setClickable(true);
+//        }
+//        if ("二煎".equals(planStatus)) {
+//            extract_extract2_button.setClickable(false);
+//            extract_pack_button.setClickable(true);
+//        }
+//        extractEquipment = new EquipmentUtil().getEquipByPlanId(PlanId);
+//        prescriptionDomain = new PrescriptionUtil().getPrescriptionByPresId(extractingDomain.getPresId());
+//        hasPre = true;
+//    }
 
-    private void startPack() throws Exception {
-        new PackUtil ().insert ( extractingDomain.getPlanId () );
-    }
+    /**
+     * 判断处方调剂
+     *
+     * @param disId
+     */
+    private void isDispensing(String disId) throws Exception {
+        dispensing = new DispensingUtil().getDispensing(disId);
+        if (dispensing != null) {
+            prescriptionDomain = new PrescriptionUtil().getPrescriptionByPresId(dispensing.getPlanId());
 
-    private void IsPre(String PlanId) throws Exception {
-        tagDomain = new TagUtil ().getTagByTagId ( tagId );
-        extractingDomain = new ExtractUtil ().getExtractingByPlanId ( PlanId );
-        String planStatus=extractingDomain.getPlanStatus();
-        if ( "浸泡".equals ( planStatus ) ) {
-            extract_extract1_button.setClickable ( true );
-            extract_pack_button.setClickable ( false );
         }
-        if ( "一煎".equals ( planStatus ) ) {
-            extract_extract1_button.setClickable ( false );
-            extract_pack_button.setClickable ( true );
-        }
-        if ( "二煎".equals ( planStatus ) ) {
-            extract_extract2_button.setClickable ( false );
-            extract_pack_button.setClickable ( true );
-        }
-        equipmentDomain = new EquipmentUtil ().getEquipByPlanId ( PlanId );
-        prescriptionDomain = new PrescriptionUtil ().getPrescriptionByPresId ( extractingDomain.getPresId () );
-        isPre = true;
     }
 
     /**
@@ -301,42 +449,88 @@ public class ExtractUI extends NFCActivity {
      *
      * @throws Exception
      */
-    private void judge() throws Exception {
-        tagDomain = new TagUtil ().getTagByTagId ( tagId );
-        if ( "处方".equals ( tagDomain.getType () ) ) {
-            IsPre(tagDomain.getBindId());
-        }
-        if ( isPre ) {
-            if ( "煎药机".equals ( tagDomain.getType () ) ) {
-                equipmentDomain = new EquipmentUtil ().getEquipByTagId ( tagId );
-                String equipType = equipmentDomain.getEquipType1 ();
-                System.out.println ( equipmentDomain.getEquipId () );
-                if ( equipType.equals ( extractingDomain.getSoakType () ) && equipType != null ) {
-                    speech.speech ( "可以开始煎药" );
-
+    private void judgeTag() throws Exception {
+        if ("处方".equals(tagDomain.getType())) {
+            reset();
+            extractThread(1);
+            hasPre = true;
+            Log.e("judgeTag", "处方");
+        } else {
+            if (hasPre) {
+                if ("加液机".equals(tagDomain.getType())) {
+                    waterTag = tagDomain;
+                    waterEquipment = new EquipmentUtil().getEquipByTagId(tagId);
+                    hasWater = true;
+                    Log.e("judgeTag", "加液机");
+                    handlerMessage(11);
+                }
+                if (hasWater) {
+                    if ("煎药机".equals(tagDomain.getType())) {
+                        extractTag=tagDomain;
+                        Log.e("judgeTag", "煎药机");
+                        extractEquipment=new EquipmentUtil().getEquipByTagId(tagId);
+                        handlerMessage(12);
+                    }
                 } else {
-                    speech.speech ( "请选择正确的煎药机" );
+                    throw new Exception("请先选择加液机");
                 }
             } else {
-                speech.speech ( "请选择煎药机" );
+                throw new Exception("请先读取处方");
             }
-        } else {
-            speech.speech ( "请先选择处方" );
         }
+
+    }
+    private void reset(){
+        hasPre=false;
+        hasPack=false;
+        hasWater=false;
+        hasExtract=false;
+
+    }
+    private void resetView(){
+        extract_patientNo_textView.setText("");
+        extract_patientName_textView.setText("");
+        extract_category_textView.setText("");
+        extract_classification_textView.setText("");
+        extract_presNumber_textView.setText("");
+        extract_way_textView.setText("");
+        extract_out_textView.setText("");
+        extract_method_textView.setText("");
+        extract_waterQuantity1_textView.setText("");
+        extract_temperature_textView.setText("");
+        extract_pressure_textView.setText("");
+        extract_presStatus_textView.setText("");
+        extract_soakTime_textView.setText("");
+        extract_extractTime1_textView.setText("");
+        extract_extractTime2_textView.setText("");
+        extract_extractEquip_textView.setText("");
+        extract_endTime_textView.setText("");
+        extract_startTime_textView.setText("");
+        extract_soakEquip_textView.setText("");
+        extract_tagCode_textView.setText("");
+        extract1_equiptype1_radioButton.setClickable(true);
+        extract2_equiptype1_radioButton.setClickable(true);
+    }
+    private void handlerMessage(int what) {
+        Log.e("handlerMessage", String.valueOf(what));
+        message = null;
+        message = new Message();
+        message.what = what;
+        handler.sendMessage(message);
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
-        super.onNewIntent ( intent );
-        tagId = getNfc ().readID ( intent );
-        request ( 0 ,null);
+        super.onNewIntent(intent);
+        tagId = getNfc().readID(intent);
+        extractThread(0);
     }
 
     @Override
     protected void onDestroy() {
-        if ( speech != null ) {
-            speech.destroy ();
+        if (speech != null) {
+            speech.destroy();
         }
-        super.onDestroy ();
+        super.onDestroy();
     }
 }

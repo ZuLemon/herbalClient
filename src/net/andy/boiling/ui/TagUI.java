@@ -129,7 +129,7 @@ public class TagUI extends NFCActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case SCANNIN_GREQUEST_CODE:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == MipcaActivityCapture.Capture_OK) {
                     Bundle bundle = data.getExtras();
                     //显示扫描到的内容
                     tag_code_editText.setText(bundle.getString("result"));

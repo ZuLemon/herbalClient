@@ -1,8 +1,9 @@
 package net.andy.boiling.util;
 
 import com.alibaba.fastjson.JSON;
-import net.andy.boiling.domain.PackDomain;
 import net.andy.boiling.domain.ReturnDomain;
+import net.andy.boiling.domain.SoakDomain;
+import net.andy.boiling.domain.SolutionDomain;
 import net.andy.com.Http;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -11,19 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PackUtil
- *
+ * SolutionUtil
+ * 煎制方案
  * @author RongGuang
- * @date 2015/12/9
+ * @date 2016/8/16
  */
-public class PackUtil {
+public class SolutionUtil {
     private ReturnDomain returnDomain;
-    public String insert(String planId) throws Exception {
+
+    public List getSolutionForAll(String status) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "pack/insert.do", pairs, ReturnDomain.class );
+        pairs.add ( new BasicNameValuePair ( "status", status ) );
+        returnDomain = ( ReturnDomain ) ( new Http ().post ( "solution/getSolutionForAll.do", pairs, ReturnDomain.class ) );
         if ( returnDomain.getSuccess () ) {
-            return "包装成功";
+            return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
         } else {
             throw new Exception ( returnDomain.getException () );
         }

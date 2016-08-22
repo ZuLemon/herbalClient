@@ -97,5 +97,7 @@
         <activity android:name="net.andy.dispensing.ui.SelectPresUI"/>
         <activity android:name="net.andy.dispensing.ui.AlreadyDisDetailUI"
                   android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.boiling.ui.ExtractPlanUI"
+                  android:theme="@style/TranslucentFullscreen"/>
     </application>
 </manifest>

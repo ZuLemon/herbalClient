@@ -31,7 +31,16 @@ public class PrescriptionUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
-
+    public PrescriptionDomain getPrescriptionByPlanId(String planId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "planId", planId ) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getPrescriptionByPlanId.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (), PrescriptionDomain.class );
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
     public PrescriptionDomain getPrescriptionByPresId(String presId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "presId", presId ) );

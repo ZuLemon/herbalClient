@@ -31,6 +31,7 @@ import net.andy.com.CoolToast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -42,6 +43,7 @@ import java.util.Map;
 /**
  * Created by Guang on 2016/2/24.
  */
+@ContentView(R.layout.setting)
 public class SettingUI extends Activity {
     @ViewInject(R.id.setting_station_linearLayout)
     private LinearLayout setting_station_linearLayout;
@@ -77,7 +79,6 @@ public class SettingUI extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting);
         x.view().inject(this);
         coolToast = new CoolToast(getBaseContext());
 //        setting_station_linearLayout = (LinearLayout) findViewById(R.id.setting_station_linearLayout);

@@ -23,7 +23,7 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/tag_tagId"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:editable="false"
@@ -42,7 +42,7 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/tag_code"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:id="@+id/tag_code_editText"/>
@@ -62,14 +62,14 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/tag_bindId"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:id="@+id/tag_bindId_editText"/>
     </LinearLayout>
     <Button style="@style/CustomButtonTheme"
             android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:text="@string/app_submit"
             android:textSize="50sp"
             android:id="@+id/tag_ok_button"/>

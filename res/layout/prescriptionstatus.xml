@@ -27,7 +27,7 @@
                   android:id="@+id/prescriptionStatus_status_textView"/>
         <View
                 android:background="@drawable/shape_line"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1px" />
         <TextView style="@style/PrescriptionStatusStyle"
                   android:id="@+id/prescriptionStatus_waitCount_textView"

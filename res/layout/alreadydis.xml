@@ -14,7 +14,7 @@
                     android:textSize="18sp"
                     android:textColor="@android:color/white"
                     android:padding="12dp"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="46dp"
                     android:gravity="center"
                     android:id="@+id/alreadydis_title"

@@ -1,8 +1,10 @@
 package net.andy.boiling.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ExtractingDomain {
+
     private Integer id;
     /*煎制计划ID*/
     private String planId = "";
@@ -106,6 +108,7 @@ public class ExtractingDomain {
     }
 
     public Date getOperationTime() {
+
         return operationTime;
     }
 

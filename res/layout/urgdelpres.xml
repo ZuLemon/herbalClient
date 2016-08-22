@@ -27,7 +27,7 @@
                       android:id="@+id/urgdelpres_urgpres_textView"/>
         <View
                 android:background="@drawable/shape_line"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1px" />
 
             <TextView style="@style/Custom20TextViewTheme"
@@ -41,7 +41,7 @@
                       android:id="@+id/urgdelpres_delpres_textView"/>
         <View
                 android:background="@drawable/shape_line"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1px" />
 
         <TextView style="@style/Custom20TextViewTheme"
@@ -55,7 +55,7 @@
                   android:id="@+id/urgdelpres_noProcess_textView"/>
         <View
                 android:background="@drawable/shape_line"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="1px" />
 
         <TextView style="@style/Custom20TextViewTheme"

@@ -45,7 +45,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 	private boolean playBeep;
 	private static final float BEEP_VOLUME = 0.10f;
 	private boolean vibrate;
-
+	public static final int  Capture_OK          = 9001;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 			Bundle bundle = new Bundle();
 			bundle.putString("result", resultString);
 			resultIntent.putExtras(bundle);
-			this.setResult(RESULT_OK, resultIntent);
+			this.setResult(Capture_OK, resultIntent);
 		}
 		MipcaActivityCapture.this.finish();
 	}

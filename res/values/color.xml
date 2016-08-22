@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <color name="black_view">#ff000000</color>
+    <color name="white_view">#ffffffff</color>
     <color name="result_view">#b0000000</color>
       <color name="viewfinder_mask">#60000000</color>
       <color name="possible_result_points">#c0ffff00</color>
         <color name="button_unselected">#ff54acea</color>
     <color name="info_panel_bg">#ffeeeeee</color>
     <color name="green">#599440</color>
+    <color name="shadow">#cc222222</color>
+
 </resources>

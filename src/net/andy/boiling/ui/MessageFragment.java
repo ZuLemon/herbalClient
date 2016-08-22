@@ -92,10 +92,16 @@ public class MessageFragment extends Fragment {
         Log.i("onActivityCreated", "执行");
         user_info_view = (TextView) v.findViewById(R.id.user_info_view);
         station_view=(TextView)v.findViewById(R.id.station_view);
-        user_info_view.setText(Application.getUsers().getUname());
+//        Log.e("Application.getUsers()",Application.getUsers().getUname());
+        if(Application.getUsers()!=null) {
+            String uname = Application.getUsers().getUname();
+            if (user_info_view != null && uname != null & ! "".equals(uname)) {
+                user_info_view.setText(Application.getUsers().getUname());
+            }
+        }
         String stationName=new AppOption().getOption(AppOption.APP_OPTION_STATION);
-        if(stationName.length()>9) {
-            station_view.setText(stationName.substring(0,9));
+        if(stationName.length()>8) {
+            station_view.setText(stationName.substring(0,8));
         }else{
             station_view.setText(stationName);
         }

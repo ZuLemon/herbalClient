@@ -27,7 +27,7 @@ public class EquipmentUtil {
      * @return
      * @throws Exception
      */
-    public EquipmentDomain getEquipById(String id) throws Exception {
+    public EquipmentDomain getEquipment(String id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", id ) );
         try {

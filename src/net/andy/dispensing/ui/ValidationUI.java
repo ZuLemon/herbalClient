@@ -224,14 +224,6 @@ public class ValidationUI extends Activity {
             val.validationItem_classification.setText( map.get("category")+""+ map.get("classification"));
             val.validationItem_info.setText( map.get("presName")+" "+map.get("way")+map.get("manufacture")+map.get("frequency"));
             val.validationItem_cnt.setText("剩余味数："+map.get("cnt"));
-            switch (what) {
-                case 0:
-
-                    break;
-                case 1:
-                    break;
-
-            }
             return view;
         }
 

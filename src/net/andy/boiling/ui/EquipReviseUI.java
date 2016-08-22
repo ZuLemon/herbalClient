@@ -177,7 +177,7 @@ public class EquipReviseUI extends NFCActivity {
             @Override
             public void run() {
                 try {
-                    equipmentDomain = new EquipmentUtil ().getEquipById ( id );
+                    equipmentDomain = new EquipmentUtil ().getEquipment ( id );
                     message.what = 0;
                     message.obj = "success";
                     handler.sendMessage ( message );

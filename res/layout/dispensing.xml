@@ -54,7 +54,7 @@
                           android:gravity="center_vertical|center_horizontal"/>
                 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
                           android:id="@+id/dispensing_image_gridView"
-                          android:layout_width="fill_parent"
+                          android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:gravity="center"
                           android:listSelector="#00000000"
@@ -213,7 +213,7 @@
         <!--</LinearLayout>-->
         <!--<View-->
         <!--android:background="@drawable/shape_line"-->
-        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_width="match_parent"-->
         <!--android:layout_height="1.0px"/>-->
         <!--<LinearLayout-->
         <!--android:orientation="horizontal"-->
@@ -489,7 +489,7 @@
             <GridView xmlns:android="http://schemas.android.com/apk/res/android"
                       android:id="@+id/dispensing_history_gridView"
                       android:layout_alignParentTop="true"
-                      android:layout_width="fill_parent"
+                      android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:columnWidth="90dp"
                       android:stretchMode="columnWidth"

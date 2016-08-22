@@ -17,7 +17,7 @@
                   android:layout_marginRight="10dp"
                   android:text="@string/option_server"/>
         <EditText
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:id="@+id/option_server_editText"
@@ -35,8 +35,8 @@
                   android:text="@string/option_state"/>
 
         <CheckBox android:id="@+id/option_state_check"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
                   style="@style/CustomCheckboxTheme"
                   android:text=""/>
     </LinearLayout>

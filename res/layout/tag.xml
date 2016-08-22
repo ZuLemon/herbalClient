@@ -20,7 +20,7 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/tag_tagId"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:editable="false"
@@ -58,8 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:paddingLeft="25dip"
-            android:paddingRight="25dip"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
             android:gravity="center_vertical"
             android:textColor="#FFF"
             android:id="@+id/tag_color_spinner"/>
@@ -145,15 +145,15 @@
                   android:textSize="18sp"
                   android:gravity="center"
                   android:text="@string/tag_bindId"/>
-        <EditText android:layout_width="fill_parent"
+        <EditText android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:textSize="18sp"
                   android:id="@+id/tag_bindId_editText"/>
     </LinearLayout>
 
     <Button style="@style/CustomButtonTheme"
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
             android:text="@string/app_submit"
             android:textSize="100sp"
             android:id="@+id/tag_ok_button"/>
