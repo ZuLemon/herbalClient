@@ -687,19 +687,7 @@ public class DispensingUI extends NFCActivity {
         }
     }
 
-    /**
-     * 将十六进制 颜色代码 转换为 int
-     *
-     * @return
-     */
-    public static int HextoColor(String color) {
 
-        String reg = "#[a-f0-9A-F]{8}";
-        if (!Pattern.matches(reg, color)) {
-            color = "#00ffffff";
-        }
-        return Color.parseColor(color);
-    }
 
     private void setGlobalView() {
         hasPre = true;
@@ -783,7 +771,7 @@ public class DispensingUI extends NFCActivity {
                         isFinish = false;
                         new CoolToast(getBaseContext()).show((String) msg.obj);
                         dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M", ""));
-                        dispensing_tagInfo_textView.setBackgroundColor(HextoColor(tagDomain.getColorValue()));
+                        dispensing_tagInfo_textView.setBackgroundColor(HerbalUtil.HextoColor(tagDomain.getColorValue()));
                         //自动隐藏标签绑定信息
 //                        showButtonTimer.start();
                         dispensing_banding_linearLayout.setVisibility(View.GONE);
@@ -820,7 +808,7 @@ public class DispensingUI extends NFCActivity {
                         new CoolToast(getBaseContext()).show("已绑定标签");
                         dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
                         dispensing_tagInfo_textView.setText(tagDomain.getCode().replace("M", ""));
-                        dispensing_tagInfo_textView.setBackgroundColor(HextoColor(tagDomain.getColorValue()));
+                        dispensing_tagInfo_textView.setBackgroundColor(HerbalUtil.HextoColor(tagDomain.getColorValue()));
                         //自动隐藏标签绑定信息
 //                        showButtonTimer.start();
                         dispensing_banding_linearLayout.setVisibility(View.GONE);

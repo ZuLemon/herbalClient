@@ -56,6 +56,8 @@ public class TagUI extends NFCActivity {
     private RadioButton tag_status2_radioButton;
     @ViewInject(R.id.tag_status3_radioButton)
     private RadioButton tag_status3_radioButton;
+    @ViewInject(R.id.tag_type4_radioButton)
+    private RadioButton tag_type4_radioButton;
     @ViewInject(R.id.tag_ok_button)
     private Button tag_ok_button;
     private List<ColorItem> colorItemList = new ArrayList<>();
@@ -148,6 +150,7 @@ public class TagUI extends NFCActivity {
             tag_type1_radioButton.setChecked(tag_type1_radioButton.getText().equals(tagDomain.getType()));
             tag_type2_radioButton.setChecked(tag_type2_radioButton.getText().equals(tagDomain.getType()));
             tag_type3_radioButton.setChecked(tag_type3_radioButton.getText().equals(tagDomain.getType()));
+            tag_type4_radioButton.setChecked(tag_type4_radioButton.getText().equals(tagDomain.getType()));
         }
         if (tagDomain.getStatus() == null) {
             tag_status_radioGroup.clearCheck();
@@ -170,6 +173,8 @@ public class TagUI extends NFCActivity {
             return (String) tag_type2_radioButton.getText();
         if (tag_type3_radioButton.isChecked())
             return (String) tag_type3_radioButton.getText();
+        if (tag_type4_radioButton.isChecked())
+            return (String) tag_type4_radioButton.getText();
         return "";
     }
 

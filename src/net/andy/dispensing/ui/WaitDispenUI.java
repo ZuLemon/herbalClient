@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 待调处方
  * Created by Guang on 2016/6/6.
  */
 public class WaitDispenUI extends Activity{

@@ -370,7 +370,8 @@
                       android:paddingRight="5dp"
                       android:paddingLeft="5dp"
                       android:layout_marginBottom="5dp"
-                      android:orientation="vertical">
+                      android:orientation="vertical"
+        android:id="@+id/extract_extractInfo_linearLayout">
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:gravity="center"
@@ -469,6 +470,37 @@
                     <TextView style="@style/CustomTextViewTheme"
                               android:textSize="18sp"
                               android:id="@+id/extract_extractEquip_textView"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:width="80dp"
+                              android:text="每次用量"/>
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:id="@+id/extract_dosage_textView"
+                    />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:visibility="invisible"
+                              android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:width="80dp"
+                              android:text="包装机"/>
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:id="@+id/extract_packEquip_textView"
                     />
                 </LinearLayout>
             </LinearLayout>

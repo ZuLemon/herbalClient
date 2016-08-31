@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,8 @@ import java.util.Map;
 public class OnlineUI extends Activity{
     @ViewInject(R.id.online_uname_listView)
     private ListView online_uname_listView;
+    @ViewInject(R.id.online_refresh_linearLayout)
+    private LinearLayout online_refresh_linearLayout;
     private OnlineAdapter onlineAdapter;
     private Integer userId;
     private List userList;
@@ -45,9 +48,8 @@ public class OnlineUI extends Activity{
         setContentView(R.layout.online);
         x.view().inject(this);
         onlineAdapter=new OnlineAdapter(this);
+
         onlineThread(0);
-
-
     }
     /*    监听ListView      */
     @Event(value = R.id.online_uname_listView,type = AdapterView.OnItemClickListener.class)
@@ -55,6 +57,12 @@ public class OnlineUI extends Activity{
 //            Map map = ( Map ) ( parent.getItemAtPosition ( position ) );
             Map map = (Map) userList.get(position);
             dialog(Integer.parseInt(String.valueOf(map.get("id"))),map.get("name")+"");
+    }
+    @Event(value = R.id.online_refresh_linearLayout,
+    type = View.OnClickListener.class)
+    private void btnClick(View v){
+        startActivity(new Intent(OnlineUI.this,LoadingUI.class));
+        onlineThread(0);
     }
     protected void dialog(Integer id,String name) {
         AlertDialog.Builder builder = new AlertDialog.Builder(OnlineUI.this);
@@ -95,9 +103,11 @@ public class OnlineUI extends Activity{
                 switch (msg.what) {
                     case -1:
                         new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
+                        LoadingUI.instance.finish();
                         break;
                     case 0:
                         setListView ();
+                        LoadingUI.instance.finish();
                         break;
                     case 1:
                         onlineThread(0);

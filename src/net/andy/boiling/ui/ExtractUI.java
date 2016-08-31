@@ -99,15 +99,23 @@ public class ExtractUI extends NFCActivity {
     private LinearLayout extract_soakbutton_linearLayout;
     @ViewInject(R.id.extract_out_textView)
     private TextView extract_out_textView;
+    @ViewInject(R.id.extract_extractInfo_linearLayout)
+    private LinearLayout extract_extractInfo_linearLayout;
+    @ViewInject(R.id.extract_dosage_textView)
+    private TextView extract_dosage_textView;
+    @ViewInject(R.id.extract_packEquip_textView)
+    private TextView extract_packEquip_textView;
     private ReturnDomain returnDomain;
     private DispensingDomain dispensing = new DispensingDomain();
     private TagDomain tagDomain = new TagDomain();
     private TagDomain waterTag = new TagDomain();
     private TagDomain extractTag = new TagDomain();
+    private TagDomain packTag=new TagDomain();
     private PrescriptionDomain prescriptionDomain = null;
     private ExtractingDomain extractingDomain = null;
     private EquipmentDomain waterEquipment = null;
     private EquipmentDomain extractEquipment =null;
+    private EquipmentDomain packEquipment=null;
     private SoakDomain soakDomain = null;
     static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
     private SoakUtil soakUtil=new SoakUtil();
@@ -142,7 +150,8 @@ public class ExtractUI extends NFCActivity {
             R.id.extract_extract1_button,
             R.id.extract_extract1_button,
             R.id.extract_pack_button,
-            R.id.extract_soak_button},
+            R.id.extract_soak_button,
+            R.id.extract_extractInfo_linearLayout},
             type = View.OnClickListener.class)
     private void btnClick(View v) {
                 if(prescriptionDomain==null){
@@ -151,11 +160,15 @@ public class ExtractUI extends NFCActivity {
                 }
         switch (v.getId()) {
             case R.id.extract_extract1_button:
-                if(hasExtract) {
-                    extractStatus = "一煎";
-                    extractThread(4);
+                if("浸泡".equals(extractingDomain.getPlanStatus())){
+                    if(hasExtract) {
+                        extractStatus = "一煎";
+                        extractThread(4);
+                    }else{
+                        new CoolToast(getBaseContext()).show("请先选择煎药机");
+                    }
                 }else{
-                    new CoolToast(getBaseContext()).show("请先选择煎药机");
+                    new CoolToast(getBaseContext()).show("当前是"+extractingDomain.getPlanStatus()+"状态，不可一煎操作");
                 }
                 break;
             case R.id.extract_extract2_button:
@@ -167,7 +180,7 @@ public class ExtractUI extends NFCActivity {
                     }
                 break;
             case R.id.extract_pack_button:
-                if("一煎".equals(extractingDomain.getPlanStatus())||"一煎".equals(extractingDomain.getPlanStatus())) {
+                if("一煎".equals(extractingDomain.getPlanStatus())||"二煎".equals(extractingDomain.getPlanStatus())) {
                     extractThread(5);
                 }else{
                     new CoolToast(getBaseContext()).show("请先煎制处方");
@@ -182,6 +195,9 @@ public class ExtractUI extends NFCActivity {
                     return;
                 }
                 break;
+            case R.id.extract_extractInfo_linearLayout:
+//                startActivity(new Intent(this,ExtractingStatus.class));
+                break;
         }
     }
 
@@ -191,6 +207,7 @@ public class ExtractUI extends NFCActivity {
                 Log.e("code", "code为空");
             } else {
                 extract_tagCode_textView.setText(tagDomain.getCode().replace("M", ""));
+                extract_tagCode_textView.setBackgroundColor(HerbalUtil.HextoColor(tagDomain.getColorValue()));
             }
             if (prescriptionDomain != null) {
                 extract_patientNo_textView.setText(prescriptionDomain.getPatientNo());
@@ -199,6 +216,7 @@ public class ExtractUI extends NFCActivity {
                 extract_classification_textView.setText(prescriptionDomain.getClassification());
                 extract_presNumber_textView.setText(prescriptionDomain.getPresNumber().toString() + "付");
                 extract_way_textView.setText(prescriptionDomain.getWay());
+                extract_dosage_textView.setText(prescriptionDomain.getDosage());
             }
             if (extractingDomain != null) {
                 extract_out_textView.setText(String.valueOf(extractingDomain.getOut()));
@@ -210,6 +228,18 @@ public class ExtractUI extends NFCActivity {
                 extract_soakTime_textView.setText(extractingDomain.getSoakTime().toString() + " 分");
                 extract_extractTime1_textView.setText(extractingDomain.getExtractTime1().toString() + " 分");
                 extract_extractTime2_textView.setText(extractingDomain.getExtractTime2().toString() + " 分");
+                if("开始".equals(extractingDomain.getPlanStatus())) {
+                    onCheckedChanged(extract_equiptype1_radioGroup, extract1_equiptype1_radioButton.getId());
+                }
+            }
+            if(extractEquipment!=null){
+                if("电锅".equals(extractEquipment.getEquipType1())){
+                    extract1_equiptype1_radioButton.setChecked(true);
+                    extract2_equiptype1_radioButton.setChecked(false);
+                }else if("气锅".equals(extractEquipment.getEquipType1())){
+                    extract1_equiptype1_radioButton.setChecked(false);
+                    extract2_equiptype1_radioButton.setChecked(true);
+                }
             }
             if (soakDomain != null) {
                 Log.e("soakDomain", String.valueOf(hasWater));
@@ -225,7 +255,10 @@ public class ExtractUI extends NFCActivity {
                 extract2_equiptype1_radioButton.setClickable(true);
             }
             if(extractEquipment!=null){
+                Log.e("extractEquipment",extractEquipment.getEquipName());
                 extract_extractEquip_textView.setText(extractEquipment.getEquipId());
+            }else{
+                extract_extractEquip_textView.setText("");
             }
 
             if(hasPack){
@@ -255,16 +288,17 @@ public class ExtractUI extends NFCActivity {
         }
         if (hasPre) {
             Log.e("equipType1", equipType1);
+            extractingDomain.setSoakType(equipType1);
             extractThread(2);
         }
     }
 
     public void resetObject() {
-        tagDomain = new TagDomain();
-        prescriptionDomain = new PrescriptionDomain();
-        extractingDomain = new ExtractingDomain();
-        waterEquipment = new EquipmentDomain();
-        extractEquipment = new EquipmentDomain();
+        tagDomain = null;
+        prescriptionDomain = null;
+        extractingDomain = null;
+        waterEquipment = null;
+        extractEquipment = null;
     }
 
     final Handler handler = new Handler() {
@@ -296,6 +330,7 @@ public class ExtractUI extends NFCActivity {
                     reset();
                     resetObject();
                     resetView();
+//                    extractThread(0);
                     break;
                 case 4:
                     new CoolToast(getBaseContext()).show("开始"+extractStatus);
@@ -318,6 +353,13 @@ public class ExtractUI extends NFCActivity {
                     Log.e(">>", extractEquipment.getEquipId());
                     hasExtract=true;
                     extract_extractEquip_textView.setText(extractEquipment.getEquipId());
+                    break;
+                case 13:
+                    hasPack=true;
+                    extract_packEquip_textView.setText(packEquipment.getEquipId());
+                    break;
+                case 20:
+                    new CoolToast(getBaseContext()).show(String.valueOf(msg.obj));
                     break;
             }
         }
@@ -346,7 +388,9 @@ public class ExtractUI extends NFCActivity {
                                 waterEquipment=new EquipmentUtil().getEquipment(soakDomain.getEquipId());
                                 if(!"浸泡".equals(extractingDomain.getPlanStatus())){
                                     ExtractList=new ExtractUtil().getExtractByPlanId(extractingDomain.getPlanId());
-                                    extractEquipment=new EquipmentUtil().getEquipByEquipId(String.valueOf(((Map)ExtractList.get(0)).get("equipId")));
+                                    if(ExtractList.size()>0) {
+                                        extractEquipment = new EquipmentUtil().getEquipByEquipId(String.valueOf(((Map) ExtractList.get(0)).get("equipId")));
+                                    }
                                 }
                                 if("包装".equals(extractingDomain.getPlanStatus())){
                                     hasPack=true;
@@ -374,23 +418,28 @@ public class ExtractUI extends NFCActivity {
                             Log.e(">>","煎制");
                             SoakDomain tempSoak=soakUtil.getSoakByPlanId(extractingDomain.getPlanId());
                            if(new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime()<tempSoak.getEndTime().getTime()){
-                               message.obj = HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎";
-                               message.what = -1;
-                               handler.sendMessage(message);
+//                               new CoolToast(getBaseContext()).show(HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎");
+                               handlerMessage(20,HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎");
+//                               return;
+//                               message.obj = HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎";
+//                               message.what = -1;
+//                               handler.sendMessage(message);
                            }else {
                                startExtract();
+                               message.what = 4;
+                               handler.sendMessage(message);
+
                            }
 //                            IsPre(planId);
-                            message.what = 4;
-                            handler.sendMessage(message);
                             break;
                         case 5:
                             Date endTime=HerbalUtil.String2Date(String.valueOf(((Map)ExtractList.get(ExtractList.size()-1)).get("endTime")),null);
                             Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
                             if(new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime()<endTime.getTime()){
-                                message.obj = HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装";
-                                message.what = -1;
-                                handler.sendMessage(message);
+                                handlerMessage(20,HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装");
+//                                message.obj = HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装";
+//                                message.what = -1;
+//                                handler.sendMessage(message);
                             }else{
                             message.obj = new PackUtil().insert(extractingDomain.getPlanId());
                             message.what = 5;
@@ -452,9 +501,9 @@ public class ExtractUI extends NFCActivity {
     private void judgeTag() throws Exception {
         if ("处方".equals(tagDomain.getType())) {
             reset();
-            extractThread(1);
             hasPre = true;
             Log.e("judgeTag", "处方");
+            extractThread(1);
         } else {
             if (hasPre) {
                 if ("加液机".equals(tagDomain.getType())) {
@@ -462,17 +511,22 @@ public class ExtractUI extends NFCActivity {
                     waterEquipment = new EquipmentUtil().getEquipByTagId(tagId);
                     hasWater = true;
                     Log.e("judgeTag", "加液机");
-                    handlerMessage(11);
+                    handlerMessage(11,null);
                 }
                 if (hasWater) {
                     if ("煎药机".equals(tagDomain.getType())) {
                         extractTag=tagDomain;
                         Log.e("judgeTag", "煎药机");
                         extractEquipment=new EquipmentUtil().getEquipByTagId(tagId);
-                        handlerMessage(12);
+                        handlerMessage(12,null);
                     }
                 } else {
                     throw new Exception("请先选择加液机");
+                }
+                if("包装机".equals(tagDomain.getType())){
+                    packTag=tagDomain;
+                    packEquipment=new EquipmentUtil().getEquipByTagId(tagId);
+                    handlerMessage(13,null);
                 }
             } else {
                 throw new Exception("请先读取处方");
@@ -488,6 +542,7 @@ public class ExtractUI extends NFCActivity {
 
     }
     private void resetView(){
+        Log.e("resetView","Success");
         extract_patientNo_textView.setText("");
         extract_patientName_textView.setText("");
         extract_category_textView.setText("");
@@ -508,14 +563,21 @@ public class ExtractUI extends NFCActivity {
         extract_startTime_textView.setText("");
         extract_soakEquip_textView.setText("");
         extract_tagCode_textView.setText("");
+        extract_dosage_textView.setText("");
+        extract_packEquip_textView.setText("");
         extract1_equiptype1_radioButton.setClickable(true);
         extract2_equiptype1_radioButton.setClickable(true);
     }
-    private void handlerMessage(int what) {
-        Log.e("handlerMessage", String.valueOf(what));
-        message = null;
-        message = new Message();
+    private void handlerMessage(int what,String obj) {
+//        Log.e("handlerMessage", String.valueOf(what));
+//        message = null;
+//        message = new Message();
+//        if(handler.obtainMessage(message.what, message.obj) != null){
+//            Message _msg = new Message();
+//            message = _msg;
+//        }
         message.what = what;
+        message.obj=obj;
         handler.sendMessage(message);
     }
 

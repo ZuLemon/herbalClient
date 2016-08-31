@@ -189,8 +189,11 @@ public class SoakUI extends NFCActivity {
         extractingDomain.setExtractTime3(solutionDomain.getExtractTime3());
         extractingDomain.setMethod(solutionDomain.getMode());
         extractingDomain.setSolutionId(String.valueOf(solutionDomain.getId()));
+        extractingDomain.setPressure(solutionDomain.getPressure());
+        extractingDomain.setTemperature(solutionDomain.getTemperature());
     }
     private void setExtractingView(){
+        soak_efficacy_textView.setText(solutionDomain.getEfficacy());
         soak_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
         soak_method_textView.setText(extractingDomain.getMethod());
         soak_extractTime1_editText.setText(String.valueOf(extractingDomain.getExtractTime1()));

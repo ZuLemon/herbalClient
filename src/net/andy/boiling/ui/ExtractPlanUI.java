@@ -91,9 +91,9 @@ public class ExtractPlanUI extends Activity {
             tempSolution.setId(Integer.parseInt(String.valueOf(map.get("id"))));
             tempSolution.setName(String.valueOf(map.get("name")));
             tempSolution.setSoakTime(Integer.parseInt(String.valueOf(map.get("soakTime"))));
-            tempSolution.setExtractTime1(Integer.parseInt(String.valueOf(map.get("extractTime1"))));
-            tempSolution.setExtractTime2(Integer.parseInt(String.valueOf(map.get("extractTime2"))));
-            tempSolution.setExtractTime3(Integer.parseInt(String.valueOf(map.get("extractTime3"))));
+            tempSolution.setExtractTime1(Integer.parseInt("null".equals(String.valueOf(map.get("extractTime1")))?"0":String.valueOf(map.get("extractTime1"))));
+            tempSolution.setExtractTime2(Integer.parseInt("null".equals(String.valueOf(map.get("extractTime2")))?"0":String.valueOf(map.get("extractTime2"))));
+//            tempSolution.setExtractTime3(Integer.parseInt(String.valueOf(map.get("extractTime3"))));
             tempSolution.setTemperature(Integer.parseInt(String.valueOf(map.get("temperature"))));
             tempSolution.setPressure(String.valueOf(map.get("pressure")));
             tempSolution.setClassification(String.valueOf(map.get("classification")));

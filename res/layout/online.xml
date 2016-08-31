@@ -18,7 +18,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="46.0dp"
                 android:gravity="center"
-                android:text="在线用户"/>
+                android:text="在线用户"
+                android:id="@+id/online_refresh_linearLayout"
+                android:drawableRight="@drawable/refresh"/>
 
     </LinearLayout>
 

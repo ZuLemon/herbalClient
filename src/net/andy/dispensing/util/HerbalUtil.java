@@ -1,5 +1,6 @@
 package net.andy.dispensing.util;
 
+import android.graphics.Color;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -140,5 +141,18 @@ public class HerbalUtil {
         byte[] items = fildeName.getBytes();
         items[0] = (byte) ((char) items[0] - 'a' + 'A');
         return new String(items);
+    }
+    /**
+     * 将十六进制 颜色代码 转换为 int
+     *
+     * @return
+     */
+    public static int HextoColor(String color) {
+
+        String reg = "#[a-f0-9A-F]{8}";
+        if (!Pattern.matches(reg, color)) {
+            color = "#00ffffff";
+        }
+        return Color.parseColor(color);
     }
 }

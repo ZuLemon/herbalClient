@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1142566679">
+  <component name="DataSourceManagerImpl" format="xml" hash="2488771225">
     <data-source source="LOCAL" name="正式库" uuid="dedd5698-1011-4307-a618-8e6ae1667e48">
       <driver-ref>sqlserver.jtds</driver-ref>
       <synchronize>true</synchronize>
@@ -12,6 +12,19 @@
       <synchronize>true</synchronize>
       <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:jtds:sqlserver://192.168.34.103:1433/herbal</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="CIS库" uuid="c22e5ffa-6281-44af-a936-a4cb21172f3f">
+      <driver-ref>oracle</driver-ref>
+      <synchronize>true</synchronize>
+      <auto-commit>false</auto-commit>
+      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
+      <jdbc-url>jdbc:oracle:thin:@//192.168.1.38:1521/icare.xinjiangzhongyi.tcm</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="HIS" uuid="0e057ca0-3022-4925-8915-3e4ef48ead8e">
+      <driver-ref>sqlserver.jtds</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:jtds:sqlserver://192.168.1.18:1433/hisys65;instance=his</jdbc-url>
     </data-source>
   </component>
 </project>

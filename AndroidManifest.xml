@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="38"
-          android:versionName="1.4">
+          android:versionCode="39"
+          android:versionName="1.5">
     <uses-sdk android:minSdkVersion="18" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
@@ -32,7 +32,7 @@
                  android:name="net.andy.com.Application"
                  android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
                  <!--android:theme="@android:style/Theme.NoTitleBar"-->
-        <activity android:name="net.andy.boiling.Login"
+        <activity android:name=".Login"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -41,26 +41,26 @@
         </activity>
         <service android:name="net.andy.com.MqttService"/>
         <service android:name="net.andy.com.FloatViewService"/>
-        <activity android:name="net.andy.boiling.Option"/>
-        <activity android:name="net.andy.boiling.Main"/>
-        <activity android:name="net.andy.boiling.ui.SoakUI"/>
-        <activity android:name="net.andy.boiling.ui.EquipmentUI"/>
-        <activity android:name="net.andy.boiling.ui.TagUI"/>
-        <activity android:name="net.andy.boiling.ui.ExtractUI"/>
-        <activity android:name="net.andy.boiling.ui.TakeUI"/>
-        <activity android:name="net.andy.boiling.ui.EquipManUI"/>
-        <activity android:name="net.andy.boiling.ui.EquipReviseUI"/>
-        <activity android:name="net.andy.boiling.ui.TestUI"/>
-        <activity android:name="net.andy.boiling.ui.MidifyPassUI"/>
-        <activity android:name="net.andy.boiling.ui.MsgManUI"/>
+        <activity android:name=".Option"/>
+        <activity android:name=".Main"/>
+        <activity android:name=".ui.SoakUI"/>
+        <activity android:name=".ui.EquipmentUI"/>
+        <activity android:name=".ui.TagUI"/>
+        <activity android:name=".ui.ExtractUI"/>
+        <activity android:name=".ui.TakeUI"/>
+        <activity android:name=".ui.EquipManUI"/>
+        <activity android:name=".ui.EquipReviseUI"/>
+        <activity android:name=".ui.TestUI"/>
+        <activity android:name=".ui.MidifyPassUI"/>
+        <activity android:name=".ui.MsgManUI"/>
         <activity android:name="net.andy.dispensing.ui.DispensingUI"/>
         <activity
-                android:name="net.andy.boiling.ui.MipcaActivityCapture"
+                android:name=".ui.MipcaActivityCapture"
                 android:configChanges="orientation|keyboardHidden"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
-        <activity android:name="net.andy.boiling.ui.SettingUI"/>
+        <activity android:name=".ui.SettingUI"/>
         <activity android:name="net.andy.dispensing.ui.StationRuleUI"/>
         <activity android:name="net.andy.dispensing.ui.PatientInfoUI"
                   android:theme="@style/TranslucentFullscreen"
@@ -97,7 +97,8 @@
         <activity android:name="net.andy.dispensing.ui.SelectPresUI"/>
         <activity android:name="net.andy.dispensing.ui.AlreadyDisDetailUI"
                   android:theme="@style/TranslucentFullscreen"/>
-        <activity android:name="net.andy.boiling.ui.ExtractPlanUI"
+        <activity android:name=".ui.ExtractPlanUI"
                   android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name=".ui.ExtractingStatus"/>
     </application>
 </manifest>
