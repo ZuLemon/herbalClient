@@ -1,5 +1,6 @@
 package net.andy.boiling.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.*;
 import net.andy.boiling.R;
 import net.andy.boiling.domain.*;
@@ -62,8 +64,8 @@ public class ExtractUI extends NFCActivity {
     private TextView extract_pressure_textView;
     //    @ViewInject(R.id.extract_planStatus_textView)
 //    private TextView extract_planStatus_textView;
-    @ViewInject(R.id.extract_waterQuantity1_textView)
-    private TextView extract_waterQuantity1_textView;
+    @ViewInject(R.id.extract_waterQuantity1_editText)
+    private LineEditText  extract_waterQuantity1_editText;
     @ViewInject(R.id.extract_method_textView)
     private TextView extract_method_textView;
     @ViewInject(R.id.extract_soakTime_textView)
@@ -83,8 +85,6 @@ public class ExtractUI extends NFCActivity {
     private Button extract_extract1_button;
     @ViewInject(R.id.extract_extract2_button)
     private Button extract_extract2_button;
-    @ViewInject(R.id.extract_extract3_button)
-    private Button extract_extract3_button;
     @ViewInject(R.id.extract_soak_button)
     private Button extract_soak_button;
     @ViewInject(R.id.extract_equiptype1_radioGroup)
@@ -103,8 +103,8 @@ public class ExtractUI extends NFCActivity {
     private LinearLayout extract_extractInfo_linearLayout;
     @ViewInject(R.id.extract_dosage_textView)
     private TextView extract_dosage_textView;
-    @ViewInject(R.id.extract_packEquip_textView)
-    private TextView extract_packEquip_textView;
+    @ViewInject(R.id.extract_frequency_textView)
+    private TextView extract_frequency_textView;
     private ReturnDomain returnDomain;
     private DispensingDomain dispensing = new DispensingDomain();
     private TagDomain tagDomain = new TagDomain();
@@ -132,6 +132,7 @@ public class ExtractUI extends NFCActivity {
     private Integer quantity;
     private Message message;
     private List ExtractList;
+    private ChineseToSpeech chineseToSpeech=new ChineseToSpeech();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,11 +152,13 @@ public class ExtractUI extends NFCActivity {
             R.id.extract_extract1_button,
             R.id.extract_pack_button,
             R.id.extract_soak_button,
-            R.id.extract_extractInfo_linearLayout},
+            R.id.extract_extractInfo_linearLayout,
+            R.id.extract_waterQuantity1_editText},
             type = View.OnClickListener.class)
     private void btnClick(View v) {
                 if(prescriptionDomain==null){
                     new CoolToast(getBaseContext()).show("请先选择处方");
+                    chineseToSpeech.speech("请先选择处方");
                     return;
                 }
         switch (v.getId()) {
@@ -166,6 +169,7 @@ public class ExtractUI extends NFCActivity {
                         extractThread(4);
                     }else{
                         new CoolToast(getBaseContext()).show("请先选择煎药机");
+                        chineseToSpeech.speech("请先选择煎药机");
                     }
                 }else{
                     new CoolToast(getBaseContext()).show("当前是"+extractingDomain.getPlanStatus()+"状态，不可一煎操作");
@@ -177,6 +181,7 @@ public class ExtractUI extends NFCActivity {
                 extractThread(4);
                     }else{
                         new CoolToast(getBaseContext()).show("请先选择煎药机");
+
                     }
                 break;
             case R.id.extract_pack_button:
@@ -184,23 +189,29 @@ public class ExtractUI extends NFCActivity {
                     extractThread(5);
                 }else{
                     new CoolToast(getBaseContext()).show("请先煎制处方");
+                    chineseToSpeech.speech("请先煎制处方");
                 }
                 break;
             case R.id.extract_soak_button:
                 Log.e(">>", "浸泡");
                 if (hasPre && hasWater) {
+                    extractingDomain.setQuantity(Integer.parseInt(String.valueOf(extract_waterQuantity1_editText.getText())));
                     extractThread(3);
                 }else{
                     new CoolToast(getBaseContext()).show("请先选择加液机");
+                    chineseToSpeech.speech("请先选择加液机");
                     return;
                 }
                 break;
             case R.id.extract_extractInfo_linearLayout:
 //                startActivity(new Intent(this,ExtractingStatus.class));
                 break;
+            case R.id.extract_waterQuantity1_editText:
+                setInterval(extract_waterQuantity1_editText,isWater);
+                break;
         }
     }
-
+    private boolean isWater;
     public void setWidget() {
         try {
             if ("".equals(tagDomain.getCode())) {
@@ -217,11 +228,12 @@ public class ExtractUI extends NFCActivity {
                 extract_presNumber_textView.setText(prescriptionDomain.getPresNumber().toString() + "付");
                 extract_way_textView.setText(prescriptionDomain.getWay());
                 extract_dosage_textView.setText(prescriptionDomain.getDosage());
+                extract_frequency_textView.setText(prescriptionDomain.getFrequency());
             }
             if (extractingDomain != null) {
                 extract_out_textView.setText(String.valueOf(extractingDomain.getOut()));
                 extract_method_textView.setText(extractingDomain.getMethod());
-                extract_waterQuantity1_textView.setText(String.valueOf(extractingDomain.getQuantity()));
+                extract_waterQuantity1_editText.setText(String.valueOf(extractingDomain.getQuantity()));
                 extract_temperature_textView.setText(extractingDomain.getTemperature().toString() + " °");
                 extract_pressure_textView.setText(extractingDomain.getPressure());
                 extract_presStatus_textView.setText(extractingDomain.getPlanStatus());
@@ -242,17 +254,19 @@ public class ExtractUI extends NFCActivity {
                 }
             }
             if (soakDomain != null) {
-                Log.e("soakDomain", String.valueOf(hasWater));
+                Log.e("soakDomain", String.valueOf(soakDomain.getBeginTime()));
                 hasWater=true;
                 extract_startTime_textView.setText(simpleDateFormat.format(soakDomain.getBeginTime()));
                 extract_endTime_textView.setText(simpleDateFormat.format(soakDomain.getEndTime()));
                 extract_soakEquip_textView.setText(waterEquipment.getEquipId());
                 extract1_equiptype1_radioButton.setClickable(false);
                 extract2_equiptype1_radioButton.setClickable(false);
+                extract_waterQuantity1_editText.setEnabled(false);
             }else{
                 hasWater=false;
                 extract1_equiptype1_radioButton.setClickable(true);
                 extract2_equiptype1_radioButton.setClickable(true);
+                extract_waterQuantity1_editText.setEnabled(true);
             }
             if(extractEquipment!=null){
                 Log.e("extractEquipment",extractEquipment.getEquipName());
@@ -274,7 +288,8 @@ public class ExtractUI extends NFCActivity {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            new CoolToast(getBaseContext()).show("UI更新失败,请稍后重试。");
         }
     }
 
@@ -294,7 +309,8 @@ public class ExtractUI extends NFCActivity {
     }
 
     public void resetObject() {
-        tagDomain = null;
+//        tagDomain = null;
+        soakDomain=null;
         prescriptionDomain = null;
         extractingDomain = null;
         waterEquipment = null;
@@ -322,11 +338,12 @@ public class ExtractUI extends NFCActivity {
                 case 2:
                     if (quantity != null) {
                         extractingDomain.setQuantity(quantity);
-                        extract_waterQuantity1_textView.setText(String.valueOf(quantity));
+                        extract_waterQuantity1_editText.setText(String.valueOf(quantity));
                     }
                     break;
                 case 3:
                     new CoolToast(getBaseContext()).show((String) msg.obj);
+                    chineseToSpeech.speech(String.valueOf(msg.obj));
                     reset();
                     resetObject();
                     resetView();
@@ -334,12 +351,14 @@ public class ExtractUI extends NFCActivity {
                     break;
                 case 4:
                     new CoolToast(getBaseContext()).show("开始"+extractStatus);
+                    chineseToSpeech.speech("开始"+extractStatus);
                     reset();
                     resetObject();
                     resetView();
                     break;
                 case 5:
                     new CoolToast(getBaseContext()).show("开始包装");
+                    chineseToSpeech.speech("开始包装");
                     reset();
                     resetObject();
                     resetView();
@@ -356,10 +375,11 @@ public class ExtractUI extends NFCActivity {
                     break;
                 case 13:
                     hasPack=true;
-                    extract_packEquip_textView.setText(packEquipment.getEquipId());
+//                    extract_packEquip_textView.setText(packEquipment.getEquipId());
                     break;
                 case 20:
                     new CoolToast(getBaseContext()).show(String.valueOf(msg.obj));
+                    chineseToSpeech.speech(String.valueOf(msg.obj));
                     break;
             }
         }
@@ -394,6 +414,8 @@ public class ExtractUI extends NFCActivity {
                                 }
                                 if("包装".equals(extractingDomain.getPlanStatus())){
                                     hasPack=true;
+                                }else{
+                                    hasPack=false;
                                 }
                             }
                             message.obj = "";
@@ -403,6 +425,11 @@ public class ExtractUI extends NFCActivity {
                             break;
                         case 2:
                             quantity = new ExtractingUtil().calcWater(extractingDomain.getPlanId(), equipType1);
+                            if(handler.obtainMessage(message.what, message.obj) != null){
+                                Message _msg = new Message();
+                                _msg.what = message.what;
+                                message = _msg;
+                            }
                             message.what = 2;
                             handler.sendMessage(message);
                             break;
@@ -415,9 +442,12 @@ public class ExtractUI extends NFCActivity {
                             break;
                         //开始煎制
                         case 4:
-                            Log.e(">>","煎制");
                             SoakDomain tempSoak=soakUtil.getSoakByPlanId(extractingDomain.getPlanId());
-                           if(new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime()<tempSoak.getEndTime().getTime()){
+                            String serverTime=new ServerUtil().getServerTime();
+//                            Log.e(">>","浸泡"+HerbalUtil.formatDate(tempSoak.getEndTime(),"yyyy-MM-dd HH:mm:ss") + ">"+HerbalUtil.formatDate(new Date(Long.parseLong(serverTime)),"yyyy-MM-dd HH:mm:ss"));
+//                            Log.e(">>","浸泡"+(tempSoak.getEndTime().getTime()) + ">"+Long.parseLong(serverTime));
+//                            Log.e(">>","浸泡"+(tempSoak.getEndTime().getTime()>Long.parseLong(serverTime)));
+                           if(tempSoak.getEndTime().getTime()>Long.parseLong(serverTime)){
 //                               new CoolToast(getBaseContext()).show(HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎");
                                handlerMessage(20,HerbalUtil.formatDate(tempSoak.getEndTime(),"HH:mm") + "后方可进行一煎");
 //                               return;
@@ -425,6 +455,7 @@ public class ExtractUI extends NFCActivity {
 //                               message.what = -1;
 //                               handler.sendMessage(message);
                            }else {
+//                               handlerMessage(20,"成功");
                                startExtract();
                                message.what = 4;
                                handler.sendMessage(message);
@@ -434,8 +465,8 @@ public class ExtractUI extends NFCActivity {
                             break;
                         case 5:
                             Date endTime=HerbalUtil.String2Date(String.valueOf(((Map)ExtractList.get(ExtractList.size()-1)).get("endTime")),null);
-                            Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
-                            if(new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime()<endTime.getTime()){
+//                            Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
+                            if(endTime.getTime()>Long.parseLong(new ServerUtil().getServerTime())){
                                 handlerMessage(20,HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装");
 //                                message.obj = HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装";
 //                                message.what = -1;
@@ -457,7 +488,7 @@ public class ExtractUI extends NFCActivity {
     }
 
     private void startExtract() throws Exception {
-        new ExtractUtil().insert(extractingDomain.getPlanId(), extractEquipment.getEquipId(), extractStatus);
+        new ExtractUtil().insert(extractingDomain.getPlanId(), extractEquipment.getEquipId(), String.valueOf(Application.getUsers().getId()), extractStatus);
     }
 //    private void IsPre(String PlanId) throws Exception {
 //        tagDomain = new TagUtil().getTagByTagId(tagId);
@@ -500,6 +531,7 @@ public class ExtractUI extends NFCActivity {
      */
     private void judgeTag() throws Exception {
         if ("处方".equals(tagDomain.getType())) {
+            resetObject();
             reset();
             hasPre = true;
             Log.e("judgeTag", "处方");
@@ -521,7 +553,8 @@ public class ExtractUI extends NFCActivity {
                         handlerMessage(12,null);
                     }
                 } else {
-                    throw new Exception("请先选择加液机");
+//                    throw new Exception("请先选择加液机");
+                    handlerMessage(20,"请先选择加液机");
                 }
                 if("包装机".equals(tagDomain.getType())){
                     packTag=tagDomain;
@@ -539,7 +572,6 @@ public class ExtractUI extends NFCActivity {
         hasPack=false;
         hasWater=false;
         hasExtract=false;
-
     }
     private void resetView(){
         Log.e("resetView","Success");
@@ -551,7 +583,7 @@ public class ExtractUI extends NFCActivity {
         extract_way_textView.setText("");
         extract_out_textView.setText("");
         extract_method_textView.setText("");
-        extract_waterQuantity1_textView.setText("");
+        extract_waterQuantity1_editText.setText("");
         extract_temperature_textView.setText("");
         extract_pressure_textView.setText("");
         extract_presStatus_textView.setText("");
@@ -564,7 +596,7 @@ public class ExtractUI extends NFCActivity {
         extract_soakEquip_textView.setText("");
         extract_tagCode_textView.setText("");
         extract_dosage_textView.setText("");
-        extract_packEquip_textView.setText("");
+        extract_frequency_textView.setText("");
         extract1_equiptype1_radioButton.setClickable(true);
         extract2_equiptype1_radioButton.setClickable(true);
     }
@@ -580,7 +612,20 @@ public class ExtractUI extends NFCActivity {
         message.obj=obj;
         handler.sendMessage(message);
     }
-
+    private void setInterval(LineEditText lineEditText,boolean is) {
+        if (is) {
+            is=false;
+            lineEditText.setFocusable(false);
+        } else {
+            is=true;
+            lineEditText.setFocusable(true);
+            lineEditText.setFocusableInTouchMode(true);
+            lineEditText.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//            setting_interval_editText.setSelection(setting_interval_editText.getText().length());
+        }
+    }
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

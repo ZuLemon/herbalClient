@@ -19,10 +19,11 @@ import java.util.List;
 public class ExtractUtil {
     private ReturnDomain returnDomain;
 
-    public ExtractingDomain insert(String planId, String equipId, String extractStatus) throws Exception {
+    public ExtractingDomain insert(String planId, String equipId,String userId, String extractStatus) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
         pairs.add ( new BasicNameValuePair ( "equipId", equipId ) );
+        pairs.add ( new BasicNameValuePair ( "userId", userId ) );
         pairs.add ( new BasicNameValuePair ( "extractStatus", extractStatus ) );
         returnDomain = ( ReturnDomain ) new Http ().post ( "extract/insert.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {

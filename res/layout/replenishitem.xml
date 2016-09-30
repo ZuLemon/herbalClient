@@ -72,7 +72,7 @@
     </LinearLayout>
     <Button android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/orangerred_circular"
+            android:background="@drawable/orangerred_selector"
             android:layout_weight="1"
             style="@style/AdjustThreeButtonTheme"
             android:text="接收"

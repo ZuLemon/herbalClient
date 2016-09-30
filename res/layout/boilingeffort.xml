@@ -58,7 +58,7 @@
                             android:layout_marginLeft="10.0dp"
                             android:text="开始时间："/>
                     <EditText
-                            android:id="@+id/personaleffort_startTime_editText"
+                            android:id="@+id/boilingeffort_startTime_editText"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                             android:layout_marginLeft="10.0dp"
                             android:text="结束时间："/>
                     <EditText
-                            android:id="@+id/personaleffort_endTime_editText"
+                            android:id="@+id/boilingeffort_endTime_editText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:focusable="false"
@@ -117,7 +117,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
-                    android:id="@+id/personaleffort_button_linearLayout">
+                    android:id="@+id/boilingeffort_button_linearLayout">
                 <Button android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/orangerred_selector"
@@ -125,7 +125,7 @@
                         android:layout_marginRight="5dp"
                         style="@style/AdjustThreeButtonTheme"
                         android:text="今天"
-                        android:id="@+id/personaleffort_today_button"/>
+                        android:id="@+id/boilingeffort_today_button"/>
                 <Button android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
@@ -133,14 +133,14 @@
                         android:layout_weight="1"
                         style="@style/AdjustThreeButtonTheme"
                         android:text="本月"
-                        android:id="@+id/personaleffort_month_button"/>
+                        android:id="@+id/boilingeffort_month_button"/>
                 <Button android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/orangerred_selector"
                         android:layout_weight="1"
                         style="@style/AdjustThreeButtonTheme"
                         android:text="上月"
-                        android:id="@+id/personaleffort_preMonth_button"/>
+                        android:id="@+id/boilingeffort_preMonth_button"/>
             </LinearLayout>
             </LinearLayout>
         <LinearLayout
@@ -165,9 +165,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10.0dp"
-                        android:text="总张数："/>
+                        android:text="浸泡总张数："/>
                 <TextView
-                        android:id="@+id/personaleffort_presTotal_textView"
+                        android:id="@+id/boilingeffort_sockTotal_textView"
                         android:textSize="20sp"
                         android:textColor="#ff545454"
                         android:layout_width="wrap_content"
@@ -175,6 +175,10 @@
                         android:layout_marginLeft="3dp"
                         android:layout_weight="1"/>
             </LinearLayout>
+            <View
+                    android:background="@drawable/shape_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
             <LinearLayout
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -188,9 +192,63 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:text="总付数："/>
+                        android:text="浸泡总付数："/>
                 <TextView
-                        android:id="@+id/personaleffort_presNumTotal_textView"
+                        android:id="@+id/boilingeffort_sockPresNumTotal_textView"
+                        android:textSize="20sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <View
+                    android:background="@drawable/shape_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:minHeight="50dp">
+                <TextView
+                        android:textSize="18sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0dp"
+                        android:text="煎制总张数："/>
+                <TextView
+                        android:id="@+id/boilingeffort_extractTotal_textView"
+                        android:textSize="20sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <View
+                    android:background="@drawable/shape_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:minHeight="50dp">
+                <TextView
+                        android:textSize="18sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="煎制总付数："/>
+                <TextView
+                        android:id="@+id/boilingeffort_extractPresNumTotal_textView"
                         android:textSize="20sp"
                         android:textColor="#ff545454"
                         android:layout_width="wrap_content"

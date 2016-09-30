@@ -133,7 +133,7 @@
             android:layout_alignParentBottom="true">
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/orangerred_circular"
+                android:background="@drawable/orangerred_selector"
                 android:layout_weight="1"
                 style="@style/AdjustThreeButtonTheme"
                 android:text="确认复核"
@@ -142,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:background="@drawable/orangerred_circular"
+                android:background="@drawable/orangerred_selector"
                 android:layout_weight="1"
                 style="@style/AdjustThreeButtonTheme"
                 android:text="返    回"

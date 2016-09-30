@@ -77,7 +77,8 @@ public class ExtractingUtil {
                     throw new Exception ( "没有加液量" );
                 }
             } else {
-                throw new Exception ( returnDomain.getException () );
+                return 0;
+//                throw new Exception ( returnDomain.getException () );
             }
         } catch (Exception e) {
             throw new Exception ( e.getMessage () );

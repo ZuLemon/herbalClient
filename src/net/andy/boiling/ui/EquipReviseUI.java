@@ -221,6 +221,18 @@ public class EquipReviseUI extends NFCActivity {
             }
         }
     }
+
+    private void reset(){
+//        equipmentDomain=null;
+        equip_tagId_editText.setText("");
+        equip_equipId_editText.setText("");
+        equip_equipName_editText.setText("");
+//        equip_type_radioGroup.clearCheck();
+//        equip_type1_radioGroup.clearCheck();
+//        equip_equipPurpose_radioGroup.clearCheck();
+//        equip1_equipStatus_radioGroup.clearCheck();
+//        equip2_equipStatus_radioGroup.clearCheck();
+    }
          @Event(R.id.equip_ok_button)
         private void btnClick(View v) {
             GetValues ();
@@ -233,7 +245,15 @@ public class EquipReviseUI extends NFCActivity {
                 @Override
                 public void handleMessage(Message msg) {
                     super.handleMessage(msg);
-                    new CoolToast(getBaseContext()).show((String) msg.obj);
+                    switch (msg.what){
+                        case -1:
+                            new CoolToast(getBaseContext()).show((String) msg.obj);
+                            break;
+                        case 0:
+                            new CoolToast(getBaseContext()).show((String) msg.obj);
+                            reset();
+                            break;
+                    }
                 }
             };
             new Thread () {
@@ -242,9 +262,11 @@ public class EquipReviseUI extends NFCActivity {
                     super.run ();
                     try {
                         new EquipmentUtil ().insertEquipment ( equipmentDomain );
+                        message.what=0;
                         message.obj="保存成功";
                         handler.sendMessage ( message );
                     } catch (Exception e) {
+                        message.what=-1;
                         message.obj = e.getMessage ();
                         handler.sendMessage ( message );
                     }
@@ -341,7 +363,6 @@ public class EquipReviseUI extends NFCActivity {
         GetTagType ( tagId );
         setValue ( tagId );
     }
-
     public void setValue(String tagId) {
         equip_tagId_editText.setText ( tagId );
     }

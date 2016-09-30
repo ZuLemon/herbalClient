@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class TimeTest {
     public static void main(String args[]){
-        System.out.println( getMinSub("2016-04-15 11:26:54","2016-04-16 11:30:54"));
+        System.out.println( );
 
     }
     public static long getMinSub(String beginDateStr,String endDateStr)

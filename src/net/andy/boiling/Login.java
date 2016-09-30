@@ -216,7 +216,7 @@ public class Login extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case -1:
-                    new AppOption().setOption(AppOption.APP_OPTION_STATION, "未设置队列");
+                    new AppOption().setOption(AppOption.APP_OPTION_STATION, "");
                     break;
                 case 0:
                     Application.setRulesDomain((RulesDomain) msg.obj);

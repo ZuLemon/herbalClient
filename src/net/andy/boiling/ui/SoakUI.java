@@ -15,6 +15,7 @@ import net.andy.boiling.util.*;
 import net.andy.com.*;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.w3c.dom.Text;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
@@ -72,6 +73,10 @@ public class SoakUI extends NFCActivity {
     private LinearLayout soak_pres_linearLayout;
     @ViewInject(R.id.soak_efficacy_textView)
     private TextView soak_efficacy_textView;
+    @ViewInject(R.id.sock_frequency_textView)
+    private TextView sock_frequency_textView;
+    @ViewInject(R.id.sock_dosage_textView)
+    private TextView sock_dosage_textView;
     @ViewInject(R.id.soak_tagCode_textView)
     private TextView soak_tagCode_textView;
 //    @ViewInject(R.id.soak_soakEndTime_textView)
@@ -106,6 +111,7 @@ public class SoakUI extends NFCActivity {
     private String captrueResult;
     private boolean hasMipcaCapture=false;
     private  Message message;
+    private ChineseToSpeech chineseToSpeech=new ChineseToSpeech();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,7 +219,9 @@ public class SoakUI extends NFCActivity {
                 case 0:
                     setValue();
 //                    check(tagType);
-                    soak_tagCode_textView.setText(tagDomain.getCode().replace("M",""));
+                    if(tagDomain!=null) {
+                        soak_tagCode_textView.setText(tagDomain.getCode().replace("M", ""));
+                    }
                     if("开始".equals(extractingDomain.getPlanStatus())) {
                         Intent intent = new Intent(SoakUI.this, ExtractPlanUI.class);
                         startActivityForResult(intent, REQUEST_CODE);
@@ -221,11 +229,13 @@ public class SoakUI extends NFCActivity {
                     break;
                 case 1:
                     new CoolToast(getBaseContext()).show("保存成功");
+                    chineseToSpeech.speech("保存成功");
                     reset();
                     break;
                 case 3:
                     soak_tagCode_textView.setText(tagDomain.getCode().replace("M",""));
                     new CoolToast(getBaseContext()).show("已绑定标签");
+                    chineseToSpeech.speech("已绑定标签");
                     break;
             }
         }
@@ -242,10 +252,10 @@ public class SoakUI extends NFCActivity {
                 try {
                     switch (what) {
                         case 0:
-                            tagDomain=new TagUtil().getTagByTagId(tagId);
                             if(hasMipcaCapture) {
                                 extractingDomain = extractingUtil.importExtracting("", Application.getUsers().getId(), captrueResult);
                             }else {
+                                tagDomain=new TagUtil().getTagByTagId(tagId);
                                 extractingDomain = extractingUtil.importExtracting(tagId, Application.getUsers().getId(), "");
                             }
                             prescriptionDomain = new PrescriptionUtil().getPrescriptionByPlanId(extractingDomain.getPlanId());
@@ -282,9 +292,11 @@ public class SoakUI extends NFCActivity {
         soak_patientName_textView.setText(String.valueOf(prescriptionDomain.getPatientName()));
         soak_category_textView.setText(String.valueOf(prescriptionDomain.getCategory()));
         soak_classification_textView.setText(String.valueOf(prescriptionDomain.getClassification()));
-        soak_diagnosis_textView.setText(String.valueOf(prescriptionDomain.getDiagnosis()));
+        soak_diagnosis_textView.setText(String.valueOf((prescriptionDomain.getDiagnosis().length()>5)?prescriptionDomain.getDiagnosis().substring(0,5):prescriptionDomain.getDiagnosis().toString()));
         soak_presNumber_textView.setText(String.valueOf(prescriptionDomain.getPresNumber())+" 付");
         soak_method_textView.setText(String.valueOf(extractingDomain.getMethod()));
+        sock_frequency_textView.setText(String.valueOf(prescriptionDomain.getFrequency()));
+        sock_dosage_textView.setText(String.valueOf(prescriptionDomain.getDosage()));
         soak_planStatus_textView.setText(String.valueOf(extractingDomain.getPlanStatus()));
         soak_efficacy_textView.setText(String.valueOf(prescriptionDomain.getEfficacy()));
         soak_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
@@ -300,6 +312,8 @@ public class SoakUI extends NFCActivity {
     public void reset() {
         soak_patientNO_textView.setText("");
         soak_patientName_textView.setText("");
+        sock_frequency_textView.setText("");
+        sock_dosage_textView.setText("");
         soak_category_textView.setText("");
         soak_classification_textView.setText("");
         soak_diagnosis_textView.setText("");
@@ -335,16 +349,19 @@ public class SoakUI extends NFCActivity {
                     extractingDomain.setExtractTime2(Integer.parseInt(String.valueOf(soak_extractTime2_editText.getText())));
                     if("".equals(extractingDomain.getTagId())){
                         new CoolToast(getBaseContext()).show("请先绑定标签");
+                        chineseToSpeech.speech("请先绑定标签");
                         return;
                     }
                     if(!"开始".equals(extractingDomain.getPlanStatus())){
                         new CoolToast(getBaseContext()).show("已经开始浸泡，不能修改");
+                        chineseToSpeech.speech("已经开始浸泡，不能修改");
                         return;
                     }
                     soakThread(1);
                     Log.e("soak_submit_button", "点击");
                 }else{
                     new CoolToast(getBaseContext()).show("请先刷卡或扫描条码获取处方");
+                    chineseToSpeech.speech("请先获取处方");
                 }
                 break;
             case R.id.soak_extractTime1_editText:
@@ -367,7 +384,7 @@ public class SoakUI extends NFCActivity {
     /**
      * 读取二维码并返回数据
      */
-    private void jump() {
+    private void jump(      ) {
         Intent intent = new Intent();
         intent.setClass(SoakUI.this, MipcaActivityCapture.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

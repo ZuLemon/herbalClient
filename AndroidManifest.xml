@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="39"
+          android:versionCode="42"
           android:versionName="1.5">
     <uses-sdk android:minSdkVersion="18" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
@@ -100,5 +100,7 @@
         <activity android:name=".ui.ExtractPlanUI"
                   android:theme="@style/TranslucentFullscreen"/>
         <activity android:name=".ui.ExtractingStatus"/>
+        <activity android:name=".ui.BoilingEffortUI"/>
+        <activity android:name=".ui.BoilingSettingUI"/>
     </application>
 </manifest>

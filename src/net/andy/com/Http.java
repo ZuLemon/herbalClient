@@ -30,7 +30,7 @@ public class Http {
         client.getParams().setParameter("http.connection.timeout",10000);
         client.getParams().setParameter("http.connection-manager.timeout",60*60L);
 //        client.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
-        HttpPost httpPost = new HttpPost("http://"+Application.getServerIP().trim()+"/herbal/" + url);
+        HttpPost httpPost = new HttpPost("http://"+new AppOption().getOption(AppOption.APP_OPTION_SERVER)+"/herbal/" + url);
 //        httpPost.setHeader("Content-Type", "text/html;charset=UTF-8");
         httpPost.setHeader("User-Agent", "boilingClient Of Android");
         httpPost.setHeader("userId", appOption.getOption(AppOption.APP_OPTION_USER));
@@ -46,6 +46,8 @@ public class Http {
             }
         } catch (UnsupportedEncodingException e) {
             throw new Exception(e);
+        } catch (IllegalArgumentException ex){
+            throw new Exception(ex);
         }
         Log.i("返回数据:",json);
         return JSON.parseObject ( json, clzz );
