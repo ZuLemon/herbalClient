@@ -20,7 +20,7 @@
                   android:paddingLeft="5dp"
                   android:layout_marginBottom="5dp"
                   android:background="@drawable/white_circular"
-                    android:id="@+id/soak_pres_linearLayout">
+                    android:id="@+id/affirm_pres_linearLayout">
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_gravity="center_horizontal"
@@ -57,7 +57,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_patientNO_textView"/>
+                          android:id="@+id/affirm_patientNO_textView"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_patientName_textView"/>
+                          android:id="@+id/affirm_patientName_textView"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -98,7 +98,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_category_textView"/>
+                          android:id="@+id/affirm_category_textView"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent"
@@ -115,7 +115,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_classification_textView"/>
+                          android:id="@+id/affirm_classification_textView"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -139,7 +139,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_diagnosis_textView"/>
+                          android:id="@+id/affirm_diagnosis_textView"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent"
@@ -156,7 +156,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_presNumber_textView"/>
+                          android:id="@+id/affirm_presNumber_textView"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_efficacy_textView"/>
+                          android:id="@+id/affirm_efficacy_textView"/>
             </LinearLayout>
 
             <LinearLayout android:layout_width="match_parent"
@@ -196,7 +196,7 @@
                           android:layout_height="wrap_content"
                           android:textSize="18sp"
                           android:textColor="@android:color/black"
-                          android:id="@+id/soak_tagCode_textView"/>
+                          android:id="@+id/affirm_tagCode_textView"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent"
@@ -276,7 +276,7 @@
                        android:layout_height="wrap_content"
                        android:textSize="18sp"
                        android:textColor="@android:color/background_dark"
-                       android:id="@+id/soak_method_textView"/>
+                       android:id="@+id/affirm_method_textView"/>
          </LinearLayout>
          <LinearLayout android:layout_width="match_parent"
                        android:layout_height="wrap_content"
@@ -293,7 +293,7 @@
                        android:layout_height="wrap_content"
                        android:textSize="18sp"
                        android:textColor="@android:color/background_dark"
-                       android:id="@+id/soak_planStatus_textView"/>
+                       android:id="@+id/affirm_planStatus_textView"/>
          </LinearLayout>
      </LinearLayout>
      <LinearLayout android:layout_width="match_parent"
@@ -315,7 +315,7 @@
                        android:layout_height="wrap_content"
                        android:textSize="18sp"
                        android:textColor="@android:color/background_dark"
-                       android:id="@+id/soak_waterQuantity1_textView"/>
+                       android:id="@+id/affirm_waterQuantity1_textView"/>
          </LinearLayout>
          <LinearLayout android:layout_width="match_parent"
                        android:layout_height="wrap_content"
@@ -342,7 +342,7 @@
                      android:layout_weight="1"
                      android:background="@null"
                      android:focusable="false"
-                     android:id="@+id/soak_soakTime_editText"
+                     android:id="@+id/affirm_soakTime_editText"
                      android:selectAllOnFocus="true"/>
              <TextView android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
@@ -373,7 +373,7 @@
                        <!--android:textSize="18sp"-->
                        <!--android:text="16:00"-->
                        <!--android:textColor="@android:color/background_dark"-->
-                       <!--android:id="@+id/soak_soakBeginTime_textView"/>-->
+                       <!--android:id="@+id/affirm_soakBeginTime_textView"/>-->
          <!--</LinearLayout>-->
          <!--<LinearLayout android:layout_width="match_parent"-->
                        <!--android:layout_height="wrap_content"-->
@@ -391,7 +391,7 @@
                        <!--android:textSize="18sp"-->
                        <!--android:text="16:30"-->
                        <!--android:textColor="@android:color/background_dark"-->
-                       <!--android:id="@+id/soak_soakEndTime_textView"/>-->
+                       <!--android:id="@+id/affirm_soakEndTime_textView"/>-->
          <!--</LinearLayout>-->
      <!--</LinearLayout>-->
  </LinearLayout>
@@ -428,7 +428,7 @@
                           android:text="温度"/>
                 <TextView style="@style/CustomTextViewTheme"
                           android:textSize="18sp"
-                          android:id="@+id/soak_temperature_textView"/>
+                          android:id="@+id/affirm_temperature_textView"/>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
@@ -440,7 +440,7 @@
                           android:text="压力"/>
                 <TextView style="@style/CustomTextViewTheme"
                           android:textSize="18sp"
-                          android:id="@+id/soak_pressure_textView"/>
+                          android:id="@+id/affirm_pressure_textView"/>
             </LinearLayout>
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent"
@@ -457,7 +457,7 @@
                           android:text="出液量"/>
                 <TextView style="@style/CustomTextViewTheme"
                           android:textSize="18sp"
-                          android:id="@+id/soak_out_textView"/>
+                          android:id="@+id/affirm_out_textView"/>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
@@ -481,7 +481,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:focusable="false"
-                        android:id="@+id/soak_extractTime1_editText"
+                        android:id="@+id/affirm_extractTime1_editText"
                         android:selectAllOnFocus="true"/>
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
@@ -519,7 +519,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:focusable="false"
-                        android:id="@+id/soak_extractTime2_editText"
+                        android:id="@+id/affirm_extractTime2_editText"
                         android:selectAllOnFocus="true"/>
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
@@ -547,7 +547,7 @@
                           <!--android:width="80dp"-->
                           <!--android:text="浸泡加液"/>-->
                 <!--<TextView style="@style/CustomTextViewTheme"-->
-                          <!--android:id="@+id/soak_waterQuantity1_textView"/>-->
+                          <!--android:id="@+id/affirm_waterQuantity1_textView"/>-->
             <!--</LinearLayout>-->
             <!--<LinearLayout android:layout_width="match_parent"-->
                           <!--android:layout_height="wrap_content"-->
@@ -557,7 +557,7 @@
                           <!--android:width="80dp"-->
                           <!--android:text="浸泡时间"/>-->
                 <!--<TextView style="@style/CustomTextViewTheme"-->
-                          <!--android:id="@+id/soak_soakTime_textView"/>-->
+                          <!--android:id="@+id/affirm_soakTime_textView"/>-->
             <!--</LinearLayout>-->
         <!--</LinearLayout>-->
         <!--<LinearLayout android:layout_width="match_parent"-->
@@ -573,7 +573,7 @@
                           <!--android:text="一煎时间"/>-->
                 <!--<TextView style="@style/CustomTextViewTheme"-->
                           <!--android:textSize="18sp"-->
-                          <!--android:id="@+id/soak_extractTime1_textView"/>-->
+                          <!--android:id="@+id/affirm_extractTime1_textView"/>-->
             <!--</LinearLayout>-->
         <!--</LinearLayout>-->
         <!--<LinearLayout android:layout_width="match_parent"-->
@@ -590,7 +590,7 @@
                           <!--android:text="二煎加液"/>-->
                 <!--<TextView android:layout_width="wrap_content"-->
                           <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/soak_Quantity2_textView"-->
+                        <!--android:id="@+id/affirm_Quantity2_textView"-->
                 <!--/>-->
             <!--</LinearLayout>-->
             <!--<LinearLayout android:layout_width="match_parent"-->
@@ -613,7 +613,7 @@
                         <!--android:maxLength="2"-->
                         <!--android:background="@null"-->
                         <!--android:layout_weight="1"-->
-                        <!--android:id="@+id/soak_extractTime2_editText"-->
+                        <!--android:id="@+id/affirm_extractTime2_editText"-->
                         <!--android:selectAllOnFocus="true"/>-->
                 <!--<TextView android:layout_width="wrap_content"-->
                           <!--android:layout_height="wrap_content"-->
@@ -639,7 +639,7 @@
                           <!--android:text="三煎加液"/>-->
                 <!--<TextView style="@style/CustomTextViewTheme"-->
                           <!--android:textSize="18sp"-->
-                          <!--android:id="@+id/soak_waterQuantity3_textView"/>-->
+                          <!--android:id="@+id/affirm_waterQuantity3_textView"/>-->
             <!--</LinearLayout>-->
             <!--<LinearLayout android:layout_width="match_parent"-->
                           <!--android:layout_height="wrap_content"-->
@@ -672,7 +672,7 @@
                 <!--/>-->
                 <!--&lt;!&ndash;<TextView style="@style/CustomTextViewTheme"&ndash;&gt;-->
                           <!--&lt;!&ndash;android:textSize="18sp"&ndash;&gt;-->
-                          <!--&lt;!&ndash;android:id="@+id/soak_extractTime3_textView"/>&ndash;&gt;-->
+                          <!--&lt;!&ndash;android:id="@+id/affirm_extractTime3_textView"/>&ndash;&gt;-->
             <!--</LinearLayout>-->
         <!--</LinearLayout>-->
     </LinearLayout>
@@ -681,5 +681,5 @@
             style="@style/CustomButtonTheme"
             android:textSize="45sp"
             android:text="确定"
-            android:id="@+id/soak_submit_button"/>
+            android:id="@+id/affirm_submit_button"/>
 </LinearLayout>

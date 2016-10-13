@@ -13,25 +13,17 @@ import net.andy.boiling.R;
 import net.andy.boiling.domain.*;
 import net.andy.boiling.util.*;
 import net.andy.com.*;
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by Administrator on 2014-11-17.
  * 浸泡操作
  */
-@ContentView(R.layout.soak)
-public class SoakUI extends NFCActivity {
+@ContentView(R.layout.affirm)
+public class AffirmUI extends NFCActivity {
     protected final int RESULT_CODE=1001;
     protected final int REQUEST_CODE=1002;
     private TagDomain tagDomain;
@@ -42,6 +34,7 @@ public class SoakUI extends NFCActivity {
     private SoakDomain soakDomain;
     private ReturnDomain returnDomain;
     private ExtractingUtil extractingUtil;
+    private String type;
     private EquipmentUtil equipmentUtil;
     private String eId;
     private String equipId;
@@ -51,62 +44,62 @@ public class SoakUI extends NFCActivity {
     private boolean isPresc;
     private String tagType;
     private String planStatus;
-    @ViewInject(R.id.soak_patientNO_textView)
-    private TextView soak_patientNO_textView;
-    @ViewInject(R.id.soak_patientName_textView)
-    private TextView soak_patientName_textView;
-    @ViewInject(R.id.soak_category_textView)
-    private TextView soak_category_textView;
-    @ViewInject(R.id.soak_classification_textView)
-    private TextView soak_classification_textView;
-    @ViewInject(R.id.soak_diagnosis_textView)
-    private TextView soak_diagnosis_textView;
-    @ViewInject(R.id.soak_presNumber_textView)
-    private TextView soak_presNumber_textView;
-    @ViewInject(R.id.soak_method_textView)
-    private TextView soak_method_textView;
-    @ViewInject(R.id.soak_planStatus_textView)
-    private TextView soak_planStatus_textView;
-    @ViewInject(R.id.soak_soakTime_editText)
-    private LineEditText soak_soakTime_editText;
-    @ViewInject(R.id.soak_pres_linearLayout)
-    private LinearLayout soak_pres_linearLayout;
-    @ViewInject(R.id.soak_efficacy_textView)
-    private TextView soak_efficacy_textView;
+    @ViewInject(R.id.affirm_patientNO_textView)
+    private TextView affirm_patientNO_textView;
+    @ViewInject(R.id.affirm_patientName_textView)
+    private TextView affirm_patientName_textView;
+    @ViewInject(R.id.affirm_category_textView)
+    private TextView affirm_category_textView;
+    @ViewInject(R.id.affirm_classification_textView)
+    private TextView affirm_classification_textView;
+    @ViewInject(R.id.affirm_diagnosis_textView)
+    private TextView affirm_diagnosis_textView;
+    @ViewInject(R.id.affirm_presNumber_textView)
+    private TextView affirm_presNumber_textView;
+    @ViewInject(R.id.affirm_method_textView)
+    private TextView affirm_method_textView;
+    @ViewInject(R.id.affirm_planStatus_textView)
+    private TextView affirm_planStatus_textView;
+    @ViewInject(R.id.affirm_soakTime_editText)
+    private LineEditText affirm_soakTime_editText;
+    @ViewInject(R.id.affirm_pres_linearLayout)
+    private LinearLayout affirm_pres_linearLayout;
+    @ViewInject(R.id.affirm_efficacy_textView)
+    private TextView affirm_efficacy_textView;
     @ViewInject(R.id.sock_frequency_textView)
     private TextView sock_frequency_textView;
     @ViewInject(R.id.sock_dosage_textView)
     private TextView sock_dosage_textView;
-    @ViewInject(R.id.soak_tagCode_textView)
-    private TextView soak_tagCode_textView;
-//    @ViewInject(R.id.soak_soakEndTime_textView)
-//    private TextView soak_soakEndTime_textView;
-    @ViewInject(R.id.soak_temperature_textView)
-    private TextView soak_temperature_textView;
-    @ViewInject(R.id.soak_pressure_textView)
-    private TextView soak_pressure_textView;
-    @ViewInject(R.id.soak_out_textView)
-    private TextView soak_out_textView;
-    @ViewInject(R.id.soak_extractTime1_editText)
-    private LineEditText soak_extractTime1_editText;
-    @ViewInject(R.id.soak_extractTime2_editText)
-    private LineEditText soak_extractTime2_editText;
-//    @ViewInject(R.id.soak_waterQuantity3_textView)
-//    private TextView soak_waterQuantity3_textView;
-//    @ViewInject(R.id.soak_extractTime3_textView)
-//    private TextView soak_extractTime3_textView;
-    @ViewInject(R.id.soak_submit_button)
-    private Button soak_submit_button;
-    @ViewInject(R.id.soak_waterQuantity1_textView)
-    private TextView soak_waterQuantity1_textView;
+    @ViewInject(R.id.affirm_tagCode_textView)
+    private TextView affirm_tagCode_textView;
+//    @ViewInject(R.id.affirm_soakEndTime_textView)
+//    private TextView affirm_soakEndTime_textView;
+    @ViewInject(R.id.affirm_temperature_textView)
+    private TextView affirm_temperature_textView;
+    @ViewInject(R.id.affirm_pressure_textView)
+    private TextView affirm_pressure_textView;
+    @ViewInject(R.id.affirm_out_textView)
+    private TextView affirm_out_textView;
+    @ViewInject(R.id.affirm_extractTime1_editText)
+    private LineEditText affirm_extractTime1_editText;
+    @ViewInject(R.id.affirm_extractTime2_editText)
+    private LineEditText affirm_extractTime2_editText;
+//    @ViewInject(R.id.affirm_waterQuantity3_textView)
+//    private TextView affirm_waterQuantity3_textView;
+//    @ViewInject(R.id.affirm_extractTime3_textView)
+//    private TextView affirm_extractTime3_textView;
+    @ViewInject(R.id.affirm_submit_button)
+    private Button affirm_submit_button;
+    @ViewInject(R.id.affirm_waterQuantity1_textView)
+    private TextView affirm_waterQuantity1_textView;
     //    @ViewInject(R.id.equipId_textView)
 //    private TextView equipId_textView;
-    private RadioGroup soak_equiptype1_radioGroup;
+    private RadioGroup affirm_equiptype1_radioGroup;
     private RadioButton soak1_equiptype1_radioButton;
     private RadioButton soak2_equiptype1_radioButton;
     private String equipType;
-    private RadioButton[] soak_equiptype1_radioButtonList;
-    private int[] soak_equiptype1_valueList;
+    private RadioButton[] affirm_equiptype1_radioButtonList;
+    private int[] affirm_equiptype1_valueList;
     private SolutionDomain solutionDomain;
     private String captrueResult;
     private boolean hasMipcaCapture=false;
@@ -116,7 +109,21 @@ public class SoakUI extends NFCActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
-        soak_equiptype1_radioButtonList = new RadioButton[]{soak1_equiptype1_radioButton, soak2_equiptype1_radioButton};
+        Bundle extra = new Bundle();
+        extra = getIntent().getExtras();
+        if (extra != null){
+            type=extra.getString("type");
+            tagId= extra.getString("tagId");
+            if("scan".equals(type)){
+                hasMipcaCapture=false;
+                jump();
+            }else {
+                soakThread(0);
+            }
+        }else {
+            Log.e(">>>>extra","空");
+        }
+        affirm_equiptype1_radioButtonList = new RadioButton[]{soak1_equiptype1_radioButton, soak2_equiptype1_radioButton};
         extractingUtil = new ExtractingUtil();
         equipmentUtil = new EquipmentUtil();
     }
@@ -139,7 +146,7 @@ public class SoakUI extends NFCActivity {
         if ("处方".equals(tagType)) {
             if ("开始".equals(planStatus)) {
 //                Intent intentEquip = new Intent ();
-//                intentEquip.setClass ( SoakUI.this, EquipmentUI.class );
+//                intentEquip.setClass ( AffirmUI.this, EquipmentUI.class );
 //                startActivityForResult ( intentEquip, 1000 );
                 soakThread(1);
                 isPresc = true;
@@ -199,14 +206,14 @@ public class SoakUI extends NFCActivity {
         extractingDomain.setTemperature(solutionDomain.getTemperature());
     }
     private void setExtractingView(){
-        soak_efficacy_textView.setText(solutionDomain.getEfficacy());
-        soak_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
-        soak_method_textView.setText(extractingDomain.getMethod());
-        soak_extractTime1_editText.setText(String.valueOf(extractingDomain.getExtractTime1()));
-        soak_extractTime2_editText.setText(String.valueOf(extractingDomain.getExtractTime2()));
-        soak_temperature_textView.setText(String.valueOf(extractingDomain.getTemperature()));
-        soak_pressure_textView.setText(extractingDomain.getPressure());
-        soak_out_textView.setText(String.valueOf(extractingDomain.getOut()));
+        affirm_efficacy_textView.setText(solutionDomain.getEfficacy());
+        affirm_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
+        affirm_method_textView.setText(extractingDomain.getMethod());
+        affirm_extractTime1_editText.setText(String.valueOf(extractingDomain.getExtractTime1()));
+        affirm_extractTime2_editText.setText(String.valueOf(extractingDomain.getExtractTime2()));
+        affirm_temperature_textView.setText(String.valueOf(extractingDomain.getTemperature()));
+        affirm_pressure_textView.setText(extractingDomain.getPressure());
+        affirm_out_textView.setText(String.valueOf(extractingDomain.getOut()));
     }
 
     final Handler handler = new Handler() {
@@ -220,10 +227,10 @@ public class SoakUI extends NFCActivity {
                     setValue();
 //                    check(tagType);
                     if(tagDomain!=null) {
-                        soak_tagCode_textView.setText(tagDomain.getCode().replace("M", ""));
+                        affirm_tagCode_textView.setText(tagDomain.getCode().replace("M", ""));
                     }
                     if("开始".equals(extractingDomain.getPlanStatus())) {
-                        Intent intent = new Intent(SoakUI.this, ExtractPlanUI.class);
+                        Intent intent = new Intent(AffirmUI.this, ExtractPlanUI.class);
                         startActivityForResult(intent, REQUEST_CODE);
                     }
                     break;
@@ -231,9 +238,11 @@ public class SoakUI extends NFCActivity {
                     new CoolToast(getBaseContext()).show("保存成功");
                     chineseToSpeech.speech("保存成功");
                     reset();
+                    setResult(RESULT_OK);
+                    finish();
                     break;
                 case 3:
-                    soak_tagCode_textView.setText(tagDomain.getCode().replace("M",""));
+                    affirm_tagCode_textView.setText(tagDomain.getCode().replace("M",""));
                     new CoolToast(getBaseContext()).show("已绑定标签");
                     chineseToSpeech.speech("已绑定标签");
                     break;
@@ -288,65 +297,65 @@ public class SoakUI extends NFCActivity {
 
 
     public void setValue() {
-        soak_patientNO_textView.setText(String.valueOf(prescriptionDomain.getPatientNo()));
-        soak_patientName_textView.setText(String.valueOf(prescriptionDomain.getPatientName()));
-        soak_category_textView.setText(String.valueOf(prescriptionDomain.getCategory()));
-        soak_classification_textView.setText(String.valueOf(prescriptionDomain.getClassification()));
-        soak_diagnosis_textView.setText(String.valueOf((prescriptionDomain.getDiagnosis().length()>5)?prescriptionDomain.getDiagnosis().substring(0,5):prescriptionDomain.getDiagnosis().toString()));
-        soak_presNumber_textView.setText(String.valueOf(prescriptionDomain.getPresNumber())+" 付");
-        soak_method_textView.setText(String.valueOf(extractingDomain.getMethod()));
+        affirm_patientNO_textView.setText(String.valueOf(prescriptionDomain.getPatientNo()));
+        affirm_patientName_textView.setText(String.valueOf(prescriptionDomain.getPatientName()));
+        affirm_category_textView.setText(String.valueOf(prescriptionDomain.getCategory()));
+        affirm_classification_textView.setText(String.valueOf(prescriptionDomain.getClassification()));
+        affirm_diagnosis_textView.setText(String.valueOf((prescriptionDomain.getDiagnosis().length()>5)?prescriptionDomain.getDiagnosis().substring(0,5):prescriptionDomain.getDiagnosis().toString()));
+        affirm_presNumber_textView.setText(String.valueOf(prescriptionDomain.getPresNumber())+" 付");
+        affirm_method_textView.setText(String.valueOf(extractingDomain.getMethod()));
         sock_frequency_textView.setText(String.valueOf(prescriptionDomain.getFrequency()));
         sock_dosage_textView.setText(String.valueOf(prescriptionDomain.getDosage()));
-        soak_planStatus_textView.setText(String.valueOf(extractingDomain.getPlanStatus()));
-        soak_efficacy_textView.setText(String.valueOf(prescriptionDomain.getEfficacy()));
-        soak_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
-        soak_waterQuantity1_textView.setText(String.valueOf(extractingDomain.getQuantity()));
-        soak_temperature_textView.setText(String.valueOf(extractingDomain.getTemperature()));
-        soak_pressure_textView.setText(String.valueOf(extractingDomain.getPressure()));
-        soak_extractTime1_editText.setText(String.valueOf(extractingDomain.getExtractTime1()));
-        soak_extractTime2_editText.setText(String.valueOf(extractingDomain.getExtractTime2()));
-        soak_out_textView.setText(String.valueOf(extractingDomain.getOut()));
+        affirm_planStatus_textView.setText(String.valueOf(extractingDomain.getPlanStatus()));
+        affirm_efficacy_textView.setText(String.valueOf(prescriptionDomain.getEfficacy()));
+        affirm_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
+        affirm_waterQuantity1_textView.setText(String.valueOf(extractingDomain.getQuantity()));
+        affirm_temperature_textView.setText(String.valueOf(extractingDomain.getTemperature()));
+        affirm_pressure_textView.setText(String.valueOf(extractingDomain.getPressure()));
+        affirm_extractTime1_editText.setText(String.valueOf(extractingDomain.getExtractTime1()));
+        affirm_extractTime2_editText.setText(String.valueOf(extractingDomain.getExtractTime2()));
+        affirm_out_textView.setText(String.valueOf(extractingDomain.getOut()));
 
     }
 
     public void reset() {
-        soak_patientNO_textView.setText("");
-        soak_patientName_textView.setText("");
+        affirm_patientNO_textView.setText("");
+        affirm_patientName_textView.setText("");
         sock_frequency_textView.setText("");
         sock_dosage_textView.setText("");
-        soak_category_textView.setText("");
-        soak_classification_textView.setText("");
-        soak_diagnosis_textView.setText("");
-        soak_presNumber_textView.setText("");
-        soak_method_textView.setText("");
-        soak_planStatus_textView.setText("");
-        soak_waterQuantity1_textView.setText("");
-        soak_soakTime_editText.setText("");
-        soak_temperature_textView.setText("");
-        soak_pressure_textView.setText("");
-        soak_extractTime1_editText.setText("");
-        soak_extractTime2_editText.setText("");
-        soak_tagCode_textView.setText("");
-        soak_efficacy_textView.setText("");
-        soak_out_textView.setText("");
+        affirm_category_textView.setText("");
+        affirm_classification_textView.setText("");
+        affirm_diagnosis_textView.setText("");
+        affirm_presNumber_textView.setText("");
+        affirm_method_textView.setText("");
+        affirm_planStatus_textView.setText("");
+        affirm_waterQuantity1_textView.setText("");
+        affirm_soakTime_editText.setText("");
+        affirm_temperature_textView.setText("");
+        affirm_pressure_textView.setText("");
+        affirm_extractTime1_editText.setText("");
+        affirm_extractTime2_editText.setText("");
+        affirm_tagCode_textView.setText("");
+        affirm_efficacy_textView.setText("");
+        affirm_out_textView.setText("");
         tagDomain = null;
         prescriptionDomain = null;
         extractingDomain = null;
         soakDomain = null;
     }
 
-    @Event(value = {R.id.soak_submit_button,
-            R.id.soak_pres_linearLayout,
-    R.id.soak_extractTime1_editText,
-    R.id.soak_soakTime_editText},
+    @Event(value = {R.id.affirm_submit_button,
+            R.id.affirm_pres_linearLayout,
+    R.id.affirm_extractTime1_editText,
+    R.id.affirm_soakTime_editText},
     type = View.OnClickListener.class)
     private void onClick(View v) {
         switch (v.getId()){
-            case R.id.soak_submit_button:
+            case R.id.affirm_submit_button:
                 if(prescriptionDomain!=null&&extractingDomain!=null) {
-                    extractingDomain.setSoakTime(Integer.parseInt(String.valueOf(soak_soakTime_editText.getText())));
-                    extractingDomain.setExtractTime1(Integer.parseInt(String.valueOf(soak_extractTime1_editText.getText())));
-                    extractingDomain.setExtractTime2(Integer.parseInt(String.valueOf(soak_extractTime2_editText.getText())));
+                    extractingDomain.setSoakTime(Integer.parseInt(String.valueOf(affirm_soakTime_editText.getText())));
+                    extractingDomain.setExtractTime1(Integer.parseInt(String.valueOf(affirm_extractTime1_editText.getText())));
+                    extractingDomain.setExtractTime2(Integer.parseInt(String.valueOf(affirm_extractTime2_editText.getText())));
                     if("".equals(extractingDomain.getTagId())){
                         new CoolToast(getBaseContext()).show("请先绑定标签");
                         chineseToSpeech.speech("请先绑定标签");
@@ -358,23 +367,23 @@ public class SoakUI extends NFCActivity {
                         return;
                     }
                     soakThread(1);
-                    Log.e("soak_submit_button", "点击");
+                    Log.e("affirm_submit_button", "点击");
                 }else{
                     new CoolToast(getBaseContext()).show("请先刷卡或扫描条码获取处方");
                     chineseToSpeech.speech("请先获取处方");
                 }
                 break;
-            case R.id.soak_extractTime1_editText:
+            case R.id.affirm_extractTime1_editText:
 //                setInterval(false);
-                setInterval(soak_extractTime1_editText,isSoak);
+                setInterval(affirm_extractTime1_editText,isSoak);
                 break;
-            case R.id.soak_soakTime_editText:
-                setInterval(soak_soakTime_editText,isTime1);
+            case R.id.affirm_soakTime_editText:
+                setInterval(affirm_soakTime_editText,isTime1);
                 break;
-            case R.id.soak_extractTime2_editText:
-                setInterval(soak_extractTime2_editText,isTime2);
+            case R.id.affirm_extractTime2_editText:
+                setInterval(affirm_extractTime2_editText,isTime2);
                 break;
-            case R.id.soak_pres_linearLayout:
+            case R.id.affirm_pres_linearLayout:
                 hasMipcaCapture=false;
                 jump();
                 break;
@@ -384,9 +393,9 @@ public class SoakUI extends NFCActivity {
     /**
      * 读取二维码并返回数据
      */
-    private void jump(      ) {
+    private void jump() {
         Intent intent = new Intent();
-        intent.setClass(SoakUI.this, MipcaActivityCapture.class);
+        intent.setClass(AffirmUI.this, MipcaActivityCapture.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivityForResult(intent, REQUEST_CODE);
     }

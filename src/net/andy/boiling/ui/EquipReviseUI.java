@@ -52,6 +52,8 @@ public class EquipReviseUI extends NFCActivity {
     private RadioButton equip2_type_radioButton;
     @ViewInject(R.id.equip3_type_radioButton)
     private RadioButton equip3_type_radioButton;
+    @ViewInject(R.id.equip4_type_radioButton)
+    private RadioButton equip4_type_radioButton;
     @ViewInject(R.id.equip1_type1_radioButton)
     private RadioButton equip1_type1_radioButton;
     @ViewInject(R.id.equip2_type1_radioButton)
@@ -103,8 +105,8 @@ public class EquipReviseUI extends NFCActivity {
 //        equip1_equipStatus_radioGroup = ( RadioGroup ) findViewById ( R.id.equip1_equipStatus_radioGroup );
 //        equip2_equipStatus_radioGroup = ( RadioGroup ) findViewById ( R.id.equip2_equipStatus_radioGroup );
 //        equip_ok_button = ( Button ) findViewById ( R.id.equip_ok_button );
-        equip_type_radioButtonList = new RadioButton[]{equip1_type_radioButton, equip2_type_radioButton, equip3_type_radioButton};
-        equip_type_valueList = new int[]{R.id.equip1_type_radioButton, R.id.equip2_type_radioButton, R.id.equip3_type_radioButton};
+        equip_type_radioButtonList = new RadioButton[]{equip1_type_radioButton, equip2_type_radioButton, equip3_type_radioButton,equip4_type_radioButton};
+        equip_type_valueList = new int[]{R.id.equip1_type_radioButton, R.id.equip2_type_radioButton, R.id.equip3_type_radioButton,R.id.equip4_type_radioButton};
         equip_type1_radioButtonList = new RadioButton[]{equip1_type1_radioButton, equip2_type1_radioButton};
         equip_type1_valueList = new int[]{R.id.equip1_type1_radioButton, R.id.equip2_type1_radioButton};
         equip_equipPurpose_radioButtonList = new RadioButton[]{equip1_equipPurpose_radioButton, equip2_equipPurpose_radioButton};
@@ -153,7 +155,7 @@ public class EquipReviseUI extends NFCActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 equipmentDomain.setEquipPurpose ( String.valueOf ( ( ( RadioButton ) findViewById ( checkedId ) ).getText () ) );
             }
-        } );
+        });
     }
 
     /**

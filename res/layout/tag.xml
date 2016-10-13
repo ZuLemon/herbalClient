@@ -65,7 +65,7 @@
             android:id="@+id/tag_color_spinner"/>
     <RadioGroup android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tag_type_radioGroup"
+                android:id="@+id/tag_type1_radioGroup"
                 android:orientation="horizontal"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="10dp"
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tag_type1"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:checked="true"
                 android:textColor="@android:color/black"
                 android:id="@+id/tag_type1_radioButton"/>
@@ -84,15 +84,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tag_type2"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/tag_type2_radioButton"/>
+
+    </RadioGroup>
+    <RadioGroup android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tag_type2_radioGroup"
+                android:orientation="horizontal"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+    >
         <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tag_type3"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/tag_type3_radioButton"/>
         <RadioButton
@@ -100,11 +110,18 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/tag_type4"
-                android:textSize="15sp"
+                android:textSize="18sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/tag_type4_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/tag_type5"
+                android:textSize="18sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/tag_type5_radioButton"/>
     </RadioGroup>
-
     <RadioGroup android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tag_status_radioGroup"

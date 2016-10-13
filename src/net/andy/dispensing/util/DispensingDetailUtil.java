@@ -21,8 +21,11 @@ public class DispensingDetailUtil {
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
-    获取待调剂处方
-    */
+     * 获取待调剂处方
+     * @param planId
+     * @return
+     * @throws Exception
+     */
     public List getListByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
@@ -52,6 +55,13 @@ public class DispensingDetailUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
+
+    /**
+     * 更新预调剂明细
+     * @param disId
+     * @param readyId
+     * @throws Exception
+     */
     public void updateReady(Integer disId,Integer readyId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
@@ -62,6 +72,28 @@ public class DispensingDetailUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
+
+    /**
+     * 更新协定处方明细
+     * @param disId
+     * @throws Exception
+     */
+    public void updateDue(Integer disId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/updateDue.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+
+    /**
+     * 通过disId获取调剂明细
+     * @param disId
+     * @return List
+     * @throws Exception
+     */
     public List getDispensingDetailByDisId(Integer disId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );

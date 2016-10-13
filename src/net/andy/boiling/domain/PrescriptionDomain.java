@@ -61,6 +61,8 @@ public class PrescriptionDomain implements Serializable{
     private String doctorId = "";
     /*处方医生姓名*/
     private String doctorName = "";
+    /*协定处方名称*/
+    private String dueName="";
 
     public Integer getId() {
         return id;
@@ -292,5 +294,12 @@ public class PrescriptionDomain implements Serializable{
 
     public void setReady(Integer ready) {
         this.ready = ready;
+    }
+
+    public String getDueName() {
+        return dueName;
+    }
+    public void setDueName(String dueName) {
+        this.dueName = dueName;
     }
 }

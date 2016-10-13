@@ -6,6 +6,7 @@
     <string name="tag_type2">煎药机</string>
     <string name="tag_type3">加液机</string>
     <string name="tag_type4">包装机</string>
+    <string name="tag_type5">煎膏机</string>
     <string name="tag_status1">使用</string>
     <string name="tag_status2">空闲</string>
     <string name="tag_status3">废弃</string>

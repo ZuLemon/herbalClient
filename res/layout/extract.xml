@@ -15,6 +15,8 @@
                   tools:layout="@layout/messagefragement"/>
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical"
+                      android:gravity="center_vertical"
                       android:background="@drawable/white_circular"
                       android:paddingBottom="5dp"
                       android:paddingRight="5dp"
@@ -44,6 +46,7 @@
 
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
+                          android:id="@+id/extract_presInfo_linearLayout"
                           android:orientation="vertical">
 
                 <TextView android:layout_width="match_parent"
@@ -145,6 +148,7 @@
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
+                              android:id="@+id/extract_pressure_linearLayout"
                               android:orientation="horizontal">
                     <LinearLayout android:layout_width="match_parent"
                                   android:layout_height="wrap_content"
@@ -282,13 +286,14 @@
                               android:layout_marginBottom="5dp"
                               android:layout_marginLeft="10dp"
                               android:layout_weight="1"
+                              android:id="@+id/extract_waterEquip_linearLayout"
                               android:orientation="horizontal">
                     <TextView android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
                               android:width="80dp"
                               android:textSize="18sp"
                               android:textColor="@android:color/background_dark"
-                              android:text="设备号"/>
+                              android:text="加液机"/>
                     <TextView android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:textSize="18sp"
@@ -521,14 +526,45 @@
                     <TextView style="@style/CustomTextViewTheme"
                               android:textSize="18sp"
                               android:width="80dp"
-                              android:text="设备号"/>
+                              android:text="煎药机"/>
                     <TextView style="@style/CustomTextViewTheme"
                               android:textSize="18sp"
                               android:id="@+id/extract_extractEquip_textView"
                     />
                 </LinearLayout>
             </LinearLayout>
-
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:id="@+id/extract_stew_linearLayout"
+                          android:layout_marginBottom="5dp">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:width="80dp"
+                              android:text="煎膏设备"/>
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:id="@+id/extract_stewEquip_textView"
+                    />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:width="80dp"
+                              android:text="制膏结束"/>
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:id="@+id/extract_stewStop_textView"
+                    />
+                </LinearLayout>
+            </LinearLayout>
             </LinearLayout>
 
     </LinearLayout>
@@ -574,6 +610,13 @@
                     android:text="包装"
                     android:layout_marginRight="5dp"
                     android:id="@+id/extract_pack_button"/>
+            <Button style="@style/CustomButtonTheme"
+                    android:background="@drawable/darkgray_selector"
+                    android:layout_weight="1"
+                    android:visibility="gone"
+                    android:text="制膏"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/extract_stew_button"/>
         </LinearLayout>
 
         <!--<Button style="@style/CustomButtonTheme"-->

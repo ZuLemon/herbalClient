@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.alibaba.fastjson.JSON;
@@ -40,8 +41,10 @@ public class TagUI extends NFCActivity {
     private EditText tag_code_editText;
     @ViewInject(R.id.tag_bindId_editText)
     private EditText tag_bindId_editText;
-    @ViewInject(R.id.tag_type_radioGroup)
-    private RadioGroup tag_type_radioGroup;
+    @ViewInject(R.id.tag_type1_radioGroup)
+    private RadioGroup tag_type1_radioGroup;
+    @ViewInject(R.id.tag_type2_radioGroup)
+    private RadioGroup tag_type2_radioGroup;
     @ViewInject(R.id.tag_status_radioGroup)
     private RadioGroup tag_status_radioGroup;
     @ViewInject(R.id.tag_type1_radioButton)
@@ -58,6 +61,8 @@ public class TagUI extends NFCActivity {
     private RadioButton tag_status3_radioButton;
     @ViewInject(R.id.tag_type4_radioButton)
     private RadioButton tag_type4_radioButton;
+    @ViewInject(R.id.tag_type5_radioButton)
+    private RadioButton tag_type5_radioButton;
     @ViewInject(R.id.tag_ok_button)
     private Button tag_ok_button;
     private List<ColorItem> colorItemList = new ArrayList<>();
@@ -85,6 +90,7 @@ public class TagUI extends NFCActivity {
         //将adapter 添加到spinner中
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new ItemSelectedListenerImpl());
+
     }
 
     /**
@@ -139,18 +145,30 @@ public class TagUI extends NFCActivity {
                 break;
         }
     }
-
+    @Event(value = R.id.tag_type1_radioGroup,type = RadioGroup.OnCheckedChangeListener.class)
+    private void onChecked1Changed(RadioGroup group, int checkedId) {
+        tag_type3_radioButton.setChecked(false);
+        tag_type4_radioButton.setChecked(false);
+        tag_type5_radioButton.setChecked(false);
+    }
+    @Event(value = R.id.tag_type2_radioGroup,type = RadioGroup.OnCheckedChangeListener.class)
+    private void onChecked2Changed(RadioGroup group, int checkedId) {
+        tag_type1_radioButton.setChecked(false);
+        tag_type2_radioButton.setChecked(false);
+    }
     public void setValue(String tagId) {
         tag_tagId_editText.setText(tagId);
         tag_code_editText.setText(tagDomain.getCode());
         tag_bindId_editText.setText(tagDomain.getBindId());
         if (tagDomain.getType() == null) {
-            tag_type_radioGroup.clearCheck();
+            tag_type1_radioGroup.clearCheck();
+            tag_type2_radioGroup.clearCheck();
         } else {
             tag_type1_radioButton.setChecked(tag_type1_radioButton.getText().equals(tagDomain.getType()));
             tag_type2_radioButton.setChecked(tag_type2_radioButton.getText().equals(tagDomain.getType()));
             tag_type3_radioButton.setChecked(tag_type3_radioButton.getText().equals(tagDomain.getType()));
             tag_type4_radioButton.setChecked(tag_type4_radioButton.getText().equals(tagDomain.getType()));
+            tag_type5_radioButton.setChecked(tag_type5_radioButton.getText().equals(tagDomain.getType()));
         }
         if (tagDomain.getStatus() == null) {
             tag_status_radioGroup.clearCheck();
@@ -175,6 +193,8 @@ public class TagUI extends NFCActivity {
             return (String) tag_type3_radioButton.getText();
         if (tag_type4_radioButton.isChecked())
             return (String) tag_type4_radioButton.getText();
+        if (tag_type5_radioButton.isChecked())
+            return (String) tag_type5_radioButton.getText();
         return "";
     }
 

@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/equip_type_one"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/equip1_type_radioButton"/>
         <RadioButton
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/equip_type_two"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/equip2_type_radioButton"/>
         <RadioButton
@@ -94,9 +94,17 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/equip_type_three"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textColor="@android:color/black"
                 android:id="@+id/equip3_type_radioButton"/>
+        <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/equip_type_four"
+                android:textSize="14sp"
+                android:textColor="@android:color/black"
+                android:id="@+id/equip4_type_radioButton"/>
     </RadioGroup>
 
     <RadioGroup android:layout_width="match_parent"

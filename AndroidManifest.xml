@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="42"
+          android:versionCode="44"
           android:versionName="1.5">
     <uses-sdk android:minSdkVersion="18" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
@@ -43,7 +43,7 @@
         <service android:name="net.andy.com.FloatViewService"/>
         <activity android:name=".Option"/>
         <activity android:name=".Main"/>
-        <activity android:name=".ui.SoakUI"/>
+        <activity android:name=".ui.AffirmUI"/>
         <activity android:name=".ui.EquipmentUI"/>
         <activity android:name=".ui.TagUI"/>
         <activity android:name=".ui.ExtractUI"/>

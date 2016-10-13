@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.alibaba.fastjson.JSON;
 import net.andy.boiling.domain.TagDomain;
+import net.andy.boiling.ui.AffirmUI;
 import net.andy.boiling.util.TagUtil;
 import net.andy.com.Application;
 import net.andy.dispensing.domain.*;
@@ -42,6 +43,7 @@ import java.util.regex.Pattern;
  * Created by Guang on 2016/2/18.
  */
 public class DispensingUI extends NFCActivity {
+
     private PowerManager.WakeLock mWakeLock;
     public static final String ACTION_DISPENSING = "net.andy.com.MqttNotification";
     private Date date = new Date(new Date().getTime() - 60 * 1000);
@@ -49,6 +51,7 @@ public class DispensingUI extends NFCActivity {
     private final static int SCANNIN_GREQUEST_CODE = 1000;
     private final static int PAUSE_PRESITION_CODE = 2000;
     private final static int PAUSE_GETPRESITION_CODE = 3000;
+    private static final int AFFIRM_CODE = 9010;
     @ViewInject(R.id.dispensing_patientInfo_linearLayout)
     private LinearLayout dispensing_patientInfo_linearLayout;
     @ViewInject(R.id.dispensing_medicineInfo_linearLayout)
@@ -168,6 +171,7 @@ public class DispensingUI extends NFCActivity {
     private boolean isGetPresTime = true;
     private long serverTime;
     private boolean hasReady;
+    private boolean hasDue;
     private List<Map> sumList = new ArrayList();
     private int clickCount = 0;
     private TagDomain tagDomain;
@@ -286,7 +290,6 @@ public class DispensingUI extends NFCActivity {
         hasHistory = false;
         herbalUtil(12);
         reset();
-        getReadyPre();
 //        setImage();
     }
 
@@ -435,16 +438,24 @@ public class DispensingUI extends NFCActivity {
         dispensing_herspecAndTotal_linearLayout.setVisibility(View.GONE);
         dispensing_nextMedicine_textView.setVisibility(View.GONE);
     }
-
+    /**
+     * 有协定处方
+     */
+    private void setDue() {
+        dispensing_nowCount_textView.setText("第 1 味  共" + dispensingDetailDomainList.size() + "味");
+        dispensing_presName_textView.setText(prescriptionDomain.getDueName());
+        dispensing_herspecAndTotal_linearLayout.setVisibility(View.GONE);
+        dispensing_nextMedicine_textView.setVisibility(View.GONE);
+    }
     /**
      * 刷新待调处方数
      */
-    private void getReadyPre() {
-//        clickCount++;
-//        if(clickCount%3==0){
-//            herbalUtil(12);
-//        }
-    }
+//    private void getReadyPre() {
+////        clickCount++;
+////        if(clickCount%3==0){
+////            herbalUtil(12);
+////        }
+//    }
 
     private synchronized void getPres() {
         Date nowDate = new Date();
@@ -477,10 +488,11 @@ public class DispensingUI extends NFCActivity {
     private void btnClick(View view) {
         switch (view.getId()) {
             case R.id.dispensing_medicineInfo_linearLayout:
-                getReadyPre();
                 dispensing_medicineInfo_linearLayout.setClickable(false);
                 Log.e("dis tagId", dispensingDomain.getTagId());
-                if (hasReady) {
+               if(hasDue){
+                   herbalUtil(15);
+               }else if (hasReady) {
                     herbalUtil(11);
                 } else {
                     if (!isEnd) {
@@ -530,6 +542,7 @@ public class DispensingUI extends NFCActivity {
                     startActivity(reIntent);
                 }
                 break;
+            //患者信息
             case R.id.dispensing_patientInfo_linearLayout:
                 if (hasHistory) {
                     Intent in = new Intent(DispensingUI.this, PatientInfoUI.class);
@@ -539,6 +552,7 @@ public class DispensingUI extends NFCActivity {
                     new CoolToast(getBaseContext()).show("请先获取处方");
                 }
                 break;
+            //回查
             case R.id.dispensing_history_button:
                 if (hasHistory) {
                     Intent in = new Intent(DispensingUI.this, DisHistoryUI.class);
@@ -549,6 +563,7 @@ public class DispensingUI extends NFCActivity {
                     new CoolToast(getBaseContext()).show("请先获取处方");
                 }
                 break;
+            //
             case R.id.dispensing_show_button:
                 if (isShow) {
                     isShow = false;
@@ -587,6 +602,7 @@ public class DispensingUI extends NFCActivity {
                 dispensing_adjust_linearLayout.setVisibility(View.GONE);
                 dispensing_warning_linearLayout.setVisibility(View.VISIBLE);
                 hasReady = false;
+                hasDue=false;
                 setValue();
                 break;
         }
@@ -682,8 +698,11 @@ public class DispensingUI extends NFCActivity {
                     tagId = data.getStringExtra("tagId");
                     Log.e("tagId", tagId);
                     herbalUtil(9);
-                    break;
                 }
+                break;
+            case AFFIRM_CODE:
+                Log.e("返回", "已确定煎制方案");
+                break;
         }
     }
 
@@ -780,6 +799,15 @@ public class DispensingUI extends NFCActivity {
                         downTimer.onFinish();
                         socInt = 0;
                         minInt = 0;
+                        //如果是代煎药品跳转至确认煎制方案
+                        if("代煎".equals(prescriptionDomain.getProcess())){
+                            Intent affirmIntent=new Intent(DispensingUI.this,AffirmUI.class);
+                            Bundle bundle=new Bundle();
+                            bundle.putString("tagId",tagId);
+                            bundle.putString("type","dispensing");
+                            affirmIntent.putExtras(bundle);
+                            startActivityForResult(affirmIntent,AFFIRM_CODE);
+                        }
                         reset();
                         break;
                     case 7:
@@ -835,6 +863,12 @@ public class DispensingUI extends NFCActivity {
                     case 14:
                         showValidationImage();
                         break;
+                    case 15:
+                        setGlobalView();
+                        dispensing_adjust_linearLayout.setVisibility(View.VISIBLE);
+                        dispensing_warning_linearLayout.setVisibility(View.GONE);
+                        setDue();
+                        break;
                 }
             }
         };
@@ -861,21 +895,29 @@ public class DispensingUI extends NFCActivity {
                             } else {
                                 hasDownTimer = false;
                                 prescriptionDomain = JSON.parseObject(alldis.get("prescription").toString(), PrescriptionDomain.class);
-                                dispensingDomain = JSON.parseObject(alldis.get("dispensing").toString(), DispensingDomain.class);
-                                listDis = JSON.parseObject(alldis.get("dispensingDetail").toString(), List.class);
-                                if (prescriptionDomain.getReady() != 0) {
+                                 dispensingDomain = JSON.parseObject(alldis.get("dispensing").toString(), DispensingDomain.class);
+                                 listDis = JSON.parseObject(alldis.get("dispensingDetail").toString(), List.class);
+                                //协定处方
+                                if(prescriptionDomain.getDueName()!=null&&!"".equals(prescriptionDomain.getDueName())) {
+                                    hasDue=true;
+                                    message.what = 15;
+                                    message.obj = "";
+                                    handler.sendMessage(message);
+                                }else if (prescriptionDomain.getReady() != 0) {
+                                    //预调剂
                                     Log.e("预调剂", String.valueOf(prescriptionDomain.getReady()));
                                     readyDomain = JSON.parseObject(alldis.get("ready").toString(), ReadyDomain.class);
                                     hasReady = true;
                                     message.what = 11;
                                     message.obj = "";
                                     handler.sendMessage(message);
-                                    break;
+                                }else {
+                                    message.what = 0;
+                                    message.obj = listDis;
+                                    handler.sendMessage(message);
                                 }
-                                message.what = 0;
-                                message.obj = listDis;
-                                handler.sendMessage(message);
                             }
+
                             break;
                         //提交第一味药开始调剂时间
                         case 1:
@@ -988,6 +1030,7 @@ public class DispensingUI extends NFCActivity {
                             message.what = 10;
                             handler.sendMessage(message);
                             break;
+                        //更新预调剂明细
                         case 11:
                             dispensingDetailUtil.updateReady(dispensingDomain.getId(), readyDomain.getId());
                             listDis = dispensingDetailUtil.getDispensingDetailByDisId(dispensingDomain.getId());
@@ -1015,6 +1058,14 @@ public class DispensingUI extends NFCActivity {
                             message.what = 14;
                             handler.sendMessage(message);
                             break;
+                        //更新预调剂明细
+                        case 15:
+                            dispensingDetailUtil.updateDue(dispensingDomain.getId());
+                            listDis = dispensingDetailUtil.getDispensingDetailByDisId(dispensingDomain.getId());
+                            message.obj = "";
+                            message.what = 0;
+                            handler.sendMessage(message);
+                            break;
                     }
                 } catch (Exception e) {
                     message.what = -1;
@@ -1038,6 +1089,7 @@ public class DispensingUI extends NFCActivity {
         dispensing_sysinfo_textView.setVisibility(View.VISIBLE);
         hasPre = false;
         hasReady = false;
+        hasDue=false;
         totalWeight = new BigDecimal(0);
         valCount = 0;
         hasValidateion = false;
