@@ -109,6 +109,36 @@ public class EquipmentUtil {
         }
     }
 
+    /**
+     *  获取设备
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    public List<EquipmentDomain> getEquipmentByType(String type) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "type", type ) );
+        try {
+            returnDomain = ( ReturnDomain ) ( new Http ().post ( "equipment/getEquipmentByType.do", pairs, ReturnDomain.class ) );
+            if ( returnDomain.getSuccess () ) {
+                if ( returnDomain.getObject () != null ) {
+                    return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
+                } else {
+                    throw new Exception ( "未查到设备信息" );
+                }
+            } else {
+                throw new Exception ( returnDomain.getException () );
+            }
+        } catch (Exception e) {
+            throw new Exception ( e.getMessage () );
+        }
+    }
+    /**
+     * 获取设备
+     * @param planId
+     * @return
+     * @throws Exception
+     */
     public EquipmentDomain getEquipByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );

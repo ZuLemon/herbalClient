@@ -29,6 +29,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,6 @@ public class ExtractUI extends NFCActivity {
     private TextView extract_extractEquip_textView;
     @ViewInject(R.id.extract_soakEquip_textView)
     private TextView extract_soakEquip_textView;
-
     @ViewInject(R.id.extract_tagCode_textView)
     private TextView extract_tagCode_textView;
     @ViewInject(R.id.extract_presStatus_textView)
@@ -77,6 +77,8 @@ public class ExtractUI extends NFCActivity {
     private TextView extract_extractTime1_textView;
     @ViewInject(R.id.extract_extractTime2_textView)
     private TextView extract_extractTime2_textView;
+    @ViewInject(R.id.extract_stewStop_textView)
+    private TextView extract_stewStop_textView;
     @ViewInject(R.id.extract1_equiptype1_radioButton)
     private RadioButton extract1_equiptype1_radioButton;
     @ViewInject(R.id.extract2_equiptype1_radioButton)
@@ -129,6 +131,7 @@ public class ExtractUI extends NFCActivity {
     private TagDomain StewTag = new TagDomain();
     private PrescriptionDomain prescriptionDomain = null;
     private ExtractingDomain extractingDomain = null;
+    private ExtractDomain extractDomain=null;
     private EquipmentDomain waterEquipment = null;
     private EquipmentDomain extractEquipment =null;
     private EquipmentDomain packEquipment=null;
@@ -147,16 +150,21 @@ public class ExtractUI extends NFCActivity {
     private boolean hasExtractEquip;
     private boolean hasStewEquip;
     private boolean hasPack;
+    private boolean hasStew;
+    private boolean hasFinish;
     private String equipType1;
     private Integer quantity;
     private Message message;
     private List ExtractList;
+    private String[] jyj={};
     private List waterEquipList;
+    private Integer waterId;
     private ChineseToSpeech chineseToSpeech=new ChineseToSpeech();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
+        waterEquipList=new ArrayList<EquipmentDomain>();
         extractThread ( 8 );
 //        Bundle bundle = this.getIntent().getExtras();
 //        if(bundle!=null) {
@@ -180,18 +188,26 @@ public class ExtractUI extends NFCActivity {
                 startActivityForResult(affirmIntent,requestCode);
                 break;
             case R.id.extract_waterEquip_linearLayout:
-                String[] xs=new String[] { "加液机01", "加液机02" };
+                if(hasPre&&!hasWater) {
                 new AlertDialog.Builder(this).setTitle("请选择加液机").setIcon(
                         android.R.drawable.ic_dialog_info).setSingleChoiceItems(
-                        xs, 0,new DialogInterface.OnClickListener() {
+                        jyj, 0,new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    extract_soakEquip_textView.setText(xs[which]);
+                        extract_soakEquip_textView.setText(((Map) waterEquipList.get(which)).get("equipId").toString());
+                        hasWater = true;
+                        waterEquipment = new EquipmentDomain();
+                        waterEquipment.setId(Integer.parseInt(((Map) waterEquipList.get(which)).get("id").toString()));
+                        waterId = which;
+                        }
+                }).setNegativeButton("取消", null).show();
+                }else {
+                    new CoolToast(getBaseContext()).show("请先选择处方");
                 }
-             }).setNegativeButton("取消", null).show();
                 break;
         }
     }
+
     @Event(value = {R.id.extract_extract1_button,
             R.id.extract_extract1_button,
             R.id.extract_extract1_button,
@@ -335,9 +351,12 @@ public class ExtractUI extends NFCActivity {
                 extract_extractEquip_textView.setText("");
             }
 
-            if(hasPack){
+            if(hasPack||hasFinish){
                 extract_extractbutton_linearLayout.setVisibility(View.GONE);
                 extract_soakbutton_linearLayout.setVisibility(View.GONE);
+                if(hasFinish){
+                    extract_stewStop_textView.setText(simpleDateFormat.format(extractDomain.getEndTime()));
+                }
             }else{
                 if ( "开始".equals(extractingDomain.getPlanStatus())) {
                     extract_extractbutton_linearLayout.setVisibility(View.GONE);
@@ -359,6 +378,12 @@ public class ExtractUI extends NFCActivity {
             if(stewEquipment!=null){
                 extract_stewEquip_textView.setText(stewEquipment.getEquipId());
             }
+            if(hasStew){
+                extract_stew_button.setText("完成");
+            }else{
+                extract_stew_button.setText("制膏");
+            }
+
         } catch (Exception e) {
 //            e.printStackTrace();
             new CoolToast(getBaseContext()).show("UI更新失败,请稍后重试。");
@@ -444,6 +469,13 @@ public class ExtractUI extends NFCActivity {
                     resetObject();
                     resetView();
                     break;
+                case 8:
+                    jyj=new String[waterEquipList.size()];
+                   for(int x=0;x<waterEquipList.size();x++){
+                       jyj[x]=((Map)waterEquipList.get(x)).get("equipName").toString();
+//                       Log.e(">>>>>>>",jyj[x]);
+                    }
+                    break;
                 case 11:
                     Log.e(">>", waterEquipment.getEquipId());
                     hasWater=true;
@@ -465,7 +497,6 @@ public class ExtractUI extends NFCActivity {
                 case 20:
                     new CoolToast(getBaseContext()).show(String.valueOf(msg.obj));
                     chineseToSpeech.speech(String.valueOf(msg.obj));
-
                     break;
                 case 21:
                     reset();
@@ -523,11 +554,22 @@ public class ExtractUI extends NFCActivity {
                                     }
                                     hasExtract=true;
                                 }
-                                if("包装".equals(extractingDomain.getPlanStatus())||"制膏".equals(extractingDomain.getPlanStatus())){
+                                if("包装".equals(extractingDomain.getPlanStatus())){
                                     hasPack=true;
-                                    stewEquipment=new EquipmentUtil().getEquipByEquipId(String.valueOf(((Map) ExtractList.get(ExtractList.size()-1)).get("equipId")));
                                 }else{
                                     hasPack=false;
+                                }
+                                if("制膏".equals(extractingDomain.getPlanStatus())){
+                                    hasStew=true;
+                                    extractDomain =new ExtractUtil().getExtractByPlanIdStatus(prescriptionDomain.getPlanId(),"制膏");
+                                    stewEquipment = new EquipmentUtil().getEquipByEquipId(extractDomain.getEquipId());
+                                    if(extractDomain.getEndTime()==null||"".equals(extractDomain.getEndTime())) {
+                                        hasFinish=false;
+                                    }else {
+                                        hasFinish=true;
+                                    }
+                                }else {
+                                    hasStew=false;
                                 }
                             }
                             message.obj = "";
@@ -592,25 +634,35 @@ public class ExtractUI extends NFCActivity {
                             break;
                         //开始煎膏
                         case 6:
-                            Date tempEndTime=HerbalUtil.String2Date(String.valueOf(((Map)ExtractList.get(ExtractList.size()-1)).get("endTime")),null);
+                            if(hasStew){
+                                message.obj=new StewUtil().stewEnd(extractingDomain.getPlanId(),stewEquipment.getTagId());
+                                message.what = 22;
+                                handler.sendMessage(message);
+                            }else {
+                                Date tempEndTime = HerbalUtil.String2Date(String.valueOf(((Map) ExtractList.get(ExtractList.size() - 1)).get("endTime")), null);
 //                            Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
-                            if(tempEndTime.getTime()>Long.parseLong(new ServerUtil().getServerTime())){
-                                handlerMessage(20,HerbalUtil.formatDate(tempEndTime,"HH:mm") + "后方可进行煎膏");
+                                if (tempEndTime.getTime() > Long.parseLong(new ServerUtil().getServerTime())) {
+                                    handlerMessage(20, HerbalUtil.formatDate(tempEndTime, "HH:mm") + "后方可进行煎膏");
 //                                message.obj = HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装";
 //                                message.what = -1;
 //                                handler.sendMessage(message);
-                            }else{
-                                message.obj = new StewUtil().stewBegin(extractingDomain.getPlanId(),stewEquipment.getTagId(),Application.getUsers().getId());
-                                message.what = 22;
-                                handler.sendMessage(message);
+                                } else {
+                                    message.obj = new StewUtil().stewBegin(extractingDomain.getPlanId(), stewEquipment.getTagId(), Application.getUsers().getId());
+                                    message.what = 22;
+                                    handler.sendMessage(message);
+                                }
                             }
                             break;
+                        //结束煎膏
                         case 7:
                          message.obj = new StewUtil().stewEnd(extractingDomain.getPlanId(),stewEquipment.getTagId());
                          message.what = 5;
                          handler.sendMessage(message);
                         case 8:
                             //获取所有加液机数据
+                            waterEquipList = new EquipmentUtil().getEquipmentByType("加液机");
+                            message.what = 8;
+                            handler.sendMessage(message);
                             break;
                     }
                 } catch (Exception e) {
@@ -704,12 +756,10 @@ public class ExtractUI extends NFCActivity {
                     packEquipment=new EquipmentUtil().getEquipByTagId(tagId);
                     handlerMessage(13,null);
                 }
-
             } else {
                 throw new Exception("请先读取处方");
             }
         }
-
     }
     private void reset(){
         hasPre=false;

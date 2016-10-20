@@ -1,6 +1,7 @@
 package net.andy.boiling.util;
 
 import com.alibaba.fastjson.JSON;
+import net.andy.boiling.domain.ExtractDomain;
 import net.andy.boiling.domain.ExtractingDomain;
 import net.andy.boiling.domain.ReturnDomain;
 import net.andy.com.Http;
@@ -38,6 +39,17 @@ public class ExtractUtil {
         returnDomain = ( ReturnDomain ) new Http ().post ( "extract/getExtractByPlanId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
+        } else {
+            throw new Exception ( returnDomain.getException () );
+        }
+    }
+    public ExtractDomain getExtractByPlanIdStatus(String planId,String extractStatus) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "planId", planId ) );
+        pairs.add ( new BasicNameValuePair ( "extractStatus", extractStatus ) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "extract/getExtractByPlanIdStatus.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject ().toString (), ExtractDomain.class );
         } else {
             throw new Exception ( returnDomain.getException () );
         }

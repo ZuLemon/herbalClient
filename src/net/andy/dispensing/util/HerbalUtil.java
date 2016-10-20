@@ -5,15 +5,16 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 /**
  * Created by Guang on 2016/5/27.
  */
@@ -155,4 +156,5 @@ public class HerbalUtil {
         }
         return Color.parseColor(color);
     }
+
 }
