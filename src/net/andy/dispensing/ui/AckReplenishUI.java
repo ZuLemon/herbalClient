@@ -56,6 +56,7 @@ public class AckReplenishUI extends Activity {
     private ReplenishUtil util = new ReplenishUtil();
     private Adapter ackAdapter;
     private DispensingDetailDomain dis;
+    private String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +86,7 @@ public class AckReplenishUI extends Activity {
     @Event(value = {
             R.id.acklinearLayout,
             R.id.ackreplenish_confirm_button,
+            R.id.ackreplenish_critical_button,
             R.id.ackreplenish_cancel_button
     },type = View.OnClickListener.class)
    private void btnClick(View view) {
@@ -93,6 +95,11 @@ public class AckReplenishUI extends Activity {
                     finish();
                     break;
                 case R.id.ackreplenish_confirm_button:
+                    type="常规";
+                    getData(1);
+                    break;
+                case R.id.ackreplenish_critical_button:
+                    type="紧急";
                     getData(1);
                     break;
                 case R.id.ackreplenish_cancel_button:
@@ -144,7 +151,7 @@ public class AckReplenishUI extends Activity {
                             break;
                         case 1:
                             StationDomain stationDomain=new StationUtil().getStationByDevice();
-                            message.obj=util.request(stationDomain.getId(),dis.getHerbId());
+                            message.obj=util.request(stationDomain.getId(),dis.getHerbId(),type);
                             message.what = 1;
                             handler.sendMessage(message);
                             break;

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
@@ -77,6 +78,8 @@ public class ReplenishUI extends Activity {
                 what = 1;
                 handler.sendEmptyMessage(what);
                 replenish_title.setText(((TextView)view).getText());
+                Intent intent=new Intent(this,ReplenishListUI.class);
+                startActivity(intent);
                 break;
             case R.id.replenish_finish:
                 what =2;

@@ -51,6 +51,10 @@ public class BoilingEffortUI extends Activity {
     private TextView boilingeffort_extractTotal_textView;
     @ViewInject(R.id.boilingeffort_extractPresNumTotal_textView)
     private TextView boilingeffort_extractPresNumTotal_textView;
+    @ViewInject(R.id.boilingeffort_pasteTotal_textView)
+    private TextView boilingeffort_pasteTotal_textView;
+    @ViewInject(R.id.boilingeffort_pastePresNumTotal_textView)
+    private TextView boilingeffort_pastePresNumTotal_textView;
     private Map effortMap;
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @Override
@@ -163,6 +167,8 @@ public class BoilingEffortUI extends Activity {
         boilingeffort_sockPresNumTotal_textView.setText(String.valueOf(effortMap.get("sockpt")));
         boilingeffort_extractTotal_textView.setText(String.valueOf(effortMap.get("extractct")));
         boilingeffort_extractPresNumTotal_textView.setText(String.valueOf(effortMap.get("extractpt")));
+        boilingeffort_pasteTotal_textView.setText(String.valueOf(effortMap.get("pastect")));
+        boilingeffort_pastePresNumTotal_textView.setText(String.valueOf(effortMap.get("pastept")));
     }
 
     private TextWatcher textWatcher = new TextWatcher() {

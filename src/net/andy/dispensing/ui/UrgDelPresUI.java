@@ -34,16 +34,6 @@ import java.util.List;
  * Created by Guang on 2016/3/16.
  */
 public class UrgDelPresUI extends Activity{
-    @ViewInject(R.id.urgdelpres_linearLayout)
-    private LinearLayout urgdelpres_linearLayout;
-    @ViewInject(R.id.urgdelpres_urgpres_textView)
-    private TextView urgdelpres_urgpres_textView;
-    @ViewInject(R.id.urgdelpres_delpres_textView)
-    private TextView urgdelpres_delpres_textView;
-    @ViewInject(R.id.urgdelpres_noProcess_textView)
-    private TextView urgdelpres_noProcess_textView;
-    @ViewInject(R.id.urgdelpres_process_textView)
-    private TextView urgdelpres_process_textView;
     private String process="";
     private String passwd;
     private String id;
@@ -55,13 +45,14 @@ public class UrgDelPresUI extends Activity{
         Intent in=getIntent();
         id=in.getStringExtra("id");
         Log.e("id",id);
-    }
+        }
     @Event(value = {
             R.id.urgdelpres_linearLayout,
             R.id.urgdelpres_urgpres_textView,
             R.id.urgdelpres_noProcess_textView,
             R.id.urgdelpres_process_textView,
-            R.id.urgdelpres_delpres_textView
+            R.id.urgdelpres_delpres_textView,
+            R.id.urgdelpres_main_textView
     },type = View.OnClickListener.class)
    private void btnClick(View v) {
             switch (v.getId()){
@@ -96,6 +87,9 @@ public class UrgDelPresUI extends Activity{
                             }
                         }
                     }) .setNegativeButton("取消", null).show();
+                    break;
+                case R.id.urgdelpres_main_textView:
+                    urgentPresThread(4);
                     break;
         }
     }
@@ -141,7 +135,7 @@ public class UrgDelPresUI extends Activity{
                     switch (what){
                         case 0:
                             message.what = 0;
-                            message.obj = new UrgentDelPresUtil().setUrgent(Integer.parseInt(id),"02");
+                            message.obj = new UrgentDelPresUtil().setUrgent(Integer.parseInt(id),"09");
                             handler.sendMessage ( message );
                             break;
                         case 1:
@@ -157,6 +151,11 @@ public class UrgDelPresUI extends Activity{
                         case 3:
                             message.what = 3;
                             message.obj = new PrescriptionUtil().setProcess(Integer.parseInt(id),process);
+                            handler.sendMessage ( message );
+                            break;
+                        case 4:
+                            message.what = 3;
+                            message.obj = new PrescriptionUtil().setMain(Integer.parseInt(id),"完成");
                             handler.sendMessage ( message );
                             break;
                     }

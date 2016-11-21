@@ -82,7 +82,7 @@ public class TagUI extends NFCActivity {
         colorItemList.add(new ColorItem("蓝色", "#ff0099FF"));
         colorItemList.add(new ColorItem("黄色", "#ffFFFF00"));
         colorItemList.add(new ColorItem("棕色", "#ff8a6f20"));
-        colorItemList.add(new ColorItem("粉色", "#ffFF1CAE"));
+        colorItemList.add(new ColorItem("玫红", "#ffFF1CAE"));
         spinner = (Spinner) findViewById(R.id.tag_color_spinner);
         adapter = new ArrayAdapter<ColorItem>(this, android.R.layout.simple_spinner_item, colorItemList);
         //设置下拉列表的风格

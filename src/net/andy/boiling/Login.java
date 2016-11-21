@@ -167,6 +167,8 @@ public class Login extends Activity {
                                 deviceid = wifiManager.getConnectionInfo().getMacAddress();
                             }
                             appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
+                            //设置间隔时间
+                            appOption.setOption(AppOption.APP_OPTION_WAITTIME, "2");
                             //检查推送服务是否运行
                             checkService();
                             //结束当前

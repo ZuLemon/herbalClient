@@ -2,9 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="net.andy.boiling"
-          android:versionCode="45"
-          android:versionName="1.6">
-    <uses-sdk android:minSdkVersion="18" tools:ignore="UsesMinSdkAttributes"/>
+          android:versionCode="58"
+          android:versionName="1.8">
+    <uses-sdk android:minSdkVersion="17" tools:ignore="UsesMinSdkAttributes"/>
     <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <!-- 振动器权限 -->
@@ -102,5 +102,8 @@
         <activity android:name=".ui.ExtractingStatus"/>
         <activity android:name=".ui.BoilingEffortUI"/>
         <activity android:name=".ui.BoilingSettingUI"/>
+        <activity android:name=".ui.AddMedicineUI"
+                  android:theme="@style/TranslucentFullscreen"/>
+        <activity android:name="net.andy.dispensing.ui.ReplenishListUI"/>
     </application>
 </manifest>

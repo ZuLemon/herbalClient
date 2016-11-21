@@ -68,14 +68,34 @@ public class ReplenishUtil {
     /**
      * 提醒上药
      */
-    public String request(Integer stationId, String herbId) throws Exception {
+    public String request(Integer stationId, String herbId,String type) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("stationId", String.valueOf(stationId)));
         pairs.add(new BasicNameValuePair("herbId", herbId));
+        pairs.add(new BasicNameValuePair("type", type));
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
         returnDomain = (ReturnDomain) new Http().post("replenish/request.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return returnDomain.getObject().toString();
+        } else {
+            throw new Exception(returnDomain.getException());
+        }
+    }
+
+    /**
+     *  获取请求上药列表
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    public List getReplenishListByUserAndType(String type,String status) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
+        pairs.add(new BasicNameValuePair("type", type));
+        pairs.add(new BasicNameValuePair("status", status));
+        returnDomain = (ReturnDomain) new Http().post("replenish/getReplenishListByUserAndType.do", pairs, ReturnDomain.class);
+        if (returnDomain.getSuccess()) {
+            return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {
             throw new Exception(returnDomain.getException());
         }

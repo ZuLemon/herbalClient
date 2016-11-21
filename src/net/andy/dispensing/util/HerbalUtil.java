@@ -70,6 +70,20 @@ public class HerbalUtil {
         return sdf.format(new Date(Long.valueOf(seconds+"000")));
     }
     /**
+     * 时间戳转换成日期格式字符串
+     * @param mis 精确到秒的字符串
+     * @param format
+     * @return
+     */
+    public static String minStamp2Date(String mis,String format) {
+        if(mis == null || mis.isEmpty() || mis.equals("null")){
+            return "";
+        }
+        if(format == null || format.isEmpty()) format = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Date(Long.valueOf(mis)));
+    }
+    /**
      * 日期格式字符串转换成时间戳
      * @param date_str 字符串日期
      * @param format 如：yyyy-MM-dd HH:mm:ss

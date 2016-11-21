@@ -102,11 +102,38 @@ public class PrescriptionUtil {
             throw new Exception ( "取暂停列表错误:"+returnDomain.getException () );
         }
     }
+
+    /**
+     * 修改处方自煎、代煎
+     * @param id
+     * @param process
+     * @return
+     * @throws Exception
+     */
     public String setProcess(Integer id,String process) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", String.valueOf(id)));
         pairs.add ( new BasicNameValuePair ( "process", process) );
         returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/setProcess.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return "修改成功";
+        } else {
+            throw new Exception (returnDomain.getException () );
+        }
+    }
+
+    /**
+     * 修改处方状态
+     * @param id
+     * @param status
+     * @return
+     * @throws Exception
+     */
+    public String setMain(Integer id,String status) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "id", String.valueOf(id)));
+        pairs.add ( new BasicNameValuePair ( "status", status) );
+        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/setMain.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "修改成功";
         } else {

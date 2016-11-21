@@ -67,5 +67,19 @@
                   android:layout_gravity="left"
                   android:text="修改为代煎"
                   android:id="@+id/urgdelpres_process_textView"/>
+        <View
+                android:background="@drawable/shape_line"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+        <TextView style="@style/Custom20TextViewTheme"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="10dp"
+                  android:paddingTop="10dp"
+                  android:paddingLeft="20dp"
+                  android:gravity="left"
+                  android:layout_gravity="left"
+                  android:text="修改为完成"
+                  android:id="@+id/urgdelpres_main_textView"/>
             </LinearLayout>
 </LinearLayout>

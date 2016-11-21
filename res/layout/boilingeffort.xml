@@ -256,6 +256,60 @@
                         android:layout_marginLeft="3dp"
                         android:layout_weight="1"/>
             </LinearLayout>
+            <View
+                    android:background="@drawable/shape_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:minHeight="50dp">
+                <TextView
+                        android:textSize="18sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10.0dp"
+                        android:text="制膏总张数："/>
+                <TextView
+                        android:id="@+id/boilingeffort_pasteTotal_textView"
+                        android:textSize="20sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"/>
+            </LinearLayout>
+            <View
+                    android:background="@drawable/shape_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"/>
+            <LinearLayout
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:minHeight="50dp">
+                <TextView
+                        android:textSize="18sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="制膏总付数："/>
+                <TextView
+                        android:id="@+id/boilingeffort_pastePresNumTotal_textView"
+                        android:textSize="20sp"
+                        android:textColor="#ff545454"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:layout_weight="1"/>
+            </LinearLayout>
         </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -49,8 +49,8 @@ public class SettingUI extends Activity {
     private LinearLayout setting_station_linearLayout;
     @ViewInject(R.id.setting_personaleffort_linearLayout)
     private LinearLayout setting_personaleffort_linearLayout;
-    @ViewInject(R.id.setting_waitDispen_linearLayout)
-    private LinearLayout setting_waitDispen_linearLayout;
+//    @ViewInject(R.id.setting_waitDispen_linearLayout)
+//    private LinearLayout setting_waitDispen_linearLayout;
     @ViewInject(R.id.setting_alreadydis_linearLayout)
     private LinearLayout setting_alreadydis_linearLayout;
     @ViewInject(R.id.switchButton)
@@ -168,9 +168,9 @@ public class SettingUI extends Activity {
     private void setInterval() {
         if (isInterval) {
             isInterval = false;
-            if (Integer.parseInt(setting_interval_editText.getText() + "") == 0) {
-                setting_interval_editText.setText("1");
-                coolToast.show("间隔时间至少为 1");
+            if (Integer.parseInt(setting_interval_editText.getText() + "") <2) {
+                setting_interval_editText.setText("2");
+                coolToast.show("间隔时间至少为 2");
             } else {
                 coolToast.show("保存成功");
             }
@@ -204,7 +204,7 @@ public class SettingUI extends Activity {
    @Event(value = {R.id.setting_interval_textView,
            R.id.setting_station_linearLayout,
            R.id.setting_personaleffort_linearLayout,
-           R.id.setting_waitDispen_linearLayout,
+//           R.id.setting_waitDispen_linearLayout,
            R.id.setting_alreadydis_linearLayout,
    } ,type = View.OnClickListener.class)
         private void btnClick(View view) {
@@ -220,10 +220,10 @@ public class SettingUI extends Activity {
                     Intent effortIntent = new Intent(SettingUI.this, PersonalEffortUI.class);
                     startActivity(effortIntent);
                     break;
-                case R.id.setting_waitDispen_linearLayout:
-                    Intent waitIntent = new Intent(SettingUI.this, WaitDispenUI.class);
-                    startActivity(waitIntent);
-                    break;
+//                case R.id.setting_waitDispen_linearLayout:
+//                    Intent waitIntent = new Intent(SettingUI.this, WaitDispenUI.class);
+//                    startActivity(waitIntent);
+//                    break;
                 case R.id.setting_alreadydis_linearLayout:
                     Intent alreadyIntent = new Intent(SettingUI.this, AlreadyDisUI.class);
                     startActivity(alreadyIntent);

@@ -26,4 +26,14 @@ public class PrescriptionDetailUtil {
             throw new Exception (returnDomain.getException () );
         }
     }
+    public List getAddMedicine(String planId) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add ( new BasicNameValuePair( "planId", planId));
+        returnDomain = (ReturnDomain) new Http().post ( "prescriptionDetail/getAddMedicine.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return JSON.parseObject ( returnDomain.getObject().toString(),List.class);
+        } else {
+            throw new Exception (returnDomain.getException () );
+        }
+    }
 }

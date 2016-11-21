@@ -26,6 +26,7 @@ import net.andy.boiling.util.PrescriptionUtil;
 import net.andy.com.AppOption;
 import net.andy.com.CoolToast;
 import net.andy.com.NFCActivity;
+import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -42,6 +43,7 @@ import java.util.regex.Pattern;
  * 按味调剂
  * Created by Guang on 2016/2/18.
  */
+@ContentView(R.layout.dispensing)
 public class DispensingUI extends NFCActivity {
 
     private PowerManager.WakeLock mWakeLock;
@@ -166,6 +168,7 @@ public class DispensingUI extends NFCActivity {
     private boolean isHer;
     private boolean hasHistory;
     private boolean isShow;
+    private boolean isDangri;
     private boolean hasDownTimer;
     private boolean hasValidateion;
     private boolean isGetPresTime = true;
@@ -265,7 +268,6 @@ public class DispensingUI extends NFCActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dispensing);
         x.view().inject(this);
         // 动态注册广播
         IntentFilter filter = new IntentFilter();
@@ -357,7 +359,16 @@ public class DispensingUI extends NFCActivity {
             map.put("imageItem", R.drawable.zijian);
             imageData.add(map);
         } else if ("代煎".equals(prescriptionDomain.getProcess())) {
-            map.put("imageItem", R.drawable.daijian);
+            String today=HerbalUtil.minStamp2Date(String.valueOf(serverTime),"yyyy-MM-dd");
+            Log.e(">>",today);
+            if("饮片".equals(prescriptionDomain.getClassification())
+                    &&HerbalUtil.String2Date(today+" 13:00:00",null).getTime()>prescriptionDomain.getSubTime().getTime()
+                    &&today.equals(prescriptionDomain.getDate())){
+                isDangri=true;
+                map.put("imageItem", R.drawable.dangri);
+            }else {
+                map.put("imageItem", R.drawable.daijian);
+            }
             imageData.add(map);
         }
         map = new HashMap<String, Object>();
@@ -498,10 +509,11 @@ public class DispensingUI extends NFCActivity {
                     if (!isEnd) {
                         //提交调剂处方状态
                         herbalUtil(2);
+                        Log.e("SecInt", String.valueOf(socInt));
                     } else {
 //                        if("".equals(dispensingDomain.getTagId())) {
                         herbalUtil(3);
-
+                        Log.e("HSecInt", String.valueOf(socInt));
 //                        }else{
 //                            herbalUtil(10);
 //                            isEnd = false;
@@ -720,6 +732,7 @@ public class DispensingUI extends NFCActivity {
         parseObject(listDis);
         setNowAdjust();
         long temp = serverTime - dispensingDomain.getBeginTime().getTime();
+
         socInt = temp / 1000;
         Log.e("socInt", serverTime + "" + dispensingDomain.getBeginTime().getTime());
         cDTimer.start();
@@ -946,7 +959,25 @@ public class DispensingUI extends NFCActivity {
                             break;
                         //绑定标签，本处方调剂结束
                         case 4:
+//                            if(socInt<30){
+//                                message.what = -1;
+//                                message.obj = "处方调剂时间至少30秒";
+//                                handler.sendMessage(message);
+//                                break;
+//                            }
                             tagDomain = new TagUtil().getTagByTagId(tagId);
+                            if(isDangri&&!"玫红".equals(tagDomain.getColor())){
+                                message.what = -1;
+                                message.obj = "当日煎处方请使用玫红色标签绑定";
+                                handler.sendMessage(message);
+                                break;
+                            }
+                            if(!isDangri&&"玫红".equals(tagDomain.getColor())){
+                                message.what = -1;
+                                message.obj = "不能使用玫红色标签绑定";
+                                handler.sendMessage(message);
+                                break;
+                            }
                             message.obj = dispensingUtil.updateToFinish(String.valueOf(dispensingDomain.getId()), tagId);
                             message.what = 4;
                             handler.sendMessage(message);
@@ -991,12 +1022,12 @@ public class DispensingUI extends NFCActivity {
 //                            handler.sendMessage(message);
 //                            break;
                         //提醒上药
-                        case 7:
-                            StationDomain stationDomain = new StationUtil().getStationByDevice();
-                            message.obj = new ReplenishUtil().request(stationDomain.getId(), nowDis.getHerbId());
-                            message.what = 7;
-                            handler.sendMessage(message);
-                            break;
+//                        case 7:
+//                            StationDomain stationDomain = new StationUtil().getStationByDevice();
+//                            message.obj = new ReplenishUtil().request(stationDomain.getId(), nowDis.getHerbId());
+//                            message.what = 7;
+//                            handler.sendMessage(message);
+//                            break;
                         /**
                          * 暂停调剂
                          */
@@ -1090,6 +1121,7 @@ public class DispensingUI extends NFCActivity {
         hasPre = false;
         hasReady = false;
         hasDue=false;
+        isDangri=false;
         totalWeight = new BigDecimal(0);
         valCount = 0;
         hasValidateion = false;
