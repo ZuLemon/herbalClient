@@ -22,7 +22,7 @@ public class SoakUtil {
     public SoakDomain getSoakByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) ( new Http ().post ( "soak/getSoakByPlanId.do", pairs, ReturnDomain.class ) );
+        returnDomain = ( ReturnDomain ) ( Http.post ( "soak/getSoakByPlanId.do", pairs, ReturnDomain.class ) );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), SoakDomain.class );
         } else {
@@ -34,7 +34,7 @@ public class SoakUtil {
         pairs.add ( new BasicNameValuePair ( "id1", String.valueOf(extId )) );
         pairs.add ( new BasicNameValuePair ( "id2", String.valueOf(equipId )) );
         pairs.add ( new BasicNameValuePair ( "userId", String.valueOf(userId )) );
-        returnDomain = ( ReturnDomain ) ( new Http ().post ( "soak/insert.do", pairs, ReturnDomain.class ) );
+        returnDomain = ( ReturnDomain ) ( Http.post ( "soak/insert.do", pairs, ReturnDomain.class ) );
         if ( returnDomain.getSuccess () ) {
             return "开始浸泡";
         } else {

@@ -29,7 +29,7 @@ public class TagUtil {
     public TagDomain getTagByTagId(String tagId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "tagId", tagId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "tag/getTagByTagId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "tag/getTagByTagId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), TagDomain.class );
         } else {
@@ -46,7 +46,7 @@ public class TagUtil {
     public String getTagTypeByTagId(String tagId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "tagId", tagId ) );
-        Map tagMap = ( Map ) ( ( ReturnDomain ) ( new Http ().post ( "tag/getTagByTagId.do", pairs, ReturnDomain.class ) ) ).getObject ();
+        Map tagMap = ( Map ) ( ( ReturnDomain ) ( Http.post ( "tag/getTagByTagId.do", pairs, ReturnDomain.class ) ) ).getObject ();
         String tag = ( String ) tagMap.get ( "tagId" );
         String type=( String ) tagMap.get ( "type" );
         if ( tag != null && !"".equals(tag) ) {

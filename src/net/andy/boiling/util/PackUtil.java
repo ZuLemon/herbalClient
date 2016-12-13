@@ -21,7 +21,7 @@ public class PackUtil {
     public String insert(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "pack/insert.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "pack/insert.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "包装成功";
         } else {

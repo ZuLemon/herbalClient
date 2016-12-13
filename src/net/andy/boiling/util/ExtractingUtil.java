@@ -23,7 +23,7 @@ public class ExtractingUtil {
     public ExtractingDomain getExtractingByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "extracting/getExtractingByPlanId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extracting/getExtractingByPlanId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), ExtractingDomain.class );
         } else {
@@ -37,7 +37,7 @@ public class ExtractingUtil {
         pairs.add ( new BasicNameValuePair ( "tagId", tagId ) );
         pairs.add ( new BasicNameValuePair ( "userId", String.valueOf(userId) ) );
         pairs.add ( new BasicNameValuePair ( "barcode", barcode ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "extracting/importExtracting.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extracting/importExtracting.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), ExtractingDomain.class );
         } else {
@@ -57,7 +57,7 @@ public class ExtractingUtil {
 //        pairs.add ( new BasicNameValuePair ( "planId", extractingDomain.getPlanId()) );
         HerbalUtil.getNameValuePair(extractingDomain,pairs);
         pairs.add ( new BasicNameValuePair ( "newTag", String.valueOf(newTag)) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "extracting/subExtracting.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extracting/subExtracting.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "保存成功";
         } else {
@@ -69,7 +69,7 @@ public class ExtractingUtil {
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
         pairs.add ( new BasicNameValuePair ( "soakType", soakType ) );
         try {
-            returnDomain = ( ReturnDomain ) ( new Http ().post ( "extracting/calcWater.do", pairs, ReturnDomain.class ) );
+            returnDomain = ( ReturnDomain ) ( Http.post ( "extracting/calcWater.do", pairs, ReturnDomain.class ) );
             if ( returnDomain.getSuccess () ) {
                 if ( returnDomain.getObject () != null ) {
                     return Integer.parseInt ( returnDomain.getObject ().toString () );

@@ -261,7 +261,7 @@ public class TestUI extends NFCActivity {
 //                pairs.add(new BasicNameValuePair("tagId", tagId));
 //
 //                try {
-//                    returnDomain = (ReturnDomain)(new Http().post("tag/getTagByTagId.do", pairs,ReturnDomain.class));
+//                    returnDomain = (ReturnDomain)(Http.post("tag/getTagByTagId.do", pairs,ReturnDomain.class));
 //                    if (returnDomain.getSuccess()) {
 //                        tagDomain = JSON.parseObject(returnDomain.getObject().toString(), TagDomain.class);
 //                        message.what = 0;
@@ -308,7 +308,7 @@ public class TestUI extends NFCActivity {
 //                    pairs.add(new BasicNameValuePair("bindId", String.valueOf(tag_bindId_editText.getText())));
 //
 //                    try {
-//                        returnDomain = (ReturnDomain) new Http().post(tagDomain.getId()==0?"tag/insert.do":"tag/update.do",pairs,ReturnDomain.class);
+//                        returnDomain = (ReturnDomain) Http.post(tagDomain.getId()==0?"tag/insert.do":"tag/update.do",pairs,ReturnDomain.class);
 //
 //                        message.obj = "保存成功";
 //                        handler.sendMessage(message);

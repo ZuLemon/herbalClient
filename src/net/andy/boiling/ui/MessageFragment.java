@@ -126,7 +126,7 @@ public class MessageFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                        new Http().get("online.do?userId="+new AppOption().getOption(AppOption.APP_OPTION_USER));
+                        Http.get("online.do?userId="+new AppOption().getOption(AppOption.APP_OPTION_USER));
                         message.what = 0;
                         handler.sendMessage(message);
                 } catch (Exception e) {

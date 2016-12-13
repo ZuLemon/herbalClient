@@ -187,48 +187,6 @@
                       android:textColor="#000000"
                       android:text="0000"/>
         </LinearLayout>
-        <!--<LinearLayout-->
-        <!--android:orientation="vertical"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/dispensing_taginfo_linearLayout"-->
-        <!--android:background="@drawable/dark_circular"-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_marginTop="10dp"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:layout_marginRight="5dp">-->
-        <!--<LinearLayout-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<TextView style="@style/Custom25TextViewTheme"-->
-        <!--android:text="绑定标签："-->
-        <!--/>-->
-        <!--<TextView style="@style/Custom25TextViewTheme"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:id="@+id/dispensing_tagId_textView"-->
-        <!--android:text="2016"-->
-        <!--/>-->
-        <!--</LinearLayout>-->
-        <!--<View-->
-        <!--android:background="@drawable/shape_line"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1.0px"/>-->
-        <!--<LinearLayout-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_weight="1"-->
-        <!--android:layout_height="wrap_content">-->
-        <!--<TextView style="@style/Custom25TextViewTheme"-->
-        <!--android:text="标签颜色："-->
-        <!--/>-->
-        <!--<TextView style="@style/Custom25TextViewTheme"-->
-        <!--android:id="@+id/dispensing_tagColor_textView"-->
-        <!--android:text="红色"-->
-        <!--/>-->
-        <!--</LinearLayout>-->
-        <!--</LinearLayout>-->
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -293,7 +251,6 @@
                 <LinearLayout android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
                               android:layout_weight="1"
-
                               android:background="@drawable/holoblue_circular">
                     <TextView android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
@@ -303,7 +260,7 @@
                               android:textSize="60dp"
                               android:textColor="#ffffff"
                               android:text="1"
-                              android:layout_weight="0.77"/>
+                              android:layout_weight="1"/>
                     <TextView android:layout_width="wrap_content"
                               android:layout_height="wrap_content"
                               android:layout_gravity="bottom"

@@ -29,7 +29,7 @@ public class StationUtil {
     public List getStationAll() throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
-        returnDomain = (ReturnDomain) new Http().post("station/getStationAll.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("station/getStationAll.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {
@@ -43,7 +43,7 @@ public class StationUtil {
     public StationDomain getStationByDevice() throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("device", new AppOption().getOption(AppOption.APP_DEVICE_ID)));
-        returnDomain = (ReturnDomain) new Http().post("station/getStationByDevice.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("station/getStationByDevice.do", pairs, ReturnDomain.class);
         StationDomain domain = new StationDomain();
         if (returnDomain.getSuccess()) {
             try {
@@ -66,7 +66,7 @@ public class StationUtil {
     public List updateStationByDevice(String device) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("device", device));
-        returnDomain = (ReturnDomain) new Http().post("station/getStationAll.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("station/getStationAll.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {
@@ -93,11 +93,11 @@ public class StationUtil {
         pairs.add(new BasicNameValuePair("deptId", String.valueOf(stationDomain.getDeptId())));
 
         if (arg == 0) {
-            returnDomain = (ReturnDomain) new Http().post("station/update.do", pairs, ReturnDomain.class);
+            returnDomain = (ReturnDomain) Http.post("station/update.do", pairs, ReturnDomain.class);
         } else if (arg == 1) {
-            returnDomain = (ReturnDomain) new Http().post("station/updateDevice.do", pairs, ReturnDomain.class);
+            returnDomain = (ReturnDomain) Http.post("station/updateDevice.do", pairs, ReturnDomain.class);
         } else if (arg == 2) {
-            returnDomain = (ReturnDomain) new Http().post("station/insert.do", pairs, ReturnDomain.class);
+            returnDomain = (ReturnDomain) Http.post("station/insert.do", pairs, ReturnDomain.class);
         }
         if (returnDomain.getSuccess()) {
             return "修改成功";

@@ -38,7 +38,7 @@ public class MqttService extends Service {
                 ReturnDomain returnDomain = new ReturnDomain();
                 List<NameValuePair> pairs = new ArrayList<>();
                 try {
-                    returnDomain = (ReturnDomain) (new Http().post("mqtt/getServer.do", pairs, ReturnDomain.class));
+                    returnDomain = (ReturnDomain) (Http.post("mqtt/getServer.do", pairs, ReturnDomain.class));
                     if (returnDomain.getSuccess()) {
                         Map map = (Map) returnDomain.getObject();
                         url = JSONArray.parseObject(map.get("broker").toString(), String[].class);

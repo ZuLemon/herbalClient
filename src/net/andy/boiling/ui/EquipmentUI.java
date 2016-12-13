@@ -180,7 +180,7 @@ public class EquipmentUI extends NFCActivity {
                 super.run();
                 List<NameValuePair> pairs = new ArrayList<NameValuePair>();
                 try {
-                    returnDomain = (ReturnDomain) (new Http().post(url, pairs, ReturnDomain.class));
+                    returnDomain = (ReturnDomain) (Http.post(url, pairs, ReturnDomain.class));
                     if (returnDomain.getSuccess()) {
                         List list = JSON.parseObject(returnDomain.getObject().toString(), List.class);
                         message.what = 0;

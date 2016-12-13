@@ -145,8 +145,7 @@ public class AckReplenishUI extends Activity {
                     switch (what){
                         case 0:
                             list = new ArrayList<>();
-                            list = util.getReplenishByStatus("replenish/getReplenishByRequestUser.do",
-                                    new AppOption().getOption(AppOption.APP_OPTION_USER), "接收");
+                            list = util.getReplenishByRequestUser("紧急","接收");;
                             handler.sendEmptyMessage(-1);
                             break;
                         case 1:
@@ -206,11 +205,11 @@ public class AckReplenishUI extends Activity {
             hold.id.setText(String.valueOf(map.get("id")));
             hold.userName.setText((CharSequence) map.get("userName"));
             try {
-                hold.sendTime.setText(""+(System.currentTimeMillis()-(format1.parse(String.valueOf(map.get("sendTime"))).getTime()))/(60*1000)+"分钟前");
+                hold.sendTime.setText(""+(System.currentTimeMillis()-(format1.parse(String.valueOf(map.get("finishTime"))).getTime()))/(60*1000)+"分钟前");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            hold.status.setText("申请");
+            hold.status.setText("接收");
             hold.herbName.setText((CharSequence) map.get("herbName"));
             hold.shelf.setText((CharSequence) map.get("shelf"));
 
@@ -219,21 +218,21 @@ public class AckReplenishUI extends Activity {
                     hold.replenish_button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            request("replenish/finish.do", String.valueOf(hold.id.getText()));
+                            request(Integer.valueOf(hold.id.getText().toString()),"完成");
                         }
                     });
 
             return view;
         }
 
-        private void request(String url, String id) {
+        private void request( Integer id,String status) {
             new Thread() {
                 @Override
                 public void run() {
                     super.run();
                     Looper.prepare();
                     try {
-                        util.setStatus(url, id);
+                        util.setStatus(id,status);
                         handler.sendEmptyMessage(0);
                     } catch (Exception e) {
                         e.printStackTrace();

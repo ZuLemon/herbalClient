@@ -30,7 +30,7 @@ public class MsgUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
         try {
-            returnDomain = (ReturnDomain) (new Http().post("extracting/getFinishExtracting.do", pairs, ReturnDomain.class));
+            returnDomain = (ReturnDomain) (Http.post("extracting/getFinishExtracting.do", pairs, ReturnDomain.class));
             if (returnDomain.getSuccess()) {
                 returnResult = (List<Map>) returnDomain.getObject();
             }
@@ -43,7 +43,7 @@ public class MsgUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
         try {
-            returnDomain = (ReturnDomain) (new Http().post("extracting/getFinishExtracting.do", pairs, ReturnDomain.class));
+            returnDomain = (ReturnDomain) (Http.post("extracting/getFinishExtracting.do", pairs, ReturnDomain.class));
             if (returnDomain.getSuccess()) {
                 returnResult = (List<Map>) returnDomain.getObject();
             }

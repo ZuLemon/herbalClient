@@ -24,7 +24,7 @@ public class RuleUtil {
      */
     public List getRulesList() throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        returnDomain = ( ReturnDomain ) new Http ().post ( "rules/getRulesList.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "rules/getRulesList.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {
@@ -37,7 +37,7 @@ public class RuleUtil {
     public RulesDomain getRules(Integer id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair( "id", String.valueOf(id) ));
-        returnDomain = ( ReturnDomain ) new Http ().post ( "rules/getRules.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "rules/getRules.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  RulesDomain.class);
         } else {

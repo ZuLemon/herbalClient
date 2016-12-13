@@ -22,7 +22,7 @@ public class ExtPreUtil {
     public Map importPres(Integer interval) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair( "interval", String.valueOf(interval ) ));
-        returnDomain = ( ReturnDomain ) new Http().post ( "extPres/importPres.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extPres/importPres.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
         } else {
@@ -36,7 +36,7 @@ public class ExtPreUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair( "begin", beginTime ));
         pairs.add ( new BasicNameValuePair( "end", endTime ));
-        returnDomain = ( ReturnDomain ) new Http().post ( "extPres/importPresByTime.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extPres/importPresByTime.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
         } else {
@@ -49,7 +49,7 @@ public class ExtPreUtil {
     public Map importPresBypresId(String presId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair( "presId", presId ));
-        returnDomain = ( ReturnDomain ) new Http().post ( "extPres/importPresByPresId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extPres/importPresByPresId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
         } else {
@@ -61,7 +61,7 @@ public class ExtPreUtil {
      */
     public Map getInterval() throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        returnDomain = ( ReturnDomain ) new Http().post ( "interval/getInterval.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "interval/getInterval.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
         } else {
@@ -75,7 +75,7 @@ public class ExtPreUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair( "id", String.valueOf(id ) ));
         pairs.add ( new BasicNameValuePair( "interval", String.valueOf(interval ) ));
-        returnDomain = ( ReturnDomain ) new Http().post ( "interval/update.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "interval/update.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "修改成功";
         } else {

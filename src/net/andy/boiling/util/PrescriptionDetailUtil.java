@@ -19,7 +19,7 @@ public class PrescriptionDetailUtil {
     public List getPrescriptionDetailByPresId(String presId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "presId", presId));
-        returnDomain = (ReturnDomain) new Http().post ( "prescriptionDetail/getPrescriptionDetailByPresId.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "prescriptionDetail/getPrescriptionDetailByPresId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject().toString(),List.class);
         } else {
@@ -29,7 +29,7 @@ public class PrescriptionDetailUtil {
     public List getAddMedicine(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "planId", planId));
-        returnDomain = (ReturnDomain) new Http().post ( "prescriptionDetail/getAddMedicine.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "prescriptionDetail/getAddMedicine.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject().toString(),List.class);
         } else {

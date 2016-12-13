@@ -19,16 +19,12 @@
               android:textColor="@android:color/background_dark"
               android:id="@+id/replenish_title"
     />
-    <ExpandableListView
-            android:background="@android:color/white"
-            android:id="@+id/expandablelistview"
-            android:layout_width="match_parent"
-            android:drawSelectorOnTop="false"
-            android:layout_height="wrap_content"
-            android:groupIndicator="@null"
-            android:cacheColorHint="#00000000"
-            android:dividerHeight="0.2dp">
-    </ExpandableListView>
+
+    <ListView android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:id="@+id/replenishlist_listView">
+
+    </ListView>
 </LinearLayout>
 
     <LinearLayout
@@ -42,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/orangerred_selector"
                 android:layout_weight="1"
+                android:layout_margin="10dp"
                 style="@style/AdjustThreeButtonTheme"
                 android:text="未接收"
                 android:id="@+id/replenishlist_new"/>
@@ -49,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/orangerred_selector"
                 android:layout_weight="1"
+                android:layout_margin="10dp"
                 style="@style/AdjustThreeButtonTheme"
                 android:text="已确认"
                 android:id="@+id/replenishlist_finish"/>

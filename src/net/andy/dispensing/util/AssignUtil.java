@@ -36,7 +36,7 @@ public class AssignUtil {
         pairs.add(new BasicNameValuePair("userId",String.valueOf(userId)));
         pairs.add(new BasicNameValuePair("category",category));
         pairs.add(new BasicNameValuePair("classification",classification));
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getOtherWayCount.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/getOtherWayCount.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Integer.class);
         } else {
@@ -63,7 +63,7 @@ public class AssignUtil {
         pairs.add(new BasicNameValuePair("category", category));
         pairs.add(new BasicNameValuePair("classification", classification));
         pairs.add(new BasicNameValuePair("assign", assign));
-        returnDomain = (ReturnDomain) new Http().post("prescription/assignOtherWay.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("prescription/assignOtherWay.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return "分配成功";
         } else {
@@ -84,7 +84,7 @@ public class AssignUtil {
         pairs.add(new BasicNameValuePair("begin",begin));
         pairs.add(new BasicNameValuePair("end",end));
         pairs.add(new BasicNameValuePair("userId",String.valueOf(userId)));
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getAssignResult.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/getAssignResult.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

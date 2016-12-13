@@ -28,6 +28,7 @@ import net.andy.boiling.R;
 import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.CoolToast;
+import net.andy.dispensing.util.TopicUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -45,25 +46,12 @@ import java.util.Map;
  */
 @ContentView(R.layout.setting)
 public class SettingUI extends Activity {
-    @ViewInject(R.id.setting_station_linearLayout)
-    private LinearLayout setting_station_linearLayout;
-    @ViewInject(R.id.setting_personaleffort_linearLayout)
-    private LinearLayout setting_personaleffort_linearLayout;
-//    @ViewInject(R.id.setting_waitDispen_linearLayout)
-//    private LinearLayout setting_waitDispen_linearLayout;
-    @ViewInject(R.id.setting_alreadydis_linearLayout)
-    private LinearLayout setting_alreadydis_linearLayout;
     @ViewInject(R.id.switchButton)
     private SwitchButton switchButton;
     @ViewInject(R.id.setting_interval_textView)
     private TextView setting_interval_textView;
-//    @ViewInject(R.id.setting_station_textView)
-//    private TextView setting_station_textView;
     @ViewInject(R.id.setting_interval_editText)
     private EditText setting_interval_editText;
-//    private ButtonListener buttonListener;
-//    @ViewInject(R.id.setting_station_linearLayout)
-//    private Spinner setting_station_spinner;
     private List stationNameList = new ArrayList<String>();
     private ArrayAdapter<String> stationAdapter;
     private SpinnerItem spinnerItem;
@@ -75,56 +63,33 @@ public class SettingUI extends Activity {
     private Integer selectedStationId;
     private AppOption appOption = new AppOption();
     private CoolToast coolToast;
+    private TopicUtil topicUtil;
+    @ViewInject(R.id.topic_mianjian)
+    private CheckBox topic_mianjian;
+    @ViewInject(R.id.topic_yinpian)
+    private CheckBox topic_yinpian;
+    @ViewInject(R.id.topic_xiaobaozhuang)
+    private CheckBox topic_xiaobaozhuang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         x.view().inject(this);
         coolToast = new CoolToast(getBaseContext());
-//        setting_station_linearLayout = (LinearLayout) findViewById(R.id.setting_station_linearLayout);
-//        setting_personaleffort_linearLayout= (LinearLayout) findViewById(R.id.setting_personaleffort_linearLayout);
-//        setting_waitDispen_linearLayout= (LinearLayout) findViewById(R.id.setting_waitDispen_linearLayout);
-//        setting_alreadydis_linearLayout= (LinearLayout) findViewById(R.id.setting_alreadydis_linearLayout);
-//        buttonListener = new ButtonListener();
-////        setting_station_spinner= (Spinner) findViewById(R.id.setting_station_spinner);
-//        switchButton = (SwitchButton) findViewById(R.id.switchButton);
-//        setting_interval_textView = (TextView) findViewById(R.id.setting_interval_textView);
-////        setting_station_textView= (TextView) findViewById(R.id.setting_station_textView);
-//        setting_interval_editText = (EditText) findViewById(R.id.setting_interval_editText);
-//        setting_station_spinner.setOnItemSelectedListener(new StSpinnerListener());
         stationDomain = new StationDomain();
         init();
+        initReplenish();
 //        setMonitor();
-        replenishController();
 //        settingThread(0);
     }
 
     private void init() {
         setting_interval_editText.setText("" + appOption.getOption(AppOption.APP_OPTION_WAITTIME));
         switchButton.setChecked(Boolean.parseBoolean(appOption.getOption(AppOption.APP_OPTION_HERSPEC)));
+        topicUtil = new TopicUtil();
     }
 
-//    private void setMonitor() {
-//        setting_interval_textView.setOnClickListener(buttonListener);
-//        setting_station_linearLayout.setOnClickListener(buttonListener);
-//        setting_personaleffort_linearLayout.setOnClickListener(buttonListener);
-//        setting_waitDispen_linearLayout.setOnClickListener(buttonListener);
-//        setting_alreadydis_linearLayout.setOnClickListener(buttonListener);
-////        setting_station_textView.setOnClickListener(buttonListener);
-//        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
-//                if (arg1) {
-//                    appOption.setOption(AppOption.APP_OPTION_HERSPEC, "true");
-//                    new CoolToast(getBaseContext()).show("打开");
-//                } else {
-//                    appOption.setOption(AppOption.APP_OPTION_HERSPEC, "false");
-//                    new CoolToast(getBaseContext()).show("关闭");
-//                }
-//            }
-//        });
-//    }
-    @Event(value = R.id.switchButton,type = CompoundButton.OnCheckedChangeListener.class)
+    @Event(value = R.id.switchButton, type = CompoundButton.OnCheckedChangeListener.class)
     private void CheckedChanged(CompoundButton arg0, boolean arg1) {
         if (arg1) {
             appOption.setOption(AppOption.APP_OPTION_HERSPEC, "true");
@@ -134,41 +99,11 @@ public class SettingUI extends Activity {
             new CoolToast(getBaseContext()).show("关闭");
         }
     }
-    //    private class StSpinnerListener implements AdapterView.OnItemSelectedListener{
-//
-//        @Override
-//        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//            selectedStationId = ((SpinnerItem)setting_station_spinner.getSelectedItem()).GetID();
-//        }
-//        @Override
-//        public void onNothingSelected(AdapterView<?> adapterView) {
-//        }
-//    }
-//    private void setStationView(){
-//        if(isStation){
-//            isStation=false;
-//            setting_station_spinner.setClickable(false);
-//            setting_station_textView.setText("修改");
-//            stationDomain.setId(selectedStationId);
-//            for(int i=0;i<stationAll.size();i++){
-//                if(Integer.parseInt(String.valueOf(((Map)stationAll.get(i)).get("id")))==selectedStationId) {
-//                    stationDomain.setRulesId(Integer.parseInt(String.valueOf(((Map)stationAll.get(i)).get("rulesId"))));
-//                    stationDomain.setShelfId(Integer.parseInt(String.valueOf(((Map)stationAll.get(i)).get("shelfId"))));
-//                    stationDomain.setName(String.valueOf(((Map) stationAll.get(i)).get("name")));
-//                    stationDomain.setDevice(new AppOption().getOption(AppOption.APP_DEVICE_ID));
-//                    settingThread(1);
-//                }
-//            }
-//        }else{
-//            isStation=true;
-//            setting_station_spinner.setClickable(true);
-//            setting_station_textView.setText("保存");
-//        }
-//    }
+
     private void setInterval() {
         if (isInterval) {
             isInterval = false;
-            if (Integer.parseInt(setting_interval_editText.getText() + "") <2) {
+            if (Integer.parseInt(setting_interval_editText.getText() + "") < 2) {
                 setting_interval_editText.setText("2");
                 coolToast.show("间隔时间至少为 2");
             } else {
@@ -201,50 +136,37 @@ public class SettingUI extends Activity {
         }
     }
 
-   @Event(value = {R.id.setting_interval_textView,
-           R.id.setting_station_linearLayout,
-           R.id.setting_personaleffort_linearLayout,
+    @Event(value = {R.id.setting_interval_textView,
+            R.id.setting_station_linearLayout,
+            R.id.setting_personaleffort_linearLayout,
 //           R.id.setting_waitDispen_linearLayout,
-           R.id.setting_alreadydis_linearLayout,
-   } ,type = View.OnClickListener.class)
-        private void btnClick(View view) {
-            switch (view.getId()) {
-                case R.id.setting_interval_textView:
-                    setInterval();
-                    break;
-                case R.id.setting_station_linearLayout:
-                    Intent intent = new Intent(SettingUI.this, StationRuleUI.class);
-                    startActivity(intent);
-                    break;
-                case R.id.setting_personaleffort_linearLayout:
-                    Intent effortIntent = new Intent(SettingUI.this, PersonalEffortUI.class);
-                    startActivity(effortIntent);
-                    break;
+            R.id.setting_alreadydis_linearLayout,
+    }, type = View.OnClickListener.class)
+    private void btnClick(View view) {
+        switch (view.getId()) {
+            case R.id.setting_interval_textView:
+                setInterval();
+                break;
+            case R.id.setting_station_linearLayout:
+                Intent intent = new Intent(SettingUI.this, StationRuleUI.class);
+                startActivity(intent);
+                break;
+            case R.id.setting_personaleffort_linearLayout:
+                Intent effortIntent = new Intent(SettingUI.this, PersonalEffortUI.class);
+                startActivity(effortIntent);
+                break;
 //                case R.id.setting_waitDispen_linearLayout:
 //                    Intent waitIntent = new Intent(SettingUI.this, WaitDispenUI.class);
 //                    startActivity(waitIntent);
 //                    break;
-                case R.id.setting_alreadydis_linearLayout:
-                    Intent alreadyIntent = new Intent(SettingUI.this, AlreadyDisUI.class);
-                    startActivity(alreadyIntent);
-                    break;
-                default:
-                    break;
-            }
+            case R.id.setting_alreadydis_linearLayout:
+                Intent alreadyIntent = new Intent(SettingUI.this, AlreadyDisUI.class);
+                startActivity(alreadyIntent);
+                break;
+            default:
+                break;
         }
-//    private void setStation(){
-//        System.out.println(stationAll.size());
-//        for(int i=0;i<stationAll.size();i++){
-//            spinnerItem= new SpinnerItem (Integer.parseInt(String.valueOf(((Map)stationAll.get(i)).get("id"))),(String)((Map)stationAll.get(i)).get("name"));
-//            stationNameList.add(spinnerItem);
-//            System.out.println(spinnerItem.GetValue());
-//        }
-//        stationAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,stationNameList);
-//        //设置下拉列表的风格
-//        stationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        setting_station_spinner.setAdapter(stationAdapter);
-//        stationAdapter.notifyDataSetChanged();
-//    }
+    }
 
     /**
      * 根据值, 设置spinner默认选中:
@@ -271,7 +193,7 @@ public class SettingUI extends Activity {
         final Handler handler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
-                    case -1:
+                    case - 1:
                         new CoolToast(getBaseContext()).show((String) msg.obj);
 //                        setStation();
                         break;
@@ -308,47 +230,34 @@ public class SettingUI extends Activity {
                             break;
                     }
                 } catch (Exception e) {
-                    message.what = -1;
+                    message.what = - 1;
                     message.obj = e.getMessage();
                     handler.sendMessage(message);
                 }
             }
         }.start();
     }
-
-    private void replenishController() {
-        ((CheckBox) findViewById(R.id.replenish)).setOnClickListener(new CompoundButton.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setReplenish(((CheckBox)view.findViewById(R.id.replenish)).isChecked() ?
-                        "topic/insert.do" : "topic/delete.do", "上药");
-            }
-        });
-        initReplenish();
+    @Event(value = {R.id.topic_mianjian,
+                    R.id.topic_yinpian,
+                    R.id.topic_xiaobaozhuang},type = View.OnClickListener.class)
+    private void checkClick(View view) {
+            CheckBox temp=(CheckBox) view;
+            setReplenish(temp.isChecked(), String.valueOf(temp.getText()));
+//            initReplenish();
     }
 
+    private Message message;
+
     private void initReplenish() {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 Looper.prepare();
-                List<NameValuePair> pairs = new ArrayList<>();
-                pairs.add(new BasicNameValuePair("userId", appOption.getOption(AppOption.APP_OPTION_USER)));
                 try {
-                    ReturnDomain returnDomain = (ReturnDomain) (
-                            new Http().post("topic/getTopicByUserId.do", pairs, ReturnDomain.class));
-                    if (returnDomain.getSuccess()) {
-                        List list = JSON.parseObject(returnDomain.getObject().toString(), List.class);
-                        for (Object o : list) {
-                            String s = (String) ((Map)o).get("topic");
-                            Log.e("json",s);
-                            if (s.equals("上药")) {
-                                reset.sendEmptyMessage(1);
-                            }
-                        }
-                    } else {
-                        Toast.makeText(SettingUI.this, returnDomain.getException(), Toast.LENGTH_SHORT);
-                    }
+                    message = new Message();
+                    message.what = 0;
+                    message.obj = topicUtil.getTopicByUserId();
+                    handl.sendMessage(message);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(SettingUI.this, e.getMessage(), Toast.LENGTH_SHORT);
@@ -357,31 +266,50 @@ public class SettingUI extends Activity {
             }
         }.start();
     }
-
-    Handler reset = new Handler(){
+    private void reset(){
+        topic_mianjian.setChecked(false);
+        topic_yinpian.setChecked(false);
+        topic_xiaobaozhuang.setChecked(false);
+    }
+    Handler handl = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 0:
-                    ((CheckBox) findViewById(R.id.replenish)).setChecked(false);
+                    reset();
+                    for (Object o : (List) msg.obj) {
+                        String tem=((Map) o).get("topic").toString();
+                        Log.e("topic",tem);
+                        if ("草药免煎".equals(tem)) {
+                            topic_mianjian.setChecked(true);
+                        }else if ("草药饮片".equals(tem)) {
+                            topic_yinpian.setChecked(true);
+                        }else if ("小包装".equals(tem)) {
+                            topic_xiaobaozhuang.setChecked(true);
+                        }
+                    }
                     break;
                 case 1:
-                    ((CheckBox) findViewById(R.id.replenish)).setChecked(true);
+                    coolToast.show(String.valueOf(msg.obj));
                     break;
             }
         }
     };
 
-    private void setReplenish(String uri, String topic) {
-        new Thread(){
+    private void setReplenish(boolean save, String topic) {
+        new Thread() {
             @Override
             public void run() {
                 Looper.prepare();
-                List<NameValuePair> pairs = new ArrayList<>();
-                pairs.add(new BasicNameValuePair("userId", appOption.getOption(AppOption.APP_OPTION_USER)));
-                pairs.add(new BasicNameValuePair("topic", topic));
                 try {
-                    ReturnDomain returnDomain = (ReturnDomain) (new Http().post(uri, pairs, ReturnDomain.class));
+                    message = new Message();
+                    if (save) {
+                        message.obj = topicUtil.insert(topic);
+                    } else {
+                        message.obj = topicUtil.delete(topic);
+                    }
+                    message.what=1;
+                    handl.sendMessage(message);
                 } catch (Exception e) {
                     Toast.makeText(SettingUI.this, e.getMessage(), Toast.LENGTH_SHORT);
                 }

@@ -24,7 +24,7 @@ public class PrescriptionUtil {
     public PrescriptionDomain getPrescription(String id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", id ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getPrescription.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/getPrescription.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), PrescriptionDomain.class );
         } else {
@@ -34,7 +34,7 @@ public class PrescriptionUtil {
     public PrescriptionDomain getPrescriptionByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getPrescriptionByPlanId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/getPrescriptionByPlanId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), PrescriptionDomain.class );
         } else {
@@ -45,7 +45,7 @@ public class PrescriptionUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "presId", presId ) );
 
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getPrescriptionByPresId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/getPrescriptionByPresId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), PrescriptionDomain.class );
         } else {
@@ -56,7 +56,7 @@ public class PrescriptionUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "device", device ) );
         pairs.add ( new BasicNameValuePair ( "userId", userId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/insertDispensingByDevice.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/insertDispensingByDevice.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             if(returnDomain.getObject()!=null)
             return JSON.parseObject ( returnDomain.getObject ().toString (), Map.class );
@@ -68,7 +68,7 @@ public class PrescriptionUtil {
     public Map cancelPauseByTagId(String tagId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "tagId", tagId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/cancelPauseByTagId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/cancelPauseByTagId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             if(returnDomain.getObject()!=null)
                 return JSON.parseObject ( returnDomain.getObject ().toString (), Map.class );
@@ -81,7 +81,7 @@ public class PrescriptionUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
         pairs.add ( new BasicNameValuePair ( "tagId", String.valueOf(tagId) ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/pause.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/pause.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
                 return "暂停成功！";
         } else {
@@ -95,7 +95,7 @@ public class PrescriptionUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
         pairs.add ( new BasicNameValuePair ( "tagId", String.valueOf(tagId) ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/getPauseList.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/getPauseList.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), Map.class );
         } else {
@@ -114,7 +114,7 @@ public class PrescriptionUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", String.valueOf(id)));
         pairs.add ( new BasicNameValuePair ( "process", process) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/setProcess.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/setProcess.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "修改成功";
         } else {
@@ -133,7 +133,7 @@ public class PrescriptionUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", String.valueOf(id)));
         pairs.add ( new BasicNameValuePair ( "status", status) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/setMain.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/setMain.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "修改成功";
         } else {
@@ -148,7 +148,7 @@ public class PrescriptionUtil {
         pairs.add ( new BasicNameValuePair ( "device", device ) );
         pairs.add ( new BasicNameValuePair ( "userId", userId ) );
         pairs.add ( new BasicNameValuePair ( "barcode", barcode ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "prescription/insertDispensingByDevice.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "prescription/insertDispensingByDevice.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             if(returnDomain.getObject()!=null)
                 return JSON.parseObject ( returnDomain.getObject ().toString (), Map.class );

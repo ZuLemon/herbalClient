@@ -260,6 +260,7 @@ public class ExtractUI extends NFCActivity {
                 }
                 break;
             case R.id.extract_soak_button:
+                extract_soak_button.setEnabled(false);
                 Log.e(">>", "浸泡");
                 if (hasPre && hasWater) {
                     extractingDomain.setQuantity(Integer.parseInt(String.valueOf(extract_waterQuantity1_editText.getText())));
@@ -450,6 +451,7 @@ public class ExtractUI extends NFCActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            extract_soak_button.setEnabled(true);
             switch (msg.what) {
                 case - 1:
                     reset();

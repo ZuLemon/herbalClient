@@ -27,7 +27,7 @@ public class ValidationUtil {
     public DispensingValidationDomain getValidationByDis(String disId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("disId", disId));
-        returnDomain = (ReturnDomain) new Http().post("validation/getValidationByDis.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("validation/getValidationByDis.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             if(returnDomain.getObject()==null){
                 Log.i("object","null");
@@ -44,7 +44,7 @@ public class ValidationUtil {
     public List getWaitValidation(String userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", userId));
-        returnDomain = (ReturnDomain) new Http().post("validation/getWaitValidation.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("validation/getWaitValidation.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {
@@ -60,7 +60,7 @@ public class ValidationUtil {
         pairs.add(new BasicNameValuePair("end", end));
         pairs.add(new BasicNameValuePair("userId", userId));
         pairs.add(new BasicNameValuePair("status", status));
-        returnDomain = (ReturnDomain) new Http().post("validation/getValidationByStatus.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("validation/getValidationByStatus.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {
@@ -74,7 +74,7 @@ public class ValidationUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("disId", disId));
         pairs.add(new BasicNameValuePair("userId", userId));
-        returnDomain = (ReturnDomain) new Http().post("validation/insert.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("validation/insert.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return "已选中复核";
         } else {
@@ -87,7 +87,7 @@ public class ValidationUtil {
     public String pass(String id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("id", id));
-        returnDomain = (ReturnDomain) new Http().post("validation/pass.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("validation/pass.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return "完成复核";
         } else {

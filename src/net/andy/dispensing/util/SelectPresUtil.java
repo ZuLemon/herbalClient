@@ -25,7 +25,7 @@ public class SelectPresUtil {
         pairs.add ( new BasicNameValuePair( "end", end));
         pairs.add ( new BasicNameValuePair( "patientNo", "%"+patientNo+"%"));
         pairs.add ( new BasicNameValuePair( "userId", userId));
-        returnDomain = (ReturnDomain) new Http().post ( "prescription/getPrescriptionByPatientNoDate.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "prescription/getPrescriptionByPatientNoDate.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

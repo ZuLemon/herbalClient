@@ -21,50 +21,67 @@ public class ReplenishUtil {
     private ReturnDomain returnDomain;
 
     /**
-     * 获取未接收上药信息
+     * 获取紧急上药信息
      */
-    public List getReplenishNoAccept() throws Exception {
+    public List getReplenishByUserAndStatus(String type,String status) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
-        returnDomain = (ReturnDomain) new Http().post("replenish/getReplenishNoAccept.do", pairs, ReturnDomain.class);
-        if (returnDomain.getSuccess()) {
-            return JSON.parseObject(returnDomain.getObject().toString(), List.class);
-        } else {
-            throw new Exception(returnDomain.getException());
-        }
-    }
-
-
-    /**
-     * 获取上药信息
-     */
-    public List getReplenishByStatus(String url,String userId,String status) throws Exception {
-        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add(new BasicNameValuePair("type", type));
         pairs.add(new BasicNameValuePair("status", status));
-        pairs.add(new BasicNameValuePair("userId", userId));
-        returnDomain = (ReturnDomain) new Http().post(url, pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("replenish/getReplenishByUserAndStatus.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {
             throw new Exception(returnDomain.getException());
         }
     }
+
+//
+//    /**
+//     * 获取上药信息
+//     */
+//    public List getReplenishByStatus(String url,String userId,String status) throws Exception {
+//        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+//        pairs.add(new BasicNameValuePair("status", status));
+//        pairs.add(new BasicNameValuePair("userId", userId));
+//        returnDomain = (ReturnDomain) Http.post(url, pairs, ReturnDomain.class);
+//        if (returnDomain.getSuccess()) {
+//            return JSON.parseObject(returnDomain.getObject().toString(), List.class);
+//        } else {
+//            throw new Exception(returnDomain.getException());
+//        }
+//    }
 
     /**
      * 完成上药操作
      */
-    public String setStatus(String url,String id) throws Exception {
+    public String setStatus(Integer id,String status) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-        pairs.add(new BasicNameValuePair("id", id));
+        pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
-        returnDomain = (ReturnDomain) new Http().post(url, pairs, ReturnDomain.class);
+        pairs.add(new BasicNameValuePair("status", status));
+        returnDomain = (ReturnDomain) Http.post("replenish/setStatus.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
-            return "上药成功！";
+            return "操作成功！";
         } else {
             throw new Exception(returnDomain.getException());
         }
     }
 
+//    /**
+//     * 完成上药操作
+//     */
+//    public String finish(Integer id) throws Exception {
+//        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+//        pairs.add(new BasicNameValuePair("id", String.valueOf(id)));
+//        pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
+//        returnDomain = (ReturnDomain) Http.post("replenish/finish.do", pairs, ReturnDomain.class);
+//        if (returnDomain.getSuccess()) {
+//            return "上药完成！";
+//        } else {
+//            throw new Exception(returnDomain.getException());
+//        }
+//    }
     /**
      * 提醒上药
      */
@@ -74,7 +91,7 @@ public class ReplenishUtil {
         pairs.add(new BasicNameValuePair("herbId", herbId));
         pairs.add(new BasicNameValuePair("type", type));
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
-        returnDomain = (ReturnDomain) new Http().post("replenish/request.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("replenish/request.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return returnDomain.getObject().toString();
         } else {
@@ -88,12 +105,29 @@ public class ReplenishUtil {
      * @return
      * @throws Exception
      */
-    public List getReplenishListByUserAndType(String type,String status) throws Exception {
+    public List getReplenishListByUserAndType(String type,String status,String startTime,String endTime) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
         pairs.add(new BasicNameValuePair("type", type));
         pairs.add(new BasicNameValuePair("status", status));
-        returnDomain = (ReturnDomain) new Http().post("replenish/getReplenishListByUserAndType.do", pairs, ReturnDomain.class);
+        pairs.add(new BasicNameValuePair("startTime", startTime));
+        pairs.add(new BasicNameValuePair("endTime", endTime));
+        returnDomain = (ReturnDomain) Http.post("replenish/getReplenishListByUserAndType.do", pairs, ReturnDomain.class);
+        if (returnDomain.getSuccess()) {
+            return JSON.parseObject(returnDomain.getObject().toString(), List.class);
+        } else {
+            throw new Exception(returnDomain.getException());
+        }
+    }
+    /**
+     * 获取紧急上药信息
+     */
+    public List getReplenishByRequestUser(String type,String status) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add(new BasicNameValuePair("userId", new AppOption().getOption(AppOption.APP_OPTION_USER)));
+        pairs.add(new BasicNameValuePair("type", type));
+        pairs.add(new BasicNameValuePair("status", status));
+        returnDomain = (ReturnDomain) Http.post("replenish/getReplenishByRequestUser.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject(returnDomain.getObject().toString(), List.class);
         } else {

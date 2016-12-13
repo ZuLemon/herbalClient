@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -9,11 +10,74 @@
               android:background="@android:color/white"
               android:padding="15dp"
               android:gravity="center"
-              android:text="未接收"
+              android:text="紧急"
               android:textSize="18dp"
               android:textColor="@android:color/background_dark"
               android:id="@+id/replenish_title"
     />
+    <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:background="@drawable/dark_circular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/replenish_dateTime_linearLayout">
+        <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:minHeight="50.0dp">
+            <TextView
+                    android:textSize="18.0sp"
+                    android:textColor="#ff545454"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dp"
+                    android:text="开始时间："/>
+            <EditText
+                    android:id="@+id/replenish_startTime_editText"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:singleLine="true"
+                    android:textSize="16sp" />
+        </LinearLayout>
+        <View
+                android:background="@drawable/shape_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        <LinearLayout
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10.0dp"
+                android:minHeight="50.0dp">
+            <TextView
+                    android:textSize="18sp"
+                    android:textColor="#ff545454"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10.0dp"
+                    android:text="结束时间："/>
+            <EditText
+                    android:id="@+id/replenish_endTime_editText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:textSize="16sp" />
+        </LinearLayout>
+        <View
+                android:background="@drawable/shape_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+    </LinearLayout>
     <ListView android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@android:color/white"
@@ -33,7 +97,7 @@
                 android:background="@drawable/orangerred_selector"
                 android:layout_weight="1"
                 style="@style/AdjustThreeButtonTheme"
-                android:text="未接收"
+                android:text="紧急"
                 android:id="@+id/replenish_new"/>
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,6 +108,15 @@
                 style="@style/AdjustThreeButtonTheme"
                 android:text="已接收"
                 android:id="@+id/replenish_accept"/>
+        <Button android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/orangerred_selector"
+                android:layout_weight="1"
+                style="@style/AdjustThreeButtonTheme"
+                android:text="常规"
+                android:id="@+id/replenish_normal"/>
+
         <Button android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/orangerred_selector"

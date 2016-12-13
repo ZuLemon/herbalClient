@@ -29,7 +29,7 @@ public class DispensingDetailUtil {
     public List getListByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/getDispensingDetailByPlanId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/getDispensingDetailByPlanId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {
@@ -39,7 +39,7 @@ public class DispensingDetailUtil {
     public void start(String id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", id ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/start.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/start.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
         } else {
             throw new Exception ( returnDomain.getException () );
@@ -48,7 +48,7 @@ public class DispensingDetailUtil {
     public String finish(String id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", id ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/finish.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/finish.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "";
         } else {
@@ -66,7 +66,7 @@ public class DispensingDetailUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
         pairs.add ( new BasicNameValuePair ( "readyId", String.valueOf(readyId)) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/updateReady.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/updateReady.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
         } else {
             throw new Exception ( returnDomain.getException () );
@@ -81,7 +81,7 @@ public class DispensingDetailUtil {
     public void updateDue(Integer disId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/updateDue.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/updateDue.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
         } else {
             throw new Exception ( returnDomain.getException () );
@@ -97,7 +97,7 @@ public class DispensingDetailUtil {
     public List getDispensingDetailByDisId(Integer disId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/getDispensingDetailByDisId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/getDispensingDetailByDisId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {
@@ -114,7 +114,7 @@ public class DispensingDetailUtil {
     public List getQuantityForUnit(Integer disId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "disId", String.valueOf(disId) ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/getQuantityForUnit.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/getQuantityForUnit.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {
@@ -137,7 +137,7 @@ public class DispensingDetailUtil {
 //        pairs.add ( new BasicNameValuePair ( "endTime", sdf.format(dis.getEndTime()) ) );
 //        pairs.add ( new BasicNameValuePair ( "status", String.valueOf(dis.getStatus()) ) );
 //        pairs.add ( new BasicNameValuePair ( "shelf", String.valueOf(dis.getShelf()) ) );
-//        returnDomain = ( ReturnDomain ) new Http ().post ( "dispensingDetail/update.do", pairs, ReturnDomain.class );
+//        returnDomain = ( ReturnDomain ) Http.post ( "dispensingDetail/update.do", pairs, ReturnDomain.class );
 //        if ( returnDomain.getSuccess () ) {
 //        } else {
 //            throw new Exception ( returnDomain.getException () );

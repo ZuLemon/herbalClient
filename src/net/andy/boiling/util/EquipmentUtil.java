@@ -31,7 +31,7 @@ public class EquipmentUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "id", id ) );
         try {
-            returnDomain = ( ReturnDomain ) ( new Http ().post ( "equipment/getEquipment.do", pairs, ReturnDomain.class ) );
+            returnDomain = ( ReturnDomain ) ( Http.post ( "equipment/getEquipment.do", pairs, ReturnDomain.class ) );
             if ( returnDomain.getObject () != null ) {
                 return JSON.parseObject ( returnDomain.getObject ().toString (), EquipmentDomain.class );
 
@@ -53,7 +53,7 @@ public class EquipmentUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "equipId", equipId ) );
         try {
-            returnDomain = ( ReturnDomain ) ( new Http ().post ( "equipment/getEquipmentByEquipId.do", pairs, ReturnDomain.class ) );
+            returnDomain = ( ReturnDomain ) ( Http.post ( "equipment/getEquipmentByEquipId.do", pairs, ReturnDomain.class ) );
             if ( returnDomain.getSuccess () ) {
                 if ( returnDomain.getObject () != null ) {
                     return JSON.parseObject ( returnDomain.getObject ().toString (), EquipmentDomain.class );
@@ -75,7 +75,7 @@ public class EquipmentUtil {
      */
     public List<EquipmentDomain> getAllEquip() throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        returnDomain = ( ReturnDomain ) ( new Http ().post ( "equipment/getEquipmentOfAll.do", pairs, ReturnDomain.class ) );
+        returnDomain = ( ReturnDomain ) ( Http.post ( "equipment/getEquipmentOfAll.do", pairs, ReturnDomain.class ) );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
         } else {
@@ -94,7 +94,7 @@ public class EquipmentUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "tagId", tagId ) );
         try {
-            returnDomain = ( ReturnDomain ) ( new Http ().post ( "equipment/getEquipmentByTagId.do", pairs, ReturnDomain.class ) );
+            returnDomain = ( ReturnDomain ) ( Http.post ( "equipment/getEquipmentByTagId.do", pairs, ReturnDomain.class ) );
             if ( returnDomain.getSuccess () ) {
                 if ( returnDomain.getObject () != null ) {
                     return JSON.parseObject ( returnDomain.getObject ().toString (), EquipmentDomain.class );
@@ -119,7 +119,7 @@ public class EquipmentUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "type", type ) );
         try {
-            returnDomain = ( ReturnDomain ) ( new Http ().post ( "equipment/getEquipmentByType.do", pairs, ReturnDomain.class ) );
+            returnDomain = ( ReturnDomain ) ( Http.post ( "equipment/getEquipmentByType.do", pairs, ReturnDomain.class ) );
             if ( returnDomain.getSuccess () ) {
                 if ( returnDomain.getObject () != null ) {
                     return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
@@ -142,7 +142,7 @@ public class EquipmentUtil {
     public EquipmentDomain getEquipByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "equipment/getEquipmentByPlanId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "equipment/getEquipmentByPlanId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), EquipmentDomain.class );
         } else {
@@ -173,7 +173,7 @@ public class EquipmentUtil {
         pairs.add ( new BasicNameValuePair ( "equipStatus", String.valueOf ( equipmentDomain.getEquipStatus () ) ) );
         System.out.println ( "$>>$$" + String.valueOf ( equipmentDomain.getEquipPurpose () ) );
         try {
-            return ( Integer ) ( ( Map ) new Http ().post ( null == equipmentDomain.getId () ? "equipment/insert.do" : "equipment/update.do", pairs, Map.class ) ).get ( "id" );
+            return ( Integer ) ( ( Map ) Http.post ( null == equipmentDomain.getId () ? "equipment/insert.do" : "equipment/update.do", pairs, Map.class ) ).get ( "id" );
         } catch (Exception e) {
             throw new Exception ( e.getMessage () );
         }

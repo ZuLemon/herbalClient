@@ -19,7 +19,9 @@ import com.alibaba.fastjson.JSON;
 import net.andy.boiling.Login;
 import net.andy.boiling.R;
 import net.andy.com.AppOption;
+import net.andy.com.Application;
 import net.andy.com.Http;
+import net.andy.dispensing.util.FileUtil;
 import org.apache.http.NameValuePair;
 
 import java.io.File;
@@ -114,8 +116,8 @@ public class UpdateUI {
             public void run() {
                 List<NameValuePair> pairs = new ArrayList<NameValuePair>();
                 try {
-//                    Map<String, String> Map = (Map<String, String>) new Http().post("renew.txt",pairs,Map.class);
-                    Map<String, String> Map= JSON.parseObject(String.valueOf(new Http().get("renew.txt")),Map.class);
+//                    Map<String, String> Map = (Map<String, String>) Http.post("renew.txt",pairs,Map.class);
+                    Map<String, String> Map= JSON.parseObject(String.valueOf(Http.get("renew.txt")),Map.class);
                     System.out.println(">>" + Map);
                     updateMap = Map;
                     message.what = 0;
@@ -247,10 +249,8 @@ public class UpdateUI {
                 // 判断SD卡是否存在，并且是否具有读写权限
                 if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                     // 获得存储卡的路径
-                    String sdpath = Environment.getExternalStorageDirectory() + "/";
-//					File sdpath=Environment.getRootDirectory();
-                    mSavePath = sdpath + "/download";
-                    String urlStr="http://"+new AppOption().getOption(AppOption.APP_OPTION_SERVER)+"/herbal/"+updateMap.get("name");
+                    mSavePath = FileUtil.getProjectPath();
+                    String urlStr="http://"+ Application.getServerIP().trim()+"/herbal/"+updateMap.get("name");
                     Log.e("url",urlStr);
                     URL url = new URL(urlStr);
                     // 创建连接

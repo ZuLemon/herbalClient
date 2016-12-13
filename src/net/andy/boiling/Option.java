@@ -5,14 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import net.andy.com.AppOption;
-import net.andy.com.Application;
-import net.andy.com.ChineseToSpeech;
-import net.andy.com.CoolToast;
+import net.andy.com.*;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -36,18 +34,17 @@ public class Option extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.option);
         x.view().inject(this);
         option_server_editText.setText(appOption.getOption(appOption.APP_OPTION_SERVER));
         option_state_check.setChecked(appOption.getOption(AppOption.APP_OPTION_STATE).equals("YES"));
     }
-
     @Event(value = {R.id.option_server_button, R.id.option_speech_button}, type = View.OnClickListener.class)
     private void onClick(View v) {
         switch (v.getId()) {
             case R.id.option_server_button:
                 Application.setServerIP(String.valueOf(option_server_editText.getText()));
+                Http.setUri(String.valueOf(option_server_editText.getText()));
                 appOption.setOption(AppOption.APP_OPTION_SERVER, String.valueOf(option_server_editText.getText()));
                 appOption.setOption(AppOption.APP_OPTION_STATE, option_state_check.isChecked() ? "YES" : "NO");
                 new CoolToast(getBaseContext()).show("保存成功");

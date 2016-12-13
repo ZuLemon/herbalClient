@@ -28,7 +28,7 @@ public class PermissionUtil {
     public List getPermissionByuserId(String userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "userId", userId ) );
-        List listMap = ( List ) new Http ().post ( "permission/userMobilePermission.do", pairs, List.class );
+        List listMap = ( List ) Http.post ( "permission/userMobilePermission.do", pairs, List.class );
         if ( listMap!=null) {
           return  listMap;
         } else {

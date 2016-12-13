@@ -31,7 +31,7 @@ public class LogUserInfo {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("id", id));
         try {
-            String info= (String) new Http().post("user/findById.do", pairs, String.class);
+            String info= (String) Http.post("user/findById.do", pairs, String.class);
             return JSON.parseObject(info,Users.class);
 //            if (returnDomain.getSuccess()) {
 //                System.out.println(">>" + returnDomain.getObject().toString());

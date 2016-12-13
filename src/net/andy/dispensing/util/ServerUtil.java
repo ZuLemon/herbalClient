@@ -21,7 +21,7 @@ public class ServerUtil {
      * @throws Exception
      */
     public String getServerTime() throws Exception {
-       String st= (String) new Http().get ( "getServerTime.do");
+       String st= (String)Http.get ( "getServerTime.do");
         if (st !=null) {
             return st;
         } else {

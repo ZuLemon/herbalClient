@@ -1,12 +1,14 @@
 package net.andy.dispensing.ui;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.app.Activity;
+import android.content.*;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.*;
+import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,7 @@ import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -54,6 +57,7 @@ public class DispensingUI extends NFCActivity {
     private final static int PAUSE_PRESITION_CODE = 2000;
     private final static int PAUSE_GETPRESITION_CODE = 3000;
     private static final int AFFIRM_CODE = 9010;
+    private static final int REQUEST_CODE_TAKE_PICTURE = 4001;
     @ViewInject(R.id.dispensing_patientInfo_linearLayout)
     private LinearLayout dispensing_patientInfo_linearLayout;
     @ViewInject(R.id.dispensing_medicineInfo_linearLayout)
@@ -142,8 +146,13 @@ public class DispensingUI extends NFCActivity {
     private List<DispensingDetailDomain> historyDisDetailList;
     private DispensingDetailUtil dispensingDetailUtil = new DispensingDetailUtil();
     private DispensingUtil dispensingUtil = new DispensingUtil();
+    private Uri mPhotoUri;           //拍照后的uri
+    private String resetNameFile;
+    private Bitmap presPhoto;
+    private final Integer photoWight=640;
+    private final Integer photoheight=860;
     private ReportUtil reportUtil = new ReportUtil();
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdfomat = new SimpleDateFormat("yyyy-MM-dd");
     private List<HashMap<String, Object>> historyData;
     private List listDis;
     private String barcode = "";
@@ -171,6 +180,7 @@ public class DispensingUI extends NFCActivity {
     private boolean isDangri;
     private boolean hasDownTimer;
     private boolean hasValidateion;
+    private boolean hasHardback;
     private boolean isGetPresTime = true;
     private long serverTime;
     private boolean hasReady;
@@ -634,7 +644,9 @@ public class DispensingUI extends NFCActivity {
             nowDis = dispensingDetailDomainList.get(now);
             nowDis.setStatus("完成");
             historyDisDetailList.add(nowDis);
+
         }
+
         Log.e("Now:", now + "");
         System.out.println("<>" + historyDisDetailList.size());
         if (now == dispensingDetailDomainList.size()) {
@@ -715,6 +727,9 @@ public class DispensingUI extends NFCActivity {
             case AFFIRM_CODE:
                 Log.e("返回", "已确定煎制方案");
                 break;
+            case REQUEST_CODE_TAKE_PICTURE:
+                savePhoto();
+                break;
         }
     }
 
@@ -741,7 +756,47 @@ public class DispensingUI extends NFCActivity {
             hasDownTimer = true;
         }
     }
-
+    //打开相机拍照
+    private void openCam(){
+        final String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            final Intent takePictureImIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            ContentValues values = new ContentValues();
+            mPhotoUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            Log.e("URI",mPhotoUri.getPath());
+            takePictureImIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoUri);
+            startActivityForResult(takePictureImIntent,REQUEST_CODE_TAKE_PICTURE);
+        } else {
+            Log.e(">>>02","错误");
+        }
+    }
+    //保存照片
+    private void savePhoto(){
+        // 通过照相获取图片
+             Uri uri = mPhotoUri;
+            if (uri != null) {
+                try {
+                    presPhoto =   MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+//            TelephonyManager tm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
+//            String deviceid= tm.getDeviceId();
+            resetNameFile= dispensingDomain.getId()+".jpg";
+//            if(deviceid != null && deviceid.length()>0){
+//                resetNameFile= deviceid+"_"+resetNameFile+".jpg";
+//            }else{
+//                resetNameFile+=".jpg";
+//            }
+//                            bitmap=ImageCompressUtil.compressByQuality(bitmap,700);
+            presPhoto=ImageCompressUtil.compressBySize(presPhoto,photoWight,photoheight);
+            new CoolToast(getBaseContext()).show("保存成功");
+//                    imageView.setImageBitmap(bitmap);
+            FileUtil.saveFileToSDCard(presPhoto,FileUtil.getProjectTemp(),resetNameFile);
+            Log.e(">>>03","错误");
+//            herbalUtil(16);
+    }
     /**
      * 获取待调剂处方
      **/
@@ -792,6 +847,11 @@ public class DispensingUI extends NFCActivity {
                         }
                         dispensing_sum_textView.setText(sum);
                         dispensing_medicineInfo_linearLayout.setVisibility(View.GONE);
+                        //完成调剂，如果有精包装打开相机拍照
+                        if(hasHardback){
+//                            new CoolToast(getBaseContext()).show("有精包装，需要拍照");
+                            openCam();
+                        }
                         dispensing_banding_linearLayout.setVisibility(View.VISIBLE);
                         isEnd = false;
                         isFinish = true;
@@ -822,6 +882,8 @@ public class DispensingUI extends NFCActivity {
                             startActivityForResult(affirmIntent,AFFIRM_CODE);
                         }
                         reset();
+                        //上传图片
+                        herbalUtil(16);
                         break;
                     case 7:
                         new CoolToast(getBaseContext()).show((String) msg.obj);
@@ -859,6 +921,8 @@ public class DispensingUI extends NFCActivity {
                         socInt = 0;
                         minInt = 0;
                         reset();
+                        //上传照片
+                        herbalUtil(16);
                         break;
                     case 11:
                         setGlobalView();
@@ -881,6 +945,11 @@ public class DispensingUI extends NFCActivity {
                         dispensing_adjust_linearLayout.setVisibility(View.VISIBLE);
                         dispensing_warning_linearLayout.setVisibility(View.GONE);
                         setDue();
+                        break;
+                    case 16:
+                        new CoolToast(getBaseContext()).show((String) msg.obj);
+                        //删除临时图片
+//                        FileUtil.deleteFile(FileUtil.getProjectTemp(),resetNameFile);
                         break;
                 }
             }
@@ -978,7 +1047,7 @@ public class DispensingUI extends NFCActivity {
                                 handler.sendMessage(message);
                                 break;
                             }
-                            message.obj = dispensingUtil.updateToFinish(String.valueOf(dispensingDomain.getId()), tagId);
+                            message.obj = dispensingUtil.updateToFinish(String.valueOf(dispensingDomain.getId()), tagId,hasHardback?resetNameFile:null);
                             message.what = 4;
                             handler.sendMessage(message);
                             break;
@@ -1057,7 +1126,8 @@ public class DispensingUI extends NFCActivity {
                             break;
                         case 10:
                             tagDomain = new TagUtil().getTagByTagId(dispensingDomain.getTagId());
-                            message.obj = dispensingUtil.updateToFinish(String.valueOf(dispensingDomain.getId()), dispensingDomain.getTagId());
+
+                            message.obj = dispensingUtil.updateToFinish(String.valueOf(dispensingDomain.getId()), dispensingDomain.getTagId(),hasHardback?resetNameFile:null);
                             message.what = 10;
                             handler.sendMessage(message);
                             break;
@@ -1097,6 +1167,11 @@ public class DispensingUI extends NFCActivity {
                             message.what = 0;
                             handler.sendMessage(message);
                             break;
+                        case 16:
+                            message.obj = new NetWorkUtil().putFile(FileUtil.getProjectTemp()+"/"+resetNameFile);
+                            message.what=16;
+                            handler.sendMessage(message);
+                            break;
                     }
                 } catch (Exception e) {
                     message.what = -1;
@@ -1125,6 +1200,7 @@ public class DispensingUI extends NFCActivity {
         totalWeight = new BigDecimal(0);
         valCount = 0;
         hasValidateion = false;
+        hasHardback=false;
     }
 
     private void setView() {
@@ -1161,16 +1237,22 @@ public class DispensingUI extends NFCActivity {
                 dispensingDetailDomain.setWarning((String) ((Map) obj).get("warning"));
                 if ((((Map) obj).get("beginTime") != null) && (((Map) obj).get("endTime") != null))
                     try {
-                        dispensingDetailDomain.setBeginTime(sdf.parse((String) ((Map) obj).get("beginTime")));
-                        dispensingDetailDomain.setEndTime(sdf.parse((String) ((Map) obj).get("endTime")));
+                        dispensingDetailDomain.setBeginTime(sdfomat.parse((String) ((Map) obj).get("beginTime")));
+                        dispensingDetailDomain.setEndTime(sdfomat.parse((String) ((Map) obj).get("endTime")));
                     } catch (ParseException e) {
 //                e.printStackTrace();
                         new CoolToast(getBaseContext()).show((String) e.getMessage());
                     }
                 dispensingDetailDomain.setStatus((String) ((Map) obj).get("status"));
                 dispensingDetailDomain.setShelf((String) ((Map) obj).get("shelf"));
+                dispensingDetailDomain.setPack((String) ((Map) obj).get("pack"));
                 totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
                 dispensingDetailDomainList.add(dispensingDetailDomain);
+                //判断是否是精装
+                if(!"免煎".equals(prescriptionDomain.getClassification())&&!"小包装".equals(dispensingDetailDomain.getPack())&&!"".equals(dispensingDetailDomain.getHerbSpec())){
+                    hasHardback=true;
+//                    new CoolToast(getBaseContext()).show("精装药");
+                }
             }
         }
 //

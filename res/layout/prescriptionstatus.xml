@@ -36,11 +36,18 @@
                   android:visibility="gone"
         />
         <TextView style="@style/PrescriptionStatusStyle"
+                  android:id="@+id/prescriptionStatus_did_textView"
+                  android:text="  调剂 ID ："
+                  android:layout_weight="1"
+                  android:visibility="gone"
+        />
+        <TextView style="@style/PrescriptionStatusStyle"
                   android:id="@+id/prescriptionStatus_waitTime_textView"
                   android:text="候方用时："
                   android:layout_weight="1"
                   android:visibility="gone"
         />
+
         <TextView style="@style/PrescriptionStatusStyle"
                   android:id="@+id/prescriptionStatus_dispensingPerson_textView"
                   android:text="  调剂人："
@@ -71,5 +78,18 @@
                   android:layout_weight="1"
                   android:visibility="gone"
         />
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                        android:layout_weight="1">
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/orangerred_selector"
+                    style="@style/AdjustThreeButtonTheme"
+                    android:id="@+id/prescriptionStatus_image_button"
+                    android:layout_margin="2dp"
+                    android:visibility="gone"
+                    android:text="查看图片"/>
+        </LinearLayout>
+
         </LinearLayout>
 </LinearLayout>

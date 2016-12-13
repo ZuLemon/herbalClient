@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import net.andy.boiling.R;
@@ -31,6 +32,8 @@ public class PrescriptionStatusUI extends Activity{
     private LinearLayout prescriptionStatus_linearLayout;
     @ViewInject(R.id.prescriptionStatus_status_textView)
     private TextView prescriptionStatus_status_textView;
+    @ViewInject(R.id.prescriptionStatus_did_textView)
+    private TextView prescriptionStatus_did_textView;
     @ViewInject(R.id.prescriptionStatus_waitCount_textView)
     private TextView prescriptionStatus_waitCount_textView;
     @ViewInject(R.id.prescriptionStatus_waitTime_textView)
@@ -45,7 +48,9 @@ public class PrescriptionStatusUI extends Activity{
     private TextView prescriptionStatus_dispensingPerson_textView;
     @ViewInject(R.id.prescriptionStatus_insPerson_textView)
     private TextView prescriptionStatus_insPerson_textView;
-    private String pId;
+    @ViewInject(R.id.prescriptionStatus_image_button)
+    private Button prescriptionStatus_image_button;
+    private Integer pId;
     private Map statusMap;
     private Map prescriptionMap;
     private Map mainMap;
@@ -57,13 +62,23 @@ public class PrescriptionStatusUI extends Activity{
         setContentView(R.layout.prescriptionstatus);
         x.view().inject(this);
         Intent in=getIntent();
-        pId=in.getStringExtra("id");
+        pId=in.getIntExtra("id",0);
         PrescriptionStausThread(0);
-        Log.e("id",pId);
+        Log.e("id", String.valueOf(pId));
     }
-    @Event(R.id.prescriptionStatus_linearLayout)
+    @Event(value = {R.id.prescriptionStatus_linearLayout,
+            R.id.prescriptionStatus_image_button},type = View.OnClickListener.class)
     private void btnClick(View view) {
-        finish();
+        switch (view.getId()){
+            case R.id.prescriptionStatus_linearLayout:
+                finish();
+                break;
+            case R.id.prescriptionStatus_image_button:
+                Intent intent=new Intent(PrescriptionStatusUI.this,PhotoViewUI.class);
+                intent.putExtra("pId", pId);
+                startActivity(intent);
+                break;
+        }
     }
     private void praseData() {
         prescriptionMap= (Map) statusMap.get("prescription");
@@ -81,9 +96,11 @@ public class PrescriptionStatusUI extends Activity{
                 String mainStatus=mainMap.get("status").toString();
                 if("新处方".equals(mainStatus)){
                     prescriptionStatus_status_textView.setText("未调剂");
+                    prescriptionStatus_image_button.setVisibility(View.GONE);
                     prescriptionStatus_waitCount_textView.setVisibility(View.VISIBLE);
                     prescriptionStatus_waitCount_textView.setText("前面有 "+mainMap.get("waitCt").toString()+" 个处方等候");
                 }else if("调剂中".equals(mainStatus)||"暂停".equals(mainStatus)){
+                    prescriptionStatus_image_button.setVisibility(View.GONE);
                     Map dispensingMap= (Map) mainMap.get("dispensing");
                     Date subTime= null;
                     try {
@@ -92,13 +109,16 @@ public class PrescriptionStatusUI extends Activity{
                         prescriptionStatus_status_textView.setText(mainStatus+" 已完成"+mainMap.get("progress"));
                         prescriptionStatus_waitTime_textView.setVisibility(View.VISIBLE);
                         prescriptionStatus_dispensingPerson_textView.setVisibility(View.VISIBLE);
+                        prescriptionStatus_did_textView.setVisibility(View.VISIBLE);
+                        prescriptionStatus_did_textView.setText("  调剂 ID ："+dispensingMap.get("id").toString());
                         prescriptionStatus_waitTime_textView.setText("候方用时："+(beginTime.getTime()-subTime.getTime())/(1000*60)+" 分钟");
-                        prescriptionStatus_dispensingPerson_textView.setText("  调剂人："+dispensingMap.get("uname").toString());
+                        prescriptionStatus_dispensingPerson_textView.setText("   调剂人："+dispensingMap.get("uname").toString());
                     } catch (ParseException e) {
                         new CoolToast( getBaseContext () ).show ( "时间转换错误~!" );
                     }
 
                 }else if("完成".equals(mainStatus)){
+                    prescriptionStatus_image_button.setVisibility(View.VISIBLE);
                     Map dispensingMap= (Map) mainMap.get("dispensing");
                     Map tagMap= (Map) mainMap.get("tag");
                     Map inspectionMap= (Map) mainMap.get("inspection");
@@ -110,9 +130,10 @@ public class PrescriptionStatusUI extends Activity{
                         prescriptionStatus_waitTime_textView.setVisibility(View.VISIBLE);
                         prescriptionStatus_dispensingTime_textView.setVisibility(View.VISIBLE);
                         prescriptionStatus_dispensingPerson_textView.setVisibility(View.VISIBLE);
-
+                        prescriptionStatus_did_textView.setVisibility(View.VISIBLE);
+                        prescriptionStatus_did_textView.setText("  调剂 ID ："+dispensingMap.get("id").toString());
                         prescriptionStatus_waitTime_textView.setText("候方用时："+(beginTime.getTime()-subTime.getTime())/(1000*60)+" 分钟");
-                        prescriptionStatus_dispensingPerson_textView.setText("  调剂人："+dispensingMap.get("uname").toString());
+                        prescriptionStatus_dispensingPerson_textView.setText("   调剂人："+dispensingMap.get("uname").toString());
                         prescriptionStatus_dispensingTime_textView.setText("调剂用时："+(endTime.getTime()-beginTime.getTime())/(1000*60)+" 分钟");
 
                         if(tagMap!=null) {

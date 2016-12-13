@@ -106,7 +106,7 @@ public class SelectPresUI extends Activity{
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = (Map) urgList.get(position);
             Intent in=new Intent(SelectPresUI.this,PrescriptionStatusUI.class);
-            in.putExtra("id",String.valueOf(map.get("id")));
+            in.putExtra("id",Integer.parseInt(String.valueOf(map.get("id"))));
             startActivity(in);
     }
     public void setListView(List presList) {

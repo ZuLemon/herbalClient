@@ -43,6 +43,7 @@ public class DispensingDetailDomain implements Serializable{
     private String status = "未调剂";
     /*货位*/
     private String shelf = "";
+    private String pack="";
 
     public Date getBeginTime() {
         return beginTime;
@@ -178,5 +179,13 @@ public class DispensingDetailDomain implements Serializable{
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public String getPack() {
+        return pack;
+    }
+
+    public void setPack(String pack) {
+        this.pack = pack;
     }
 }

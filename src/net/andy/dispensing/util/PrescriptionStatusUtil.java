@@ -21,7 +21,7 @@ public class PrescriptionStatusUtil {
     public Map getPrescriptionStatus(Integer pId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "pId", String.valueOf(pId ) ));
-        returnDomain = (ReturnDomain) new Http().post ( "report/prescriptionStatus/getPrescriptionStatus.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "report/prescriptionStatus/getPrescriptionStatus.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
         } else {

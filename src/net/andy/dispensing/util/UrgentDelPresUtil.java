@@ -23,7 +23,7 @@ public class UrgentDelPresUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "id", String.valueOf(id)));
         pairs.add ( new BasicNameValuePair( "urgent", urgent));
-        returnDomain = (ReturnDomain) new Http().post ( "prescription/setUrgent.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "prescription/setUrgent.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "设置成功！";
         } else {
@@ -35,7 +35,7 @@ public class UrgentDelPresUtil {
     public String delPres(Integer id) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "id", String.valueOf(id)));
-        returnDomain = (ReturnDomain) new Http().post ( "prescription/powerDelete.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "prescription/powerDelete.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "删除成功！";
         } else {

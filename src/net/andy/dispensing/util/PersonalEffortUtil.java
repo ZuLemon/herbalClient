@@ -28,7 +28,7 @@ public class PersonalEffortUtil {
         pairs.add(new BasicNameValuePair("userId",userId));
         pairs.add(new BasicNameValuePair("startTime",startTime));
         pairs.add(new BasicNameValuePair("endTime",endTime));
-        returnDomain = ( ReturnDomain ) new Http ().post ( "report/effort/getEffortByUserIdAndTime.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "report/effort/getEffortByUserIdAndTime.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  Map.class);
         } else {

@@ -34,7 +34,7 @@ public class UserUtil {
         pairs.add ( new BasicNameValuePair ( "oldPassword", oldPassword ) );
         pairs.add ( new BasicNameValuePair ( "newPassword", newPassword ) );
         try {
-            return ( String ) ( ( Map ) ( new Http ().post ( "/user/changePassword.do", pairs, Map.class ) ) ).get ( "returnInfo" );
+            return ( String ) ( ( Map ) ( Http.post ( "/user/changePassword.do", pairs, Map.class ) ) ).get ( "returnInfo" );
         } catch (Exception e) {
             throw new Exception ( e.getMessage () );
         }
@@ -53,7 +53,7 @@ public class UserUtil {
         pairs.add(new BasicNameValuePair("browser", "HttpClient"));
         pairs.add(new BasicNameValuePair("version", "mobile"));
         try {
-            return (String) ((Map) (new Http().post("login1.do", pairs, Map.class))).get("info");
+            return (String) ((Map) (Http.post("login1.do", pairs, Map.class))).get("info");
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception ("网络异常:" + e.getMessage () );
@@ -69,7 +69,7 @@ public class UserUtil {
     public List getUserByDept(Integer userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "userId", String.valueOf(userId) ) );
-        returnDomain = (ReturnDomain) new Http().post ( "user/getUserByDept.do", pairs, ReturnDomain.class );
+        returnDomain = (ReturnDomain) Http.post ( "user/getUserByDept.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

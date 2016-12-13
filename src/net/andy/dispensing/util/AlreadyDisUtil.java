@@ -17,7 +17,7 @@ public class AlreadyDisUtil {
     public List getPrescriptionByUserId(Integer userId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("userId", String.valueOf(userId)));
-        returnDomain = (ReturnDomain) new Http().post("prescription/getPrescriptionByUserId.do", pairs, ReturnDomain.class);
+        returnDomain = (ReturnDomain) Http.post("prescription/getPrescriptionByUserId.do", pairs, ReturnDomain.class);
         if (returnDomain.getSuccess()) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
+              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@drawable/dark_circular"
@@ -16,8 +16,8 @@
         <CheckBox
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="上药"
-                android:id="@+id/replenish"
+                android:text="草药免煎"
+                android:id="@+id/topic_mianjian"
                 android:layout_gravity="center_horizontal"
                 style="@style/CustomCheckboxTheme"/>
 
@@ -27,7 +27,57 @@
                   android:textSize="18sp"
                   android:layout_marginRight="10dp"
                   android:textColor="#ff545454"
-                  android:text="上药"/>
+                  android:text="草药免煎"/>
+
+    </LinearLayout>
+    <View
+            android:background="@drawable/shape_line"
+            android:layout_width="match_parent"
+            android:layout_height="1.0px"/>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="50dp"
+                  android:orientation="horizontal"
+                  android:padding="10dp">
+        <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="草药饮片"
+                android:id="@+id/topic_yinpian"
+                android:layout_gravity="center_horizontal"
+                style="@style/CustomCheckboxTheme"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:textSize="18sp"
+                  android:layout_marginRight="10dp"
+                  android:textColor="#ff545454"
+                  android:text="草药饮片"/>
+
+    </LinearLayout>
+    <View
+            android:background="@drawable/shape_line"
+            android:layout_width="match_parent"
+            android:layout_height="1.0px"/>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="50dp"
+                  android:orientation="horizontal"
+                  android:padding="10dp">
+        <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="小包装"
+                android:id="@+id/topic_xiaobaozhuang"
+                android:layout_gravity="center_horizontal"
+                style="@style/CustomCheckboxTheme"/>
+
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:textSize="18sp"
+                  android:layout_marginRight="10dp"
+                  android:textColor="#ff545454"
+                  android:text="   小包装"/>
 
     </LinearLayout>
 </LinearLayout>

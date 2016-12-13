@@ -26,7 +26,7 @@ public class ExtractUtil {
         pairs.add ( new BasicNameValuePair ( "equipId", equipId ) );
         pairs.add ( new BasicNameValuePair ( "userId", userId ) );
         pairs.add ( new BasicNameValuePair ( "extractStatus", extractStatus ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "extract/insert.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extract/insert.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), ExtractingDomain.class );
         } else {
@@ -36,7 +36,7 @@ public class ExtractUtil {
     public List getExtractByPlanId(String planId) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "extract/getExtractByPlanId.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extract/getExtractByPlanId.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
         } else {
@@ -47,7 +47,7 @@ public class ExtractUtil {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );
         pairs.add ( new BasicNameValuePair ( "extractStatus", extractStatus ) );
-        returnDomain = ( ReturnDomain ) new Http ().post ( "extract/getExtractByPlanIdStatus.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extract/getExtractByPlanIdStatus.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), ExtractDomain.class );
         } else {

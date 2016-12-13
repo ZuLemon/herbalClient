@@ -23,7 +23,7 @@ public class SolutionUtil {
     public List getSolutionForAll(String status) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "status", status ) );
-        returnDomain = ( ReturnDomain ) ( new Http ().post ( "solution/getSolutionForAll.do", pairs, ReturnDomain.class ) );
+        returnDomain = ( ReturnDomain ) ( Http.post ( "solution/getSolutionForAll.do", pairs, ReturnDomain.class ) );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
         } else {

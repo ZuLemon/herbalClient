@@ -18,7 +18,7 @@ public class StewUtil  {
         pairs.add ( new BasicNameValuePair( "planId", planId ) );
         pairs.add ( new BasicNameValuePair( "tagId", tagId ) );
         pairs.add ( new BasicNameValuePair( "userId", String.valueOf(userId) ) );
-        returnDomain = ( ReturnDomain ) new Http().post ( "extract/stewBegin.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extract/stewBegin.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "开始煎膏";
         } else {
@@ -29,7 +29,7 @@ public class StewUtil  {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add ( new BasicNameValuePair( "planId", planId ) );
         pairs.add ( new BasicNameValuePair( "tagId", tagId ) );
-        returnDomain = ( ReturnDomain ) new Http().post ( "extract/stewEnd.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "extract/stewEnd.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return "结束煎膏";
         } else {

@@ -179,7 +179,7 @@ public class TakeUI extends NFCActivity {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("equipId",equipId));
 
-            ReturnDomain returnDomain = (ReturnDomain)(new Http().post("equipment/takePlan.do",pairs,ReturnDomain.class));
+            ReturnDomain returnDomain = (ReturnDomain)(Http.post("equipment/takePlan.do",pairs,ReturnDomain.class));
             if (returnDomain.getSuccess()){
                 extracting = JSON.parseObject(returnDomain.getObject().toString(),ExtractingDomain.class);
             }else {
@@ -191,7 +191,7 @@ public class TakeUI extends NFCActivity {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("presId",extracting.getPresId()));
 
-        ReturnDomain returnDomain = (ReturnDomain)(new Http().post("prescription/getPrescriptionByPresId.do",pairs,ReturnDomain.class));
+        ReturnDomain returnDomain = (ReturnDomain)(Http.post("prescription/getPrescriptionByPresId.do",pairs,ReturnDomain.class));
         if (returnDomain.getSuccess()){
             prescription = JSON.parseObject(returnDomain.getObject().toString(),PrescriptionDomain.class);
         }else {
@@ -203,7 +203,7 @@ public class TakeUI extends NFCActivity {
         List<NameValuePair> pairs = new ArrayList<NameValuePair>();
         pairs.add(new BasicNameValuePair("tagId",extracting.getTagId()));
 
-        ReturnDomain returnDomain = (ReturnDomain)(new Http().post("tag/getTagByTagId.do",pairs,ReturnDomain.class));
+        ReturnDomain returnDomain = (ReturnDomain)(Http.post("tag/getTagByTagId.do",pairs,ReturnDomain.class));
         if (returnDomain.getSuccess()){
             tag = JSON.parseObject(returnDomain.getObject().toString(),TagDomain.class);
         }else {
@@ -216,7 +216,7 @@ public class TakeUI extends NFCActivity {
         pairs.add(new BasicNameValuePair("planId",extracting.getPlanId()));
         pairs.add(new BasicNameValuePair("equipId",equipId));
 
-        ReturnDomain returnDomain = (ReturnDomain)(new Http().post("take/submit.do",pairs,ReturnDomain.class));
+        ReturnDomain returnDomain = (ReturnDomain)(Http.post("take/submit.do",pairs,ReturnDomain.class));
         if (!returnDomain.getSuccess()){
             throw new Exception(returnDomain.getException());
         }

@@ -18,7 +18,7 @@ public class ExtInpatientUtil {
      */
     public List getExtDept() throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        returnDomain = ( ReturnDomain ) new Http().post ( "getExtDept.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "getExtDept.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {
@@ -32,7 +32,7 @@ public class ExtInpatientUtil {
         pairs.add ( new BasicNameValuePair ( "patName", patName ) );
         if(deptId!=null)
         pairs.add ( new BasicNameValuePair ( "deptId", deptId ) );
-        returnDomain = ( ReturnDomain ) new Http().post ( "getExtInPatient.do", pairs, ReturnDomain.class );
+        returnDomain = ( ReturnDomain ) Http.post ( "getExtInPatient.do", pairs, ReturnDomain.class );
         if ( returnDomain.getSuccess () ) {
             return JSON.parseObject ( returnDomain.getObject ().toString (),  List.class);
         } else {

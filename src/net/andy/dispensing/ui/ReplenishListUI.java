@@ -1,6 +1,7 @@
 package net.andy.dispensing.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Handler;
@@ -10,37 +11,53 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import net.andy.boiling.R;
-import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.ReplenishUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 public class ReplenishListUI extends Activity {
     private List listAll=null;
-    private ExpandableListView listView=null;
-    private My_Adapter adapter=null;//自定义的适配器
+    private ListView replenishlist_listView=null;
+    private replenishAdapter adapter=null;//自定义的适配器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.replenishlist);
-
-        listView=(ExpandableListView)findViewById(R.id.expandablelistview);
-
+        replenishlist_listView=(ListView)findViewById(R.id.replenishlist_listView);
         ReplenishListThread(0);
-        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        replenishlist_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(ReplenishListUI.this,"你点击了:"+adapter.getChild(groupPosition, childPosition).toString(), Toast.LENGTH_LONG).show();
-                return false;
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Map replenishMap = ( Map ) ( listAll.get(position) );
+         Intent intent = new Intent ();
+        Bundle bundle = new Bundle ();
+         bundle.putSerializable ( "replenishMap", (Serializable) replenishMap);
+        intent.putExtras ( bundle );
+        intent.setClass ( ReplenishListUI.this, ReplenishDetailUI.class );
+                startActivity ( intent );
             }
         });
     }
+    /*    监听ListView      */
+//    @Event(value = R.id.replenishlist_listView,type = AdapterView.OnItemClickListener.class)
+//    private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//        new CoolToast(getBaseContext()).show("进入");
+//        Map replenishMap = ( Map ) ( listAll.get(position) );
+//        List list= (List) replenishMap.get("user");
+//        //回传值
+//        for (int x = 0; x <list.size() ; x++) {
+//            new CoolToast(getBaseContext()).show(((Map)list.get(x)).get("puser").toString());
+//        }
+////        Intent intent = new Intent ();
+////        Bundle bundle = new Bundle ();
+////        bundle.putString ( "id", String.valueOf ( map.get ( "equip_id_textView" ) ) );
+////        intent.putExtras ( bundle );
+////        intent.setClass ( EquipManUI.this, EquipReviseUI.class );
+////        EquipManUI.this.startActivity ( intent );
+//    }
     private void ReplenishListThread(int what) {
         final Message message = new Message ();
         final Handler handler = new Handler () {
@@ -52,8 +69,8 @@ public class ReplenishListUI extends Activity {
                         new CoolToast( getBaseContext () ).show ( ( String ) msg.obj );
                         break;
                     case 0:
-                        adapter=new My_Adapter(ReplenishListUI.this);
-                        listView.setAdapter(adapter);
+                        adapter=new replenishAdapter(ReplenishListUI.this);
+                        replenishlist_listView.setAdapter(adapter);
                         break;
                 }
             }
@@ -66,7 +83,7 @@ public class ReplenishListUI extends Activity {
                 try {
                     switch (what){
                         case 0:
-                            listAll = new ReplenishUtil().getReplenishListByUserAndType("常规","申请");
+                            listAll = new ReplenishUtil().getReplenishListByUserAndType("常规","申请",null,null);
                             message.what = 0;
                             handler.sendMessage ( message );
                             break;
@@ -79,176 +96,52 @@ public class ReplenishListUI extends Activity {
             }
         }.start ();
     }
+    private class replenishAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
 
-    class My_Adapter extends BaseExpandableListAdapter {
-        private SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        private SimpleDateFormat format2 = new SimpleDateFormat("d日 HH:mm");
-        private Context context;
-        private LayoutInflater father_Inflater=null;
-        private LayoutInflater son_Inflater=null;
-
-        private ArrayList<Map> father_array;//父层
-        private ArrayList<List<Map>> son_array;//子层
-
-        public My_Adapter(Context context)
-        {
-            this.context=context;
-            father_Inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            son_Inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            Init_data();
+        public replenishAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
         }
 
-        //重写的方法，用于获取子层的内容，这里获取子层的显示字符串
         @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            return son_array.get(groupPosition).get(childPosition);
+        public int getCount() {
+            return listAll.size();
         }
 
-        //重写的方法，用于获取子层中单项在子层中的位置
         @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
+        public Object getItem(int i) {
+            return i;
         }
 
-        //重写的方法，用于获取子层视图
         @Override
-        public View getChildView(int groupPosition, int childPosition,
-                                 boolean isLastChild, View convertView, ViewGroup parent) {
-            Son_ViewHolder son_ViewHolder=null;
-            if(convertView==null)
-            {
-                convertView=son_Inflater.inflate(R.layout.replenishlist_son, null);
-                son_ViewHolder=new Son_ViewHolder();
-                son_ViewHolder.son_user=(TextView)convertView.findViewById(R.id.son_user);
-                son_ViewHolder.son_id=(TextView)convertView.findViewById(R.id.son_id);
-                son_ViewHolder.son_time=(TextView)convertView.findViewById(R.id.son_time);
-                son_ViewHolder.son_button= (Button) convertView.findViewById(R.id.son_button);
-                convertView.setTag(son_ViewHolder);
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final ReplenishView replenishView;
+            if (view == null) {
+                view = inflater.inflate(R.layout.replenishlist_item, viewGroup, false);
+                replenishView = new ReplenishView();
+                replenishView.replenishitem_id  = (TextView) view.findViewById(R.id.replenishitem_id);
+                replenishView.replenishitem_name= (TextView) view.findViewById(R.id.replenishitem_name);
+                replenishView.replenishitem_count = (TextView) view.findViewById(R.id.replenishitem_count);
+                view.setTag(replenishView);
+            } else {
+                replenishView = (ReplenishView) view.getTag();
             }
-            else
-            {
-                son_ViewHolder=(Son_ViewHolder)convertView.getTag();
-            }
-                Map sonMap=son_array.get(groupPosition).get(childPosition);
-            son_ViewHolder.son_user.setText(sonMap.get("puser").toString());
-            son_ViewHolder.son_id.setText(sonMap.get("id").toString());
-            try {
-                son_ViewHolder.son_time.setText(format2.format(format1.parse(String.valueOf(sonMap.get("sendTime"))))+"申请");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            son_ViewHolder.son_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    new CoolToast(getBaseContext()).show(sonMap.get("id").toString());
-                }
-            });
-            return convertView;
+            Map map = (Map) listAll.get(i);
+            Map herbMap = (Map) map.get("herb");
+            replenishView.replenishitem_id.setText(String.valueOf(herbMap.get("herbId")));
+            replenishView.replenishitem_name.setText(""+ herbMap.get("herbName"));
+            replenishView.replenishitem_count.setText(""+ herbMap.get("ct"));
+            return view;
         }
-
-        //重写的方法，用于获取父层中其中一层的子数目
-        @Override
-        public int getChildrenCount(int groupPosition) {
-            // TODO Auto-generated method stub
-            return son_array.get(groupPosition).size();
-        }
-
-        //重写的方法，用于获取父层中的一项，返回的是父层的字符串类型
-        @Override
-        public Object getGroup(int groupPosition) {
-            // TODO Auto-generated method stub
-            return father_array.get(groupPosition);
-        }
-
-        //重写的方法，用于获取父层的大小
-        @Override
-        public int getGroupCount() {
-            // TODO Auto-generated method stub
-            return father_array.size();
-        }
-
-        //重写的方法，用于获取父层的位置
-        @Override
-        public long getGroupId(int groupPosition) {
-            // TODO Auto-generated method stub
-            return groupPosition;
-        }
-
-        //重写的方法，用于获取父层的视图
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded,
-                                 View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
-            Father_ViewHolder father_ViewHolder=null;
-            if(convertView==null)
-            {
-                convertView=father_Inflater.inflate(R.layout.replenishlist_father, null);
-                father_ViewHolder=new Father_ViewHolder();
-
-                father_ViewHolder.father_TextView=(TextView)convertView.findViewById(R.id.father_textview);
-                father_ViewHolder.image_view=(ImageView)convertView.findViewById(R.id.father_imageview);
-                father_ViewHolder.count_view= (TextView) convertView.findViewById(R.id.count_view);
-                convertView.setTag(father_ViewHolder);
-            }
-            else
-            {
-                father_ViewHolder=(Father_ViewHolder)convertView.getTag();
-            }
-            Map fatherMap=((Map)father_array.get(groupPosition));
-            father_ViewHolder.father_TextView.setText(fatherMap.get("herbName").toString());
-            father_ViewHolder.count_view.setText(fatherMap.get("ct").toString());
-            if(isExpanded)
-            {
-                father_ViewHolder.image_view.setImageDrawable(context.getResources().getDrawable(R.drawable.imagetodown));
-            }
-            else
-            {
-                father_ViewHolder.image_view.setImageDrawable(context.getResources().getDrawable(R.drawable.imagetoright));
-            }
-            return convertView;
-        }
-        @Override
-        public boolean hasStableIds() {
-            // TODO Auto-generated method stub
-            return true;
-        }
-
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            // TODO Auto-generated method stub
-            return true;
-        }
-
-        //初始化数据，主要是父层和子层数据的初始化
-        public void Init_data()
-        {
-            father_array=new ArrayList<Map>();
-            son_array=new ArrayList<List<Map>>();
-            List<Map> sonList=null;
-            for (int c = 0; c < listAll.size(); c++) {
-                Map herbMap= (Map) ((Map)listAll.get(c)).get("herb");
-                father_array.add(herbMap);
-                List userList=(List)((Map)listAll.get(c)).get("user");
-                sonList=new ArrayList<Map>();
-                for (int u = 0; u < userList.size(); u++) {
-                    sonList.add((Map)userList.get(u));
-                }
-                son_array.add(sonList);
-            }
-
-        }
-        public final class Father_ViewHolder
-        {
-            private TextView father_TextView;
-            private ImageView image_view;
-            private TextView count_view;
-        }
-        public final class Son_ViewHolder
-        {
-            private TextView son_id;
-            private TextView son_user;
-            private TextView son_time;
-            private Button son_button;
+        private class ReplenishView {
+            private TextView replenishitem_id;
+            private TextView replenishitem_name;
+            private TextView replenishitem_count;
         }
     }
 
