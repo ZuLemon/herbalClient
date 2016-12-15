@@ -118,7 +118,9 @@ public class PrescriptionStatusUI extends Activity{
                     }
 
                 }else if("完成".equals(mainStatus)){
-                    prescriptionStatus_image_button.setVisibility(View.VISIBLE);
+                    if(Integer.parseInt(String.valueOf(prescriptionMap.get("imgCount")))>0) {
+                        prescriptionStatus_image_button.setVisibility(View.VISIBLE);
+                    }
                     Map dispensingMap= (Map) mainMap.get("dispensing");
                     Map tagMap= (Map) mainMap.get("tag");
                     Map inspectionMap= (Map) mainMap.get("inspection");

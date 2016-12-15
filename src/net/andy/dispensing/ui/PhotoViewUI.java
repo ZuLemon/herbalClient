@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import net.andy.boiling.Login;
 import net.andy.boiling.R;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.DispensingUtil;
@@ -32,6 +33,9 @@ public class PhotoViewUI extends Activity {
         if(pid==0){
              new CoolToast(getBaseContext()).show("参数传递错误");
             finish();
+        }else {
+            //正在加载
+            startActivity(new Intent(PhotoViewUI.this, LoadingUI.class));
         }
         //创建并启动一个新线程用于从网络上下载图片
         new Thread(){
@@ -56,6 +60,7 @@ public class PhotoViewUI extends Activity {
             if (msg.what==0x9527) {
                 //显示从网上下载的图片
 //                progressBar1.setVisibility(View.GONE);
+                LoadingUI.instance.finish();
                 if(bitmap!=null) {
 //                    photoImageView.setVisibility(View.VISIBLE);
                     Log.e(">>","显示图片");

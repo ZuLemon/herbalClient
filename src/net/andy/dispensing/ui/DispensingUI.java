@@ -883,7 +883,10 @@ public class DispensingUI extends NFCActivity {
                         }
                         reset();
                         //上传图片
-                        herbalUtil(16);
+                        if(hasHardback) {
+                            herbalUtil(16);
+                        }
+                        hasHardback=false;
                         break;
                     case 7:
                         new CoolToast(getBaseContext()).show((String) msg.obj);
@@ -922,7 +925,10 @@ public class DispensingUI extends NFCActivity {
                         minInt = 0;
                         reset();
                         //上传照片
-                        herbalUtil(16);
+                        if(hasHardback) {
+                            herbalUtil(16);
+                        }
+                        hasHardback=false;
                         break;
                     case 11:
                         setGlobalView();
@@ -947,7 +953,7 @@ public class DispensingUI extends NFCActivity {
                         setDue();
                         break;
                     case 16:
-                        new CoolToast(getBaseContext()).show((String) msg.obj);
+//                        new CoolToast(getBaseContext()).show((String) msg.obj);
                         //删除临时图片
 //                        FileUtil.deleteFile(FileUtil.getProjectTemp(),resetNameFile);
                         break;
@@ -1200,7 +1206,6 @@ public class DispensingUI extends NFCActivity {
         totalWeight = new BigDecimal(0);
         valCount = 0;
         hasValidateion = false;
-        hasHardback=false;
     }
 
     private void setView() {
@@ -1249,7 +1254,7 @@ public class DispensingUI extends NFCActivity {
                 totalWeight = Arith.add((BigDecimal) ((Map) obj).get("quantity"), totalWeight);
                 dispensingDetailDomainList.add(dispensingDetailDomain);
                 //判断是否是精装
-                if(!"免煎".equals(prescriptionDomain.getClassification())&&!"小包装".equals(dispensingDetailDomain.getPack())&&!"".equals(dispensingDetailDomain.getHerbSpec())){
+                if("饮片".equals(prescriptionDomain.getClassification())&&"自煎".equals(prescriptionDomain.getProcess())&&!"小包装".equals(dispensingDetailDomain.getPack())&&!"".equals(dispensingDetailDomain.getHerbSpec())){
                     hasHardback=true;
 //                    new CoolToast(getBaseContext()).show("精装药");
                 }

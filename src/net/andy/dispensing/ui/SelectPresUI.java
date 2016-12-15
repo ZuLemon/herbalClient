@@ -190,6 +190,7 @@ public class SelectPresUI extends Activity{
                 urgDelPresView.selectPres_main_textView= (TextView) view.findViewById(R.id.selectPres_main_textView);
                 urgDelPresView.selectPres_way_textView= (TextView) view.findViewById(R.id.selectPres_way_textView);
                 urgDelPresView.selectPres_subTime_textView= (TextView) view.findViewById(R.id.selectPres_subTime_textView);
+                urgDelPresView.selectPres_img_textView= (TextView) view.findViewById(R.id.selectPres_img_textView);
                 view.setTag(urgDelPresView);
             } else {
                 urgDelPresView = (UrgDelPresView) view.getTag();
@@ -203,6 +204,11 @@ public class SelectPresUI extends Activity{
             urgDelPresView.selectPres_presDept_textView .setText(map.get("deptName")+" "+ map.get("doctorName"));
             urgDelPresView.selectPres_main_textView .setText(""+ map.get("main")+ " " +map.get("presNumber")+"付"+ map.get("herbCnt")+"味");
             urgDelPresView.selectPres_way_textView .setText(""+ map.get("way")+ map.get("process")+ map.get("frequency"));
+            if(Integer.parseInt(String.valueOf(map.get("imgCount")))>0){
+                urgDelPresView.selectPres_img_textView.setVisibility(View.VISIBLE);
+            }else {
+                urgDelPresView.selectPres_img_textView.setVisibility(View.GONE);
+            }
             try {
                 urgDelPresView.selectPres_subTime_textView.setText(dateFormat.format(dateFormat.parse(String.valueOf(map.get("subTime")))));
             } catch (ParseException e) {
@@ -230,6 +236,7 @@ public class SelectPresUI extends Activity{
             private TextView selectPres_main_textView;
             private TextView selectPres_way_textView;
             private TextView selectPres_subTime_textView;
+            private TextView selectPres_img_textView;
             }
     }
     @Override
