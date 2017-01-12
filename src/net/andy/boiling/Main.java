@@ -1,6 +1,8 @@
 package net.andy.boiling;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,10 +13,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import net.andy.boiling.domain.ArgumentDomain;
 import net.andy.boiling.domain.PermissionDomain;
+import net.andy.boiling.util.ArgumentUtil;
 import net.andy.boiling.util.PermissionUtil;
 import net.andy.com.AppOption;
+import net.andy.com.Application;
 import net.andy.com.CoolToast;
+import net.andy.com.MqttService;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.util.OnlineUtil;
 import net.andy.dispensing.util.RuleUtil;
@@ -41,7 +47,7 @@ public class Main extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Init(1);
+        Init(0);
         x.view().inject(this);
     }
 
@@ -127,7 +133,6 @@ public class Main extends Activity {
         main_GridView.setAdapter(adapter);
 //       adapter.notifyDataSetChanged();
     }
-
     //ListMap 转为 List<Bean>
     private void parseObject(List listPermission) {
         permissionDomainList = new ArrayList<PermissionDomain>();
@@ -139,7 +144,24 @@ public class Main extends Activity {
             permissionDomainList.add(permissionDomain);
         }
     }
-
+    public void checkService() {
+        boolean isRun = false;
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if ("net.andy.com.MqttService".equals(service.service.getClassName())) {
+                isRun = true;
+            }
+        }
+        if (isRun) {
+            Log.e(">>已经存在此服务","#########");
+            MqttService.disconnect();
+            MqttService.connect();
+        } else {
+            Log.e(">>不存在服务新建","#########");
+            //启动推送服务
+            startService(new Intent(Application.getContext(), MqttService.class));
+        }
+    }
     public void Init(final int code) {
         final Message message = new Message();
         final Handler handler = new Handler() {
@@ -151,6 +173,18 @@ public class Main extends Activity {
                     case 0:
                         parseObject((List) msg.obj);
                         setView();
+                        //待调默认显示有 无
+                        Application.setWaitDispensing(Integer.valueOf(2));
+                        Init(2);
+                        Init(1);
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        ArgumentDomain argumentDomain= (ArgumentDomain) msg.obj;
+                        if(argumentDomain!=null){
+                            Application.setWaitDispensing(Integer.valueOf(argumentDomain.getItemValues1()));
+                        }
                         break;
                 }
             }
@@ -159,9 +193,23 @@ public class Main extends Activity {
             @Override
             public void run() {
                 try {
-                    message.obj = new PermissionUtil().getPermissionByuserId(new AppOption().getOption(AppOption.APP_OPTION_USER));
-                    message.what = 0;
-                    handler.sendMessage(message);
+                    switch (code){
+                        case 0:
+                            message.obj = new PermissionUtil().getPermissionByuserId(new AppOption().getOption(AppOption.APP_OPTION_USER));
+                            message.what = 0;
+                            handler.sendMessage(message);
+                            break;
+                        case 1:
+                            checkService();
+                            message.what=1;
+                            handler.sendMessage(message);
+                            break;
+                        case 2:
+                            message.obj=new ArgumentUtil().getArgument("待调显示","%","%","herbalClient");
+                            message.what=2;
+                            handler.sendMessage(message);
+                            break;
+                    }
                 } catch (Exception e) {
                     message.what = -1;
                     message.obj = e.getMessage();
@@ -170,7 +218,6 @@ public class Main extends Activity {
             }
         }.start();
     }
-
     private void offlineThread() {
         final Message message = new Message();
         final Handler handler = new Handler() {

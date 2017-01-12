@@ -33,16 +33,16 @@ public class ExtractUtil {
             throw new Exception ( returnDomain.getException () );
         }
     }
-    public List getExtractByPlanId(String planId) throws Exception {
-        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-        pairs.add ( new BasicNameValuePair ( "planId", planId ) );
-        returnDomain = ( ReturnDomain ) Http.post ( "extract/getExtractByPlanId.do", pairs, ReturnDomain.class );
-        if ( returnDomain.getSuccess () ) {
-            return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
-        } else {
-            throw new Exception ( returnDomain.getException () );
-        }
-    }
+//    public List getExtractByPlanId(String planId) throws Exception {
+//        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+//        pairs.add ( new BasicNameValuePair ( "planId", planId ) );
+//        returnDomain = ( ReturnDomain ) Http.post ( "extract/getExtractByPlanId.do", pairs, ReturnDomain.class );
+//        if ( returnDomain.getSuccess () ) {
+//            return JSON.parseObject ( returnDomain.getObject ().toString (), List.class );
+//        } else {
+//            throw new Exception ( returnDomain.getException () );
+//        }
+//    }
     public ExtractDomain getExtractByPlanIdStatus(String planId,String extractStatus) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
         pairs.add ( new BasicNameValuePair ( "planId", planId ) );

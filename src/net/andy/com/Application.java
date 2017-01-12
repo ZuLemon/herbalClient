@@ -14,17 +14,14 @@ import org.xutils.x;
 public class Application extends android.app.Application {
     private static Context context;
     private static Users users;
-    private static int msgCount=0;
-    private static int intervalTime=3;
+//    private static Integer msgCount=0;
+    private static Integer intervalTime=3;
     private static String serverIP="";
-
-
+    private static Integer waitDispensing=1;
     private static RulesDomain rulesDomain;
-
     public static RulesDomain getRulesDomain() {
         return rulesDomain;
     }
-
     public static void setRulesDomain(RulesDomain rulesDomain) {
         Application.rulesDomain = rulesDomain;
     }
@@ -51,24 +48,23 @@ public class Application extends android.app.Application {
     public static void setUsers(Users users) {
         Application.users = users;
     }
-    public static int getMsgCount() {
-        return msgCount;
-    }
-    public static void setMsgCount(int msgCount) {
-        Application.msgCount = msgCount;
-    }
     public static int getIntervalTime() {
         return intervalTime;
     }
     public static void setIntervalTime(int intervalTime) {
         Application.intervalTime = intervalTime;
     }
-
     public static String getServerIP() {
         return serverIP;
     }
-
     public static void setServerIP(String serverIP) {
         Application.serverIP = serverIP;
+    }
+
+    public static Integer getWaitDispensing() {
+        return waitDispensing;
+    }
+    public static void setWaitDispensing(Integer waitDispensing) {
+        Application.waitDispensing = waitDispensing;
     }
 }

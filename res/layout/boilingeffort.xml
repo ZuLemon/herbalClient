@@ -167,7 +167,7 @@
                         android:layout_marginLeft="10.0dp"
                         android:text="浸泡总张数："/>
                 <TextView
-                        android:id="@+id/boilingeffort_sockTotal_textView"
+                        android:id="@+id/boilingeffort_soakTotal_textView"
                         android:textSize="20sp"
                         android:textColor="#ff545454"
                         android:layout_width="wrap_content"
@@ -194,7 +194,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="浸泡总付数："/>
                 <TextView
-                        android:id="@+id/boilingeffort_sockPresNumTotal_textView"
+                        android:id="@+id/boilingeffort_soakPresNumTotal_textView"
                         android:textSize="20sp"
                         android:textColor="#ff545454"
                         android:layout_width="wrap_content"

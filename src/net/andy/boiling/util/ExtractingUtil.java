@@ -46,15 +46,6 @@ public class ExtractingUtil {
     }
     public String subExtracting(ExtractingDomain extractingDomain, boolean newTag) throws Exception {
         List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
-//        pairs.add ( new BasicNameValuePair ( "id", String.valueOf(extractingDomain.getId() ) ));
-//        pairs.add ( new BasicNameValuePair ( "planId", extractingDomain.getPlanId()) );
-//        pairs.add ( new BasicNameValuePair ( "tagId", extractingDomain.getTagId()) );
-//        pairs.add ( new BasicNameValuePair ( "presId", extractingDomain.getPresId()) );
-//        pairs.add ( new BasicNameValuePair ( "solutionId", extractingDomain.getSolutionId()) );
-//        pairs.add ( new BasicNameValuePair ( "userId", String.valueOf(extractingDomain.getUserId()) ));
-//        pairs.add ( new BasicNameValuePair ( "deptId", extractingDomain.getDeptId()) );
-////        pairs.add ( new BasicNameValuePair ( "operationTime", extractingDomain.getOperationTime()) );
-//        pairs.add ( new BasicNameValuePair ( "planId", extractingDomain.getPlanId()) );
         HerbalUtil.getNameValuePair(extractingDomain,pairs);
         pairs.add ( new BasicNameValuePair ( "newTag", String.valueOf(newTag)) );
         returnDomain = ( ReturnDomain ) Http.post ( "extracting/subExtracting.do", pairs, ReturnDomain.class );
@@ -82,6 +73,17 @@ public class ExtractingUtil {
             }
         } catch (Exception e) {
             throw new Exception ( e.getMessage () );
+        }
+    }
+    public String setStatus(String planId,String status) throws Exception {
+        List<NameValuePair> pairs = new ArrayList<NameValuePair> ();
+        pairs.add ( new BasicNameValuePair ( "planId", planId) );
+        pairs.add ( new BasicNameValuePair ( "status", status) );
+        returnDomain = ( ReturnDomain ) Http.post ( "extracting/setStatus.do", pairs, ReturnDomain.class );
+        if ( returnDomain.getSuccess () ) {
+            return status;
+        } else {
+            throw new Exception ( returnDomain.getException () );
         }
     }
 }

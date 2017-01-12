@@ -36,8 +36,16 @@ public class SelectPresUI extends Activity{
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     @ViewInject(R.id.selectPres_patient_listView)
     private ListView selectPres_patient_listView;
-    @ViewInject(R.id.selectPres_search_button)
-    private Button selectPres_search_button;
+    @ViewInject(R.id.selectPres_status_radioGroup)
+    private RadioGroup selectPres_status_radioGroup;
+    @ViewInject(R.id.selectPres_status1_radioButton)
+    private RadioButton selectPres_status1_radioButton;
+    @ViewInject(R.id.selectPres_status2_radioButton)
+    private RadioButton selectPres_status2_radioButton;
+    @ViewInject(R.id.selectPres_status3_radioButton)
+    private RadioButton selectPres_status3_radioButton;
+    @ViewInject(R.id.selectPres_status4_radioButton)
+    private RadioButton selectPres_status4_radioButton;
     @ViewInject(R.id.selectPres_patientId_editText)
     private EditText selectPres_patientId_editText;
     @ViewInject(R.id.selectPres_startTime_editText)
@@ -118,6 +126,17 @@ public class SelectPresUI extends Activity{
         urgList=presList;
         urgDelAdapter.notifyDataSetChanged();
     }
+    private String getStatus() {
+        if (selectPres_status1_radioButton.isChecked())
+            return "%";
+        if (selectPres_status2_radioButton.isChecked())
+            return (String) selectPres_status2_radioButton.getText();
+        if (selectPres_status3_radioButton.isChecked())
+            return (String) selectPres_status3_radioButton.getText();
+        if (selectPres_status4_radioButton.isChecked())
+            return (String) selectPres_status4_radioButton.getText();
+        return "%";
+    }
     private void selectPresThread(int what) {
         final Message message = new Message ();
         final Handler handler = new Handler () {
@@ -145,7 +164,7 @@ public class SelectPresUI extends Activity{
                     switch (what){
                         case 0:
                             message.what = 0;
-                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(startTime,endTime,patId, String.valueOf(Application.getUsers().getId()));
+                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(startTime,endTime,patId, String.valueOf(Application.getUsers().getId()),getStatus());
                             handler.sendMessage ( message );
                             break;
                     }
@@ -190,7 +209,7 @@ public class SelectPresUI extends Activity{
                 urgDelPresView.selectPres_main_textView= (TextView) view.findViewById(R.id.selectPres_main_textView);
                 urgDelPresView.selectPres_way_textView= (TextView) view.findViewById(R.id.selectPres_way_textView);
                 urgDelPresView.selectPres_subTime_textView= (TextView) view.findViewById(R.id.selectPres_subTime_textView);
-                urgDelPresView.selectPres_img_textView= (TextView) view.findViewById(R.id.selectPres_img_textView);
+                urgDelPresView.selectPres_img_imageView= (ImageView) view.findViewById(R.id.selectPres_img_imageView);
                 view.setTag(urgDelPresView);
             } else {
                 urgDelPresView = (UrgDelPresView) view.getTag();
@@ -205,9 +224,9 @@ public class SelectPresUI extends Activity{
             urgDelPresView.selectPres_main_textView .setText(""+ map.get("main")+ " " +map.get("presNumber")+"付"+ map.get("herbCnt")+"味");
             urgDelPresView.selectPres_way_textView .setText(""+ map.get("way")+ map.get("process")+ map.get("frequency"));
             if(Integer.parseInt(String.valueOf(map.get("imgCount")))>0){
-                urgDelPresView.selectPres_img_textView.setVisibility(View.VISIBLE);
+                urgDelPresView.selectPres_img_imageView.setVisibility(View.VISIBLE);
             }else {
-                urgDelPresView.selectPres_img_textView.setVisibility(View.GONE);
+                urgDelPresView.selectPres_img_imageView.setVisibility(View.GONE);
             }
             try {
                 urgDelPresView.selectPres_subTime_textView.setText(dateFormat.format(dateFormat.parse(String.valueOf(map.get("subTime")))));
@@ -236,7 +255,7 @@ public class SelectPresUI extends Activity{
             private TextView selectPres_main_textView;
             private TextView selectPres_way_textView;
             private TextView selectPres_subTime_textView;
-            private TextView selectPres_img_textView;
+            private ImageView selectPres_img_imageView;
             }
     }
     @Override

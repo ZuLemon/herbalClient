@@ -40,6 +40,11 @@
                       android:text="开单科室 医生"
                       android:id="@+id/selectPres_presDept_textView"/>
         </LinearLayout>
+        <ImageView android:layout_width="30dp"
+                   android:layout_height="40dp"
+                   android:background="@drawable/img"
+                   android:id="@+id/selectPres_img_imageView"
+        />
         <LinearLayout android:layout_width="wrap_content"
                       android:layout_height="match_parent"
                       android:orientation="vertical"
@@ -54,14 +59,7 @@
                           android:gravity="right"
                           android:paddingBottom="5dp"
                           android:orientation="horizontal">
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="·"
-                          android:id="@+id/selectPres_img_textView"
-                          android:textColor="@android:color/holo_red_light"
-                          android:textSize="25sp"
-                          android:visibility="gone"
-                />
+
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:text="新处方 7付 32味"

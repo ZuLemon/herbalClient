@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,6 +28,7 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,41 +80,50 @@ public class ExtractUI extends NFCActivity {
     private TextView extract_extractTime2_textView;
     @ViewInject(R.id.extract_stewStop_textView)
     private TextView extract_stewStop_textView;
+    @ViewInject(R.id.extract_stewStart_textView)
+    private TextView extract_stewStart_textView;
     @ViewInject(R.id.extract1_equiptype1_radioButton)
     private RadioButton extract1_equiptype1_radioButton;
     @ViewInject(R.id.extract2_equiptype1_radioButton)
     private RadioButton extract2_equiptype1_radioButton;
-    private TextView extract_status_textView;
     @ViewInject(R.id.extract_pack_button)
     private Button extract_pack_button;
+    @ViewInject(R.id.extract_finish_button)
+    private Button extract_finish_button;
     @ViewInject(R.id.extract_extract1_button)
     private Button extract_extract1_button;
     @ViewInject(R.id.extract_extract2_button)
     private Button extract_extract2_button;
     @ViewInject(R.id.extract_soak_button)
     private Button extract_soak_button;
+    @ViewInject(R.id.extract_waitStew_button)
+    private Button extract_waitStew_button;
     @ViewInject(R.id.extract_stew_button)
     private Button extract_stew_button;
     @ViewInject(R.id.extract_stewEquip_textView)
     private TextView extract_stewEquip_textView;
     @ViewInject(R.id.extract_equiptype1_radioGroup)
     private RadioGroup extract_equiptype1_radioGroup;
-    @ViewInject(R.id.extract_startTime_textView)
-    private TextView extract_startTime_textView;
-    @ViewInject(R.id.extract_endTime_textView)
-    private TextView extract_endTime_textView;
-    @ViewInject(R.id.extract_extractbutton_linearLayout)
-    private LinearLayout extract_extractbutton_linearLayout;
-    @ViewInject(R.id.extract_soakbutton_linearLayout)
-    private LinearLayout extract_soakbutton_linearLayout;
-    @ViewInject(R.id.extract_stew_linearLayout)
-    private LinearLayout extract_stew_linearLayout;
+    @ViewInject(R.id.extract_soakStart_textView)
+    private TextView extract_soakStart_textView;
+    @ViewInject(R.id.extract_soakEnd_textView)
+    private TextView extract_soakEnd_textView;
+    @ViewInject(R.id.extract_extractStart_textView)
+    private TextView extract_extractStart_textView;
+    @ViewInject(R.id.extract_extractEnd_textView)
+    private TextView extract_extractEnd_textView;
+    @ViewInject(R.id.extract_packButton_linearLayout)
+    private LinearLayout extract_packButton_linearLayout;
     @ViewInject(R.id.extract_out_textView)
     private TextView extract_out_textView;
     @ViewInject(R.id.extract_manufacture_textView)
     private TextView extract_manufacture_textView;
     @ViewInject(R.id.extract_extractInfo_linearLayout)
     private LinearLayout extract_extractInfo_linearLayout;
+    @ViewInject(R.id.extract_soakInfo_linearLayout)
+    private LinearLayout extract_soakInfo_linearLayout;
+    @ViewInject(R.id.extract_stewInfo_linearLayout)
+    private LinearLayout extract_stewInfo_linearLayout;
     @ViewInject(R.id.extract_pressure_linearLayout)
     private LinearLayout extract_pressure_linearLayout;
     @ViewInject(R.id.extract_other_linearLayout)
@@ -137,12 +146,14 @@ public class ExtractUI extends NFCActivity {
     private PrescriptionDomain prescriptionDomain = null;
     private ExtractingDomain extractingDomain = null;
     private ExtractDomain extractDomain=null;
+    private ExtractDomain stewDomain=null;
     private EquipmentDomain waterEquipment = null;
     private EquipmentDomain extractEquipment =null;
     private EquipmentDomain packEquipment=null;
     private EquipmentDomain stewEquipment =null;
     private SoakDomain soakDomain = null;
     static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    static SimpleDateFormat DateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SoakUtil soakUtil=new SoakUtil();
     private ChineseToSpeech speech = new ChineseToSpeech();
     private String extractStatus;
@@ -160,7 +171,7 @@ public class ExtractUI extends NFCActivity {
     private String equipType1;
     private Integer quantity;
     private Message message;
-    private List ExtractList;
+//    private List ExtractList;
     private String[] jyj={};
     private List waterEquipList;
     private  List addList;
@@ -221,7 +232,9 @@ public class ExtractUI extends NFCActivity {
             R.id.extract_soak_button,
             R.id.extract_extractInfo_linearLayout,
             R.id.extract_waterQuantity1_editText,
-            R.id.extract_stew_button},
+            R.id.extract_waitStew_button,
+            R.id.extract_stew_button,
+            R.id.extract_finish_button},
             type = View.OnClickListener.class)
     private void btnClick(View v) {
                 if(prescriptionDomain==null){
@@ -243,14 +256,14 @@ public class ExtractUI extends NFCActivity {
                     new CoolToast(getBaseContext()).show("当前是"+extractingDomain.getPlanStatus()+"状态，不可一煎操作");
                 }
                 break;
-            case R.id.extract_extract2_button:
-                if(hasExtractEquip) {
-                extractStatus = "二煎";
-                extractThread(4);
-                    }else{
-                        new CoolToast(getBaseContext()).show("请先选择煎药机");
-                    }
-                break;
+//            case R.id.extract_extract2_button:
+//                if(hasExtractEquip) {
+//                extractStatus = "二煎";
+//                extractThread(4);
+//                    }else{
+//                        new CoolToast(getBaseContext()).show("请先选择煎药机");
+//                    }
+//                break;
             case R.id.extract_pack_button:
                 if("一煎".equals(extractingDomain.getPlanStatus())||"二煎".equals(extractingDomain.getPlanStatus())) {
                     extractThread(5);
@@ -267,7 +280,10 @@ public class ExtractUI extends NFCActivity {
                     extractThread(3);
                 }else{
                     waterEquipment = new EquipmentDomain();
+                    //正式库
                     waterEquipment.setId(93);
+                    //测试库
+//                    waterEquipment.setId(21);
                     hasWater = true;
                     extractingDomain.setQuantity(Integer.parseInt(String.valueOf(extract_waterQuantity1_editText.getText())));
                     extractThread(3);
@@ -282,20 +298,100 @@ public class ExtractUI extends NFCActivity {
             case R.id.extract_waterQuantity1_editText:
                 setInterval(extract_waterQuantity1_editText,isWater);
                 break;
+            case R.id.extract_waitStew_button:
+                extractStatus="待制膏";
+                extractThread(10);
+                break;
             case R.id.extract_stew_button:
                 if(hasStewEquip){
-                    Log.e("制膏","开始");
                     extractThread(6);
                 }else {
                     new CoolToast(getBaseContext()).show("请先选择煎膏设备");
                     chineseToSpeech.speech("请先选择煎膏设备");
                 }
                 break;
+            case R.id.extract_finish_button:
+                if("膏方".equals(prescriptionDomain.getClassification())) {
+                    extractThread(7);
+                }else {
+                    extractStatus="完成";
+                    extractThread(9);
+                }
+                break;
+        }
+    }
+    //设置电锅、气锅
+    private void setExtractType(){
+        if(extractEquipment!=null){
+            if("电锅".equals(extractEquipment.getEquipType1())){
+                extract1_equiptype1_radioButton.setChecked(true);
+                extract2_equiptype1_radioButton.setChecked(false);
+            }else if("气锅".equals(extractEquipment.getEquipType1())){
+                extract1_equiptype1_radioButton.setChecked(false);
+                extract2_equiptype1_radioButton.setChecked(true);
+            }
+        }
+    }
+
+    //设置浸泡基础UI
+    private void setSoakBase(){
+        extract_method_textView.setText(extractingDomain.getMethod());
+        extract_waterQuantity1_editText.setText(String.valueOf(extractingDomain.getQuantity()));
+        extract_soakTime_textView.setText(extractingDomain.getSoakTime().toString() + " 分");
+    }
+    //设置浸泡UI
+    private void setSoakView(){
+        if (soakDomain != null) {
+            Log.e("soakDomain", String.valueOf(soakDomain.getBeginTime()));
+            hasWater=true;
+            extract_soakStart_textView.setText(simpleDateFormat.format(soakDomain.getBeginTime()));
+            extract_soakEnd_textView.setText(simpleDateFormat.format(soakDomain.getEndTime()));
+            extract_soakEquip_textView.setText(waterEquipment.getEquipId());
+            extract1_equiptype1_radioButton.setClickable(false);
+            extract2_equiptype1_radioButton.setClickable(false);
+            extract_waterQuantity1_editText.setEnabled(false);
+        }else{
+            hasWater=false;
+            extract1_equiptype1_radioButton.setClickable(true);
+            extract2_equiptype1_radioButton.setClickable(true);
+            extract_waterQuantity1_editText.setEnabled(true);
+        }
+    }
+    //设置煎制UI
+    private void setExtractView(){
+        extract_out_textView.setText(String.valueOf(extractingDomain.getOut()));
+        extract_waterQuantity1_editText.setText(String.valueOf(extractingDomain.getQuantity()));
+        extract_temperature_textView.setText(extractingDomain.getTemperature().toString() + " °");
+        extract_pressure_textView.setText(extractingDomain.getPressure());
+        extract_presStatus_textView.setText(extractingDomain.getPlanStatus());
+        extract_extractTime1_textView.setText(extractingDomain.getExtractTime1().toString() + " 分");
+        extract_extractTime2_textView.setText(extractingDomain.getExtractTime2().toString() + " 分");
+        if (extractEquipment != null) {
+            Log.e("extractEquipment", extractEquipment.getEquipName());
+            extract_extractEquip_textView.setText(extractEquipment.getEquipId());
+        } else {
+            extract_extractEquip_textView.setText("");
+        }
+    }
+    //设置煎制时间
+    private void setExtractTimeView(){
+//        if(ExtractList.size()>0) {
+//            Map extMap = (Map) ExtractList.get(ExtractList.size() - 1);
+                extract_extractStart_textView.setText(simpleDateFormat.format(extractDomain.getBeginTime()));
+                extract_extractEnd_textView.setText(simpleDateFormat.format(extractDomain.getEndTime()));
+        }
+    private void setStewView(){
+        if(stewEquipment!=null){
+            extract_stewEquip_textView.setText(stewEquipment.getEquipId());
+            extract_stewStart_textView.setText(simpleDateFormat.format(stewDomain.getBeginTime()));
+            if(stewDomain.getEndTime()!=null&&!"".equals(stewDomain.getEndTime())) {
+                extract_stewStop_textView.setText(simpleDateFormat.format(stewDomain.getEndTime()));
+            }
         }
     }
     private boolean isWater;
     public void setWidget() {
-        try {
+//        try {
             if ("".equals(tagDomain.getCode())) {
                 Log.e("code", "code为空");
             } else {
@@ -303,13 +399,13 @@ public class ExtractUI extends NFCActivity {
                 extract_tagCode_textView.setBackgroundColor(HerbalUtil.HextoColor(tagDomain.getColorValue()));
             }
             if (prescriptionDomain != null) {
+                //更新处方UI
                 extract_patientNo_textView.setText(prescriptionDomain.getPatientNo());
                 extract_patientName_textView.setText(prescriptionDomain.getPatientName().length() < 4 ? prescriptionDomain.getPatientName() : prescriptionDomain.getPatientName().substring(0, 4));
                 extract_category_textView.setText(prescriptionDomain.getCategory());
                 extract_classification_textView.setText(prescriptionDomain.getClassification());
                 extract_presNumber_textView.setText(prescriptionDomain.getPresNumber().toString() + "付");
                 extract_way_textView.setText(prescriptionDomain.getWay());
-
                 if("膏方".equals(prescriptionDomain.getClassification())){
                     extract_pressure_linearLayout.setVisibility(View.GONE);
                     extract_other_linearLayout.setVisibility(View.VISIBLE);
@@ -319,99 +415,96 @@ public class ExtractUI extends NFCActivity {
                     extract_other_linearLayout.setVisibility(View.GONE);
                     extract_dosage_textView.setText(prescriptionDomain.getDosage());
                     extract_frequency_textView.setText(prescriptionDomain.getFrequency());
-
                 }
-
             }
-            if (extractingDomain != null) {
-                extract_out_textView.setText(String.valueOf(extractingDomain.getOut()));
-                extract_method_textView.setText(extractingDomain.getMethod());
-                extract_waterQuantity1_editText.setText(String.valueOf(extractingDomain.getQuantity()));
-                extract_temperature_textView.setText(extractingDomain.getTemperature().toString() + " °");
-                extract_pressure_textView.setText(extractingDomain.getPressure());
+            if(extractingDomain!=null) {
                 extract_presStatus_textView.setText(extractingDomain.getPlanStatus());
-                extract_soakTime_textView.setText(extractingDomain.getSoakTime().toString() + " 分");
-                extract_extractTime1_textView.setText(extractingDomain.getExtractTime1().toString() + " 分");
-                extract_extractTime2_textView.setText(extractingDomain.getExtractTime2().toString() + " 分");
-                if("开始".equals(extractingDomain.getPlanStatus())) {
+                //开始状态
+                if ("开始".equals(extractingDomain.getPlanStatus())) {
+                    extract_soakInfo_linearLayout.setVisibility(View.VISIBLE);
+                    setSoakBase();
                     onCheckedChanged(extract_equiptype1_radioGroup, extract1_equiptype1_radioButton.getId());
+                    extract_soak_button.setVisibility(View.VISIBLE);
+                } else if ("浸泡".equals(extractingDomain.getPlanStatus())) {
+                    extract_soakInfo_linearLayout.setVisibility(View.VISIBLE);
+                    extract_extractInfo_linearLayout.setVisibility(View.VISIBLE);
+                    setSoakBase();
+                    setSoakView();
+                    setExtractView();
+                    extract_extract1_button.setVisibility(View.VISIBLE);
+                } else if (extractingDomain.getPlanStatus().contains("煎")) {
+                    hasWater=true;
+                    extract_extractInfo_linearLayout.setVisibility(View.VISIBLE);
+                    extract_extract2_button.setVisibility(View.VISIBLE);
+                    setExtractView();
+                    setExtractTimeView();
+                    extract_packButton_linearLayout.setVisibility(View.VISIBLE);
+                    if("膏方".equals(prescriptionDomain.getClassification())) {
+                        extract_soakInfo_linearLayout.setVisibility(View.VISIBLE);
+                        setSoakBase();
+                        setSoakView();
+                        extract_pack_button.setVisibility(View.GONE);
+                        extract_waitStew_button.setVisibility(View.VISIBLE);
+                        extract_stew_button.setVisibility(View.GONE);
+                    }else {
+                        extract_stewInfo_linearLayout.setVisibility(View.GONE);
+                        extract_pack_button.setVisibility(View.VISIBLE);
+                        extract_stew_button.setVisibility(View.GONE);
+                    }
+                }else if("待制膏".equals(extractingDomain.getPlanStatus())){
+                    hasWater=true;
+                    extract_extractInfo_linearLayout.setVisibility(View.VISIBLE);
+                    setExtractView();
+                    setExtractTimeView();
+                    extract_packButton_linearLayout.setVisibility(View.VISIBLE);
+                    extract_stewInfo_linearLayout.setVisibility(View.VISIBLE);
+
+                    extract_stew_button.setVisibility(View.VISIBLE);
+                }else if ("制膏".equals(extractingDomain.getPlanStatus())) {
+                    if("膏方".equals(prescriptionDomain.getClassification())) {
+                        extract_finish_button.setVisibility(View.VISIBLE);
+                        extract_stewInfo_linearLayout.setVisibility(View.VISIBLE);
+                    }
+                    if(addList!=null){
+                        if(addList.size()>0){
+                            Intent intent=new Intent(this,AddMedicineUI.class);
+                            intent.putExtra("addList",(Serializable) addList);
+                            intent.putExtra("presNum",prescriptionDomain.getPresNumber());
+                            startActivity(intent);
+                        }
+                    }
+                    setStewView();
+                    extract_packButton_linearLayout.setVisibility(View.GONE);
+                }else if ("完成".equals(extractingDomain.getPlanStatus())) {
+                    extract_extractInfo_linearLayout.setVisibility(View.VISIBLE);
+                    setExtractView();
+                    setExtractTimeView();
+                    if("膏方".equals(prescriptionDomain.getClassification())){
+                        extract_stewInfo_linearLayout.setVisibility(View.VISIBLE);
+                        setStewView();
+                    }else {
+                        extract_soakInfo_linearLayout.setVisibility(View.VISIBLE);
+                        setSoakBase();
+                        setSoakView();
+                    }
+                    extract_finish_button.setVisibility(View.GONE);
+                }else if("包装".equals(extractingDomain.getPlanStatus())){
+                    extract_soakInfo_linearLayout.setVisibility(View.VISIBLE);
+                    extract_extractInfo_linearLayout.setVisibility(View.VISIBLE);
+                    setSoakBase();
+                    setSoakView();
+                    setExtractView();
+                    extract_packButton_linearLayout.setVisibility(View.GONE);
+                    extract_finish_button.setVisibility(View.VISIBLE);
                 }
-            }
-            if(extractEquipment!=null){
-                if("电锅".equals(extractEquipment.getEquipType1())){
-                    extract1_equiptype1_radioButton.setChecked(true);
-                    extract2_equiptype1_radioButton.setChecked(false);
-                }else if("气锅".equals(extractEquipment.getEquipType1())){
-                    extract1_equiptype1_radioButton.setChecked(false);
-                    extract2_equiptype1_radioButton.setChecked(true);
-                }
-            }
-            if (soakDomain != null) {
-                Log.e("soakDomain", String.valueOf(soakDomain.getBeginTime()));
-                hasWater=true;
-                extract_startTime_textView.setText(simpleDateFormat.format(soakDomain.getBeginTime()));
-                extract_endTime_textView.setText(simpleDateFormat.format(soakDomain.getEndTime()));
-                extract_soakEquip_textView.setText(waterEquipment.getEquipId());
-                extract1_equiptype1_radioButton.setClickable(false);
-                extract2_equiptype1_radioButton.setClickable(false);
-                extract_waterQuantity1_editText.setEnabled(false);
-            }else{
-                hasWater=false;
-                extract1_equiptype1_radioButton.setClickable(true);
-                extract2_equiptype1_radioButton.setClickable(true);
-                extract_waterQuantity1_editText.setEnabled(true);
-            }
-            if(extractEquipment!=null){
-                Log.e("extractEquipment",extractEquipment.getEquipName());
-                extract_extractEquip_textView.setText(extractEquipment.getEquipId());
-            }else{
-                extract_extractEquip_textView.setText("");
             }
 
-            if(hasPack||hasFinish){
-                extract_extractbutton_linearLayout.setVisibility(View.GONE);
-                extract_soakbutton_linearLayout.setVisibility(View.GONE);
-                if(hasFinish){
-                    extract_stewStop_textView.setText(simpleDateFormat.format(extractDomain.getEndTime()));
-                }
-            }else{
-                if ( "开始".equals(extractingDomain.getPlanStatus())) {
-                    extract_extractbutton_linearLayout.setVisibility(View.GONE);
-                    extract_soakbutton_linearLayout.setVisibility(View.VISIBLE);
-                }else {
-                    extract_extractbutton_linearLayout.setVisibility(View.VISIBLE);
-                    extract_soakbutton_linearLayout.setVisibility(View.GONE);
-                }
-                if("膏方".equals(prescriptionDomain.getClassification())){
-                    extract_stew_button.setVisibility(View.VISIBLE);
-                    extract_pack_button.setVisibility(View.GONE);
-                    extract_stew_linearLayout.setVisibility(View.VISIBLE);
-                }else{
-                    extract_stew_button.setVisibility(View.GONE);
-                    extract_pack_button.setVisibility(View.VISIBLE);
-                    extract_stew_linearLayout.setVisibility(View.GONE);
-                }
-            }
-            if(stewEquipment!=null){
-                extract_stewEquip_textView.setText(stewEquipment.getEquipId());
-            }
-            if(hasStew){
-                extract_stew_button.setText("完成");
-                if(addList.size()>0){
-                    Intent intent=new Intent(this,AddMedicineUI.class);
-                    intent.putExtra("addList",(Serializable) addList);
-                    intent.putExtra("presNum",prescriptionDomain.getPresNumber());
-                    startActivity(intent);
-                }
-            }else{
-                extract_stew_button.setText("制膏");
-            }
             chineseToSpeech.speech(prescriptionDomain.getPresNumber()+"付 "+prescriptionDomain.getFrequency()+" "+prescriptionDomain.getDosage());
 
-        } catch (Exception e) {
-//            e.printStackTrace();
-            new CoolToast(getBaseContext()).show("UI更新失败,请稍后重试。");
-        }
+//        } catch (Exception e) {
+////            e.printStackTrace();
+//            new CoolToast(getBaseContext()).show("UI更新失败,请稍后重试。"+e.getMessage());
+//        }
     }
 
     @Event(value = R.id.extract_equiptype1_radioGroup,
@@ -570,13 +663,15 @@ public class ExtractUI extends NFCActivity {
                             }
                             prescriptionDomain = new PrescriptionUtil().getPrescriptionByPlanId(extractingDomain.getPlanId());
                             if (! "开始".equals(extractingDomain.getPlanStatus())) {
+                                //获取浸泡和加液信息
                                 soakDomain = soakUtil.getSoakByPlanId(extractingDomain.getPlanId());
                                 waterEquipment=new EquipmentUtil().getEquipment(soakDomain.getEquipId());
                                 if(!"浸泡".equals(extractingDomain.getPlanStatus())){
-                                    ExtractList=new ExtractUtil().getExtractByPlanId(extractingDomain.getPlanId());
-                                    if(ExtractList.size()>0) {
-                                        extractEquipment = new EquipmentUtil().getEquipByEquipId(String.valueOf(((Map) ExtractList.get(0)).get("equipId")));
-                                    }
+                                    //获取煎制信息
+                                    extractDomain=new ExtractUtil().getExtractByPlanIdStatus(prescriptionDomain.getPlanId(), "一煎");;
+//                                    if(ExtractList.size()>0) {
+                                        extractEquipment = new EquipmentUtil().getEquipByEquipId(extractDomain.getEquipId());
+//                                    }
                                     hasExtract=true;
                                 }
                                 if("包装".equals(extractingDomain.getPlanStatus())){
@@ -584,15 +679,18 @@ public class ExtractUI extends NFCActivity {
                                 }else{
                                     hasPack=false;
                                 }
-                                if("制膏".equals(extractingDomain.getPlanStatus())){
-                                    hasStew=true;
-                                    extractDomain =new ExtractUtil().getExtractByPlanIdStatus(prescriptionDomain.getPlanId(),"制膏");
-                                    stewEquipment = new EquipmentUtil().getEquipByEquipId(extractDomain.getEquipId());
-                                    if(extractDomain.getEndTime()==null||"".equals(extractDomain.getEndTime())) {
-                                        addList=new PrescriptionDetailUtil().getAddMedicine(prescriptionDomain.getPlanId());
-                                        hasFinish=false;
-                                    }else {
-                                        hasFinish=true;
+                                if("膏方".equals(prescriptionDomain.getClassification())){
+                                if("制膏".equals(extractingDomain.getPlanStatus())||"完成".equals(extractingDomain.getPlanStatus())){
+                                    //获取制膏信息
+                                        hasStew = true;
+                                        stewDomain = new ExtractUtil().getExtractByPlanIdStatus(prescriptionDomain.getPlanId(), "制膏");
+                                        stewEquipment = new EquipmentUtil().getEquipByEquipId(stewDomain.getEquipId());
+                                        if (stewDomain.getEndTime() == null || "".equals(stewDomain.getEndTime())) {
+                                            addList = new PrescriptionDetailUtil().getAddMedicine(prescriptionDomain.getPlanId());
+                                            hasFinish = false;
+                                        } else {
+                                            hasFinish = true;
+                                        }
                                     }
                                 }else {
                                     hasStew=false;
@@ -645,7 +743,7 @@ public class ExtractUI extends NFCActivity {
                             break;
                         //开始包装
                         case 5:
-                            Date endTime=HerbalUtil.String2Date(String.valueOf(((Map)ExtractList.get(ExtractList.size()-1)).get("endTime")),null);
+                            Date endTime=extractDomain.getEndTime();
 //                            Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
                             if(endTime.getTime()>Long.parseLong(new ServerUtil().getServerTime())){
                                 handlerMessage(20,HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装");
@@ -660,35 +758,37 @@ public class ExtractUI extends NFCActivity {
                             break;
                         //开始煎膏
                         case 6:
-                            if(hasStew){
-                                message.obj=new StewUtil().stewEnd(extractingDomain.getPlanId(),stewEquipment.getTagId());
-                                message.what = 22;
-                                handler.sendMessage(message);
-                            }else {
-                                Date tempEndTime = HerbalUtil.String2Date(String.valueOf(((Map) ExtractList.get(ExtractList.size() - 1)).get("endTime")), null);
-//                            Log.e("endTime"+new Date(Long.parseLong(new ServerUtil().getServerTime())).getTime(), String.valueOf(endTime.getTime()));
-                                if (tempEndTime.getTime() > Long.parseLong(new ServerUtil().getServerTime())) {
-                                    handlerMessage(20, HerbalUtil.formatDate(tempEndTime, "HH:mm") + "后方可进行煎膏");
-//                                message.obj = HerbalUtil.formatDate(endTime,"HH:mm") + "后方可进行包装";
-//                                message.what = -1;
-//                                handler.sendMessage(message);
-                                } else {
+
                                     message.obj = new StewUtil().stewBegin(extractingDomain.getPlanId(), stewEquipment.getTagId(), Application.getUsers().getId());
                                     message.what = 22;
                                     handler.sendMessage(message);
-                                }
-                            }
                             break;
                         //结束煎膏
                         case 7:
                          message.obj = new StewUtil().stewEnd(extractingDomain.getPlanId(),stewEquipment.getTagId());
-                         message.what = 5;
+                         message.what = 22;
                          handler.sendMessage(message);
+                         break;
                         case 8:
                             //获取所有加液机数据
                             waterEquipList = new EquipmentUtil().getEquipmentByType("加液机");
                             message.what = 8;
                             handler.sendMessage(message);
+                            break;
+                        case 9:
+                            message.obj = new ExtractingUtil().setStatus(extractingDomain.getPlanId(),extractStatus);
+                            message.what = 22;
+                            handler.sendMessage(message);
+                            //待制膏
+                        case 10:
+                            Date tempEndTime = extractDomain.getEndTime();
+                            if (tempEndTime.getTime() > Long.parseLong(new ServerUtil().getServerTime())) {
+                                handlerMessage(20, HerbalUtil.formatDate(tempEndTime, "HH:mm") + "完成煎制");
+                            } else {
+                                message.obj = new ExtractingUtil().setStatus(extractingDomain.getPlanId(),extractStatus);
+                                message.what = 22;
+                                handler.sendMessage(message);
+                            }
                             break;
                     }
                 } catch (Exception e) {
@@ -814,15 +914,26 @@ public class ExtractUI extends NFCActivity {
         extract_extractTime1_textView.setText("");
         extract_extractTime2_textView.setText("");
         extract_extractEquip_textView.setText("");
-        extract_endTime_textView.setText("");
-        extract_startTime_textView.setText("");
+        extract_soakStart_textView.setText("");
+        extract_soakEnd_textView.setText("");
         extract_soakEquip_textView.setText("");
         extract_tagCode_textView.setText("");
         extract_dosage_textView.setText("");
         extract_frequency_textView.setText("");
         extract_stewEquip_textView.setText("");
+        extract_manufacture_textView.setText("");
         extract1_equiptype1_radioButton.setClickable(true);
         extract2_equiptype1_radioButton.setClickable(true);
+        extract_soakInfo_linearLayout.setVisibility(View.GONE);
+        extract_extractInfo_linearLayout.setVisibility(View.GONE);
+        extract_stewInfo_linearLayout.setVisibility(View.GONE);
+        extract_soak_button.setVisibility(View.GONE);
+        extract_extract1_button.setVisibility(View.GONE);
+        extract_extract2_button.setVisibility(View.GONE);
+        extract_stew_button.setVisibility(View.GONE);
+        extract_waitStew_button.setVisibility(View.GONE);
+        extract_packButton_linearLayout.setVisibility(View.GONE);
+        extract_finish_button.setVisibility(View.GONE);
     }
     private void handlerMessage(int what,String obj) {
 //        Log.e("handlerMessage", String.valueOf(what));

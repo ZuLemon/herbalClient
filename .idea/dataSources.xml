@@ -20,7 +20,13 @@
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
       <jdbc-url>jdbc:oracle:thin:@//192.168.1.38:1521/icare.xinjiangzhongyi.tcm</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="HIS" uuid="0e057ca0-3022-4925-8915-3e4ef48ead8e">
+    <data-source source="LOCAL" name="HIS_CIS" uuid="415ac599-b279-4f62-ad04-eb1403920200">
+      <driver-ref>sqlserver.jtds</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:jtds:sqlserver://192.168.1.18:1433/his_cis;instance=his</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="HIS [2]" uuid="c295954c-c4e8-4715-ad9b-190ac327aad6">
       <driver-ref>sqlserver.jtds</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>

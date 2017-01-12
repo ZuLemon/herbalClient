@@ -44,7 +44,7 @@ public class Option extends Activity {
         switch (v.getId()) {
             case R.id.option_server_button:
                 Application.setServerIP(String.valueOf(option_server_editText.getText()));
-                Http.setUri(String.valueOf(option_server_editText.getText()));
+                Http.setUri(String.valueOf(option_server_editText.getText()).trim());
                 appOption.setOption(AppOption.APP_OPTION_SERVER, String.valueOf(option_server_editText.getText()));
                 appOption.setOption(AppOption.APP_OPTION_STATE, option_state_check.isChecked() ? "YES" : "NO");
                 new CoolToast(getBaseContext()).show("保存成功");

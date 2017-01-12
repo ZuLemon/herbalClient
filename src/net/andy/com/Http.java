@@ -32,11 +32,11 @@ public class Http {
     public static void setUri(String ip) {
         Http.uri = "http://"+ip.trim()+"/herbal/";
     }
-    private static String uri="http://"+Application.getServerIP().trim()+"/herbal/";
+    private static String uri="http://"+appOption.getOption(AppOption.APP_OPTION_SERVER).trim()+"/herbal/";
     public static Object post(String url, List<NameValuePair> pairs,Class clzz) throws Exception {
         String json;
         HttpClient client = new DefaultHttpClient();
-        client.getParams().setParameter("http.socket.timeout",10000);
+        client.getParams().setParameter("http.soaket.timeout",10000);
         client.getParams().setParameter("http.connection.timeout",10000);
         client.getParams().setParameter("http.connection-manager.timeout",60*60L);
 //        client.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
@@ -44,7 +44,7 @@ public class Http {
         httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 //        httpPost.setHeader("Content-Type", "text/html;charset=UTF-8");
 //        httpPost.getParams().setParameter(CoreProtocolPNames.HTTP_CONTENT_CHARSET, "UTF-8");
-        httpPost.setHeader("User-Agent", "boilingClient Of Android");
+        httpPost.setHeader("User-Agent", "herbalClient Of Android");
         httpPost.setHeader("userId", appOption.getOption(AppOption.APP_OPTION_USER));
 
         try {
@@ -67,7 +67,7 @@ public class Http {
     }
 //    public Object xUtilsPost(String url, List<NameValuePair> pairs,Class clzz){
 //        RequestParams params = new RequestParams(url);
-//        params.addParameter("http.socket.timeout",10000);
+//        params.addParameter("http.soaket.timeout",10000);
 //        params.addParameter("http.connection.timeout",10000);
 //        params.addParameter("http.connection-manager.timeout",60*60L);
 //        params.addHeader("User-Agent", "boilingClient Of Android"); //为当前请求添加一个头

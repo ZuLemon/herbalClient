@@ -47,6 +47,16 @@ public class UrgentPresUI extends Activity{
     private EditText urgentPres_startTime_editText;
     @ViewInject(R.id.urgentPres_endTime_editText)
     private EditText urgentPres_endTime_editText;
+    @ViewInject(R.id.urgentPres_status_radioGroup)
+    private RadioGroup urgentPres_status_radioGroup;
+    @ViewInject(R.id.urgentPres_status1_radioButton)
+    private RadioButton urgentPres_status1_radioButton;
+    @ViewInject(R.id.urgentPres_status2_radioButton)
+    private RadioButton urgentPres_status2_radioButton;
+    @ViewInject(R.id.urgentPres_status3_radioButton)
+    private RadioButton urgentPres_status3_radioButton;
+    @ViewInject(R.id.urgentPres_status4_radioButton)
+    private RadioButton urgentPres_status4_radioButton;
     private String patId;
     private Integer Id;
     private String startTime;
@@ -87,6 +97,17 @@ public class UrgentPresUI extends Activity{
                 enddateTimePicKDialog.dateTimePicKDialog(urgentPres_endTime_editText);
                 break;
         }
+    }
+    private String getStatus() {
+        if (urgentPres_status1_radioButton.isChecked())
+            return "%";
+        if (urgentPres_status2_radioButton.isChecked())
+            return (String) urgentPres_status2_radioButton.getText();
+        if (urgentPres_status3_radioButton.isChecked())
+            return (String) urgentPres_status3_radioButton.getText();
+        if (urgentPres_status4_radioButton.isChecked())
+            return (String) urgentPres_status4_radioButton.getText();
+        return "%";
     }
     private void confirm(){
         urgList.clear();
@@ -151,7 +172,7 @@ public class UrgentPresUI extends Activity{
                     switch (what){
                         case 0:
                             message.what = 0;
-                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(startTime,endTime,patId, String.valueOf(Application.getUsers().getId()));
+                            message.obj = new SelectPresUtil().getPrescriptionByPatientNo(startTime,endTime,patId, String.valueOf(Application.getUsers().getId()),getStatus());
                             handler.sendMessage ( message );
                             break;
                     }

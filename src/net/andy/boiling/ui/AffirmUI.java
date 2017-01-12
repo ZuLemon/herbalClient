@@ -66,10 +66,10 @@ public class AffirmUI extends NFCActivity {
     private LinearLayout affirm_pres_linearLayout;
     @ViewInject(R.id.affirm_efficacy_textView)
     private TextView affirm_efficacy_textView;
-    @ViewInject(R.id.sock_frequency_textView)
-    private TextView sock_frequency_textView;
-    @ViewInject(R.id.sock_dosage_textView)
-    private TextView sock_dosage_textView;
+    @ViewInject(R.id.soak_frequency_textView)
+    private TextView soak_frequency_textView;
+    @ViewInject(R.id.soak_dosage_textView)
+    private TextView soak_dosage_textView;
     @ViewInject(R.id.affirm_tagCode_textView)
     private TextView affirm_tagCode_textView;
 //    @ViewInject(R.id.affirm_soakEndTime_textView)
@@ -304,8 +304,8 @@ public class AffirmUI extends NFCActivity {
         affirm_diagnosis_textView.setText(String.valueOf((prescriptionDomain.getDiagnosis().length()>5)?prescriptionDomain.getDiagnosis().substring(0,5):prescriptionDomain.getDiagnosis().toString()));
         affirm_presNumber_textView.setText(String.valueOf(prescriptionDomain.getPresNumber())+" 付");
         affirm_method_textView.setText(String.valueOf(extractingDomain.getMethod()));
-        sock_frequency_textView.setText(String.valueOf(prescriptionDomain.getFrequency()));
-        sock_dosage_textView.setText(String.valueOf(prescriptionDomain.getDosage()));
+        soak_frequency_textView.setText(String.valueOf(prescriptionDomain.getFrequency()));
+        soak_dosage_textView.setText(String.valueOf(prescriptionDomain.getDosage()));
         affirm_planStatus_textView.setText(String.valueOf(extractingDomain.getPlanStatus()));
         affirm_efficacy_textView.setText(String.valueOf(prescriptionDomain.getEfficacy()));
         affirm_soakTime_editText.setText(String.valueOf(extractingDomain.getSoakTime()));
@@ -321,8 +321,8 @@ public class AffirmUI extends NFCActivity {
     public void reset() {
         affirm_patientNO_textView.setText("");
         affirm_patientName_textView.setText("");
-        sock_frequency_textView.setText("");
-        sock_dosage_textView.setText("");
+        soak_frequency_textView.setText("");
+        soak_dosage_textView.setText("");
         affirm_category_textView.setText("");
         affirm_classification_textView.setText("");
         affirm_diagnosis_textView.setText("");

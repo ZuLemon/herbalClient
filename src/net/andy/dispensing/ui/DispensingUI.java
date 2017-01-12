@@ -937,7 +937,15 @@ public class DispensingUI extends NFCActivity {
                         setReadyValue();
                         break;
                     case 12:
-                        dispensing_noDispensing_textView.setText("待调：" + restCount);
+                        if(Application.getWaitDispensing()==1) {
+                            dispensing_noDispensing_textView.setText("待调：" + restCount);
+                        }else{
+                            if(restCount==0){
+                                dispensing_noDispensing_textView.setText("待调：无");
+                            }else {
+                                dispensing_noDispensing_textView.setText("待调：有");
+                            }
+                        }
                         dispensing_alreadyDispensing_textView.setText("完成：" + alreadyDisCount);
                         break;
                     case 13:
@@ -1441,7 +1449,15 @@ public class DispensingUI extends NFCActivity {
             String bindId = intent.getStringExtra("bindId");
             String message = intent.getStringExtra("message");
             if (Application.getRulesDomain().getId().equals(Integer.parseInt(bindId))) {
-                dispensing_noDispensing_textView.setText("待调：" + message);
+                if(Application.getWaitDispensing()==1) {
+                    dispensing_noDispensing_textView.setText("待调：" + message);
+                }else{
+                    if("0".equals(message)){
+                        dispensing_noDispensing_textView.setText("待调：无");
+                    }else {
+                        dispensing_noDispensing_textView.setText("待调：有");
+                    }
+                }
                 Log.i("待调更新", message);
             }
         }

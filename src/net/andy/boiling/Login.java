@@ -6,9 +6,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +21,8 @@ import net.andy.com.*;
 import net.andy.dispensing.domain.RulesDomain;
 import net.andy.dispensing.domain.StationDomain;
 import net.andy.dispensing.ui.LoadingUI;
+import net.andy.dispensing.util.DeviceUtil;
+import net.andy.dispensing.util.HerbalUtil;
 import net.andy.dispensing.util.RuleUtil;
 import net.andy.dispensing.util.StationUtil;
 import org.apache.http.NameValuePair;
@@ -33,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static android.os.Build.MANUFACTURER;
 
 /**
  * 登陆窗口
@@ -50,7 +56,11 @@ public class Login extends Activity {
     Message message = new Message();
     public static Login instance = null;
     private PendingIntent pendingIntent;
-    String deviceid;
+    private String imei;
+    private String meid;
+    private String mac;
+    private String model;
+    private String loginIP;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +74,7 @@ public class Login extends Activity {
             appOption.setOption(AppOption.APP_OPTION_SERVER, serverIP+":8888");
         }
         Application.setServerIP(appOption.getOption(AppOption.APP_OPTION_SERVER));
+        Log.e("serverIP",""+Application.getServerIP());
         // 检查软件更新
         manager.checkUpdate();
         setContentView(R.layout.login);
@@ -161,18 +172,11 @@ public class Login extends Activity {
                             LoadingUI.instance.finish();
                             Intent intent = new Intent(Login.this, Main.class);
                             startActivity(intent);
-                            StationThread();
-                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-                            if (wifiManager != null) {
-                                deviceid = wifiManager.getConnectionInfo().getMacAddress();
-                            }
-                            appOption.setOption(AppOption.APP_DEVICE_ID, deviceid);
+                            getDeviceInfo();
+                            LoginThread(0);
                             //设置间隔时间
                             appOption.setOption(AppOption.APP_OPTION_WAITTIME, "2");
                             //检查推送服务是否运行
-                            checkService();
-                            //结束当前
-                            Login.this.finish();
                             break;
                     }
 
@@ -219,30 +223,73 @@ public class Login extends Activity {
             switch (msg.what) {
                 case -1:
                     new AppOption().setOption(AppOption.APP_OPTION_STATION, "");
+//                    finishExt();
+                    Login.this.finish();
                     break;
                 case 0:
                     Application.setRulesDomain((RulesDomain) msg.obj);
                     new AppOption().setOption(AppOption.APP_OPTION_STATION, String.valueOf(((RulesDomain) msg.obj).getName()));
+//                    finishExt();
+                    Login.this.finish();
+                    break;
+                case 1:
+                    Login.this.finish();
                     break;
             }
         }
     };
-    private void StationThread() {
+    private void finishExt(){
+        //设置间隔时间
+        appOption.setOption(AppOption.APP_OPTION_WAITTIME, "2");
+        //检查推送服务是否运行
+
+        //结束当前
+        LoginThread(1);
+    }
+    private void getDeviceInfo() {
+        TelephonyManager mTm = (TelephonyManager)this.getSystemService(TELEPHONY_SERVICE);
+        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager != null) {
+            mac = wifiManager.getConnectionInfo().getMacAddress();
+            loginIP=HerbalUtil.intToIp(wifiManager.getConnectionInfo().getIpAddress());
+            appOption.setOption(AppOption.APP_DEVICE_ID, mac);
+        }
+        imei = mTm.getDeviceId();
+        meid = mTm.getSubscriberId();
+        model = android.os.Build.MODEL; // 手机型号
+        Log.i("Device:", "手机IMEI号："+imei+"手机IESI号："+meid+"手机型号："+model+"mac："+mac+"IP"+loginIP);
+    }
+    private void LoginThread(int way) {
         final Message message = new Message();
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 try {
-                    StationDomain st = new StationUtil().getStationByDevice();
-                    if (st == null) {
-                        message.obj = null;
-                        message.what = -1;
-                    } else {
-                        message.obj = new RuleUtil().getRules(st.getRulesId());
-                        message.what = 0;
+                    switch (way){
+                        case 0:
+                            StationDomain st = new StationUtil().getStationByDevice();
+                            if (st == null) {
+                                message.obj = null;
+                                message.what = -1;
+                            } else {
+                                message.obj = new RuleUtil().getRules(st.getRulesId());
+                                message.what = 0;
+                            }
+                            if(mac!=null) {
+                                new DeviceUtil().insert(imei, meid, mac, model, loginIP);
+                            }
+                            handler.sendMessage(message);
+                            break;
+                        case 1:
+                            if(mac!=null) {
+                                new DeviceUtil().insert(imei, meid, mac, model, loginIP);
+                            }
+                            message.what = 1;
+                            handler.sendMessage(message);
+                            break;
                     }
-                    handler.sendMessage(message);
+
                 } catch (Exception e) {
                     message.what = -1;
                     message.obj = e.getMessage();
@@ -261,41 +308,41 @@ public class Login extends Activity {
 //        }
 //    }
 
-    public void checkService() {
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-                    boolean isRun = false;
-                    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-                    for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-                        if ("net.andy.com.MqttService".equals(service.service.getClassName())) {
-                            isRun = true;
-                        }
-                    }
-                    if (isRun) {
-                        Log.e(">>已经存在此服务","#########");
-                        MqttService.disconnect();
-                        MqttService.connect();
-                    } else {
-                        Log.e(">>不存在服务新建","#########");
-
-//                        new Thread(){
-//                            @Override
-//                            public void run() {
-//                                super.run();
-                                //启动推送服务
-                                startService(new Intent(Application.getContext(), MqttService.class));
-//                            }
-//                        }.start();
-
-                    }
-//                } catch (Exception ex) {
-//                    message.what = -1;
-//                    message.obj = ex.getMessage();
-//                    handler.sendMessage(message);
-//                }
-//            }
-//        }.start();
-    }
+//    public void checkService() {
+////        new Thread() {
+////            @Override
+////            public void run() {
+////                try {
+//                    boolean isRun = false;
+//                    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//                    for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+//                        if ("net.andy.com.MqttService".equals(service.service.getClassName())) {
+//                            isRun = true;
+//                        }
+//                    }
+//                    if (isRun) {
+//                        Log.e(">>已经存在此服务","#########");
+//                        MqttService.disconnect();
+//                        MqttService.connect();
+//                    } else {
+//                        Log.e(">>不存在服务新建","#########");
+//
+////                        new Thread(){
+////                            @Override
+////                            public void run() {
+////                                super.run();
+//                                //启动推送服务
+//                                startService(new Intent(Application.getContext(), MqttService.class));
+////                            }
+////                        }.start();
+//
+//                    }
+////                } catch (Exception ex) {
+////                    message.what = -1;
+////                    message.obj = ex.getMessage();
+////                    handler.sendMessage(message);
+////                }
+////            }
+////        }.start();
+//    }
 }

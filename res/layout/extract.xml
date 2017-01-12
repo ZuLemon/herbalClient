@@ -192,8 +192,7 @@
                                   android:text="配置"/>
                         <TextView style="@style/CustomTextViewTheme"
                                   android:textSize="16sp"
-                                  android:id="@+id/extract_manufacture_textView"
-                        />
+                                  android:id="@+id/extract_manufacture_textView"/>
                     </LinearLayout>
 
                     <LinearLayout android:layout_width="match_parent"
@@ -219,7 +218,8 @@
                       android:paddingRight="5dp"
                       android:paddingLeft="5dp"
                       android:layout_marginBottom="5dp"
-                      android:background="@drawable/white_circular">
+                      android:background="@drawable/white_circular"
+                        android:id="@+id/extract_soakInfo_linearLayout">
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_marginTop="5dp"
@@ -334,8 +334,7 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-            >
+                          android:layout_height="wrap_content">
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:layout_marginBottom="5dp"
@@ -352,7 +351,7 @@
                               android:layout_height="wrap_content"
                               android:textSize="18sp"
                               android:textColor="@android:color/background_dark"
-                              android:id="@+id/extract_startTime_textView"/>
+                              android:id="@+id/extract_soakStart_textView"/>
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
@@ -371,8 +370,7 @@
                               android:gravity="left"
                               android:textSize="18sp"
                               android:layout_weight="1.0"
-                              android:id="@+id/extract_endTime_textView"
-                    />
+                              android:id="@+id/extract_soakEnd_textView" />
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
@@ -380,7 +378,6 @@
                           android:layout_weight="1"
                           android:layout_marginLeft="5dp"
                           android:orientation="horizontal">
-
                 <RadioGroup
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -438,7 +435,6 @@
             <!--&lt;!&ndash;android:id="@+id/extract_equipPurpose_textView"&ndash;&gt;-->
             <!--&lt;!&ndash;/>&ndash;&gt;-->
             <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
-
             <!--&lt;!&ndash;<LinearLayout android:layout_width="match_parent"&ndash;&gt;-->
             <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
             <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
@@ -452,8 +448,6 @@
             <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
             <!--&lt;!&ndash;</LinearLayout>&ndash;&gt;-->
         <!--</LinearLayout>-->
-
-
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:background="@drawable/white_circular"
@@ -462,7 +456,7 @@
                       android:paddingLeft="5dp"
                       android:layout_marginBottom="5dp"
                       android:orientation="vertical"
-        android:id="@+id/extract_extractInfo_linearLayout">
+                      android:id="@+id/extract_extractInfo_linearLayout">
             <TextView android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:gravity="center"
@@ -543,13 +537,46 @@
                               android:layout_weight="1"
                               android:orientation="horizontal">
                     <TextView style="@style/CustomTextViewTheme"
+                              android:width="80dp"
+                              android:textSize="18sp"
+                              android:text="开始时间"/>
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:textSize="18sp"
+                              android:id="@+id/extract_extractStart_textView"/>
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme"
+                              android:width="80dp"
+                              android:textSize="18sp"
+                              android:text="结束时间"/>
+                    <TextView android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:textColor="@color/black_view"
+                              android:gravity="left"
+                              android:textSize="18sp"
+                              android:layout_weight="1"
+                              android:id="@+id/extract_extractEnd_textView"
+                    />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          android:layout_marginBottom="5dp">
+                <LinearLayout android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:layout_weight="1"
+                              android:orientation="horizontal">
+                    <TextView style="@style/CustomTextViewTheme"
                               android:textSize="18sp"
                               android:width="80dp"
                               android:text="二煎时间"/>
                     <TextView style="@style/CustomTextViewTheme"
                               android:textSize="18sp"
-                              android:id="@+id/extract_extractTime2_textView"
-                    />
+                              android:id="@+id/extract_extractTime2_textView" />
                 </LinearLayout>
                 <LinearLayout android:layout_width="match_parent"
                               android:layout_height="wrap_content"
@@ -561,101 +588,149 @@
                               android:text="煎药机"/>
                     <TextView style="@style/CustomTextViewTheme"
                               android:textSize="18sp"
-                              android:id="@+id/extract_extractEquip_textView"
-                    />
+                              android:id="@+id/extract_extractEquip_textView"/>
                 </LinearLayout>
+            </LinearLayout>
+            </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@drawable/white_circular"
+                  android:paddingBottom="5dp"
+                  android:paddingRight="5dp"
+                  android:paddingLeft="5dp"
+                  android:layout_marginBottom="5dp"
+                  android:orientation="vertical"
+                  android:id="@+id/extract_stewInfo_linearLayout">
+        <TextView android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center"
+                  android:layout_marginTop="5dp"
+                  android:layout_marginBottom="5dp"
+                  android:textColor="@android:color/black"
+                  android:textSize="23sp"
+                  android:text="制膏信息"/>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginBottom="5dp">
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:orientation="horizontal">
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:width="80dp"
+                          android:text="煎膏设备"/>
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:id="@+id/extract_stewEquip_textView"
+                />
             </LinearLayout>
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
-                          android:orientation="horizontal"
-                          android:id="@+id/extract_stew_linearLayout"
-                          android:layout_marginBottom="5dp">
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:textSize="18sp"
-                              android:width="80dp"
-                              android:text="煎膏设备"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:textSize="18sp"
-                              android:id="@+id/extract_stewEquip_textView"
-                    />
-                </LinearLayout>
-                <LinearLayout android:layout_width="match_parent"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="horizontal">
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:textSize="18sp"
-                              android:width="80dp"
-                              android:text="制膏结束"/>
-                    <TextView style="@style/CustomTextViewTheme"
-                              android:textSize="18sp"
-                              android:id="@+id/extract_stewStop_textView"
-                    />
-                </LinearLayout>
+                          android:layout_weight="1"
+                          android:visibility="invisible"
+                          android:orientation="horizontal">
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:width="80dp"
+                          android:text="制膏结束"/>
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp" />
             </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginBottom="5dp">
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:orientation="horizontal">
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:width="80dp"
+                          android:text="开始时间"/>
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:id="@+id/extract_stewStart_textView"
+                />
             </LinearLayout>
-
+            <LinearLayout android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:orientation="horizontal">
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:width="80dp"
+                          android:text="结束时间"/>
+                <TextView style="@style/CustomTextViewTheme"
+                          android:textSize="18sp"
+                          android:id="@+id/extract_stewStop_textView"
+                />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="vertical"
                   android:layout_alignParentBottom="true">
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                    android:id="@+id/extract_soakbutton_linearLayout">
             <Button style="@style/CustomButtonTheme"
                     android:layout_width="match_parent"
                     android:background="@drawable/button_style"
                     android:text="浸泡"
                     android:id="@+id/extract_soak_button"/>
-        </LinearLayout>
+            <Button style="@style/CustomButtonTheme"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/orangerred_selector"
+                    android:visibility="gone"
+                    android:text="煎制"
+                    android:id="@+id/extract_extract1_button"/>
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:id="@+id/extract_extractbutton_linearLayout"
+                  android:id="@+id/extract_packButton_linearLayout"
                   android:visibility="gone"
-                  android:orientation="vertical">
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal"
-                      >
-            <Button style="@style/CustomButtonTheme"
-                    android:background="@drawable/orangerred_selector"
-                    android:layout_weight="1"
-                    android:text="一煎"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:id="@+id/extract_extract1_button"/>
+                  android:orientation="horizontal">
             <Button style="@style/CustomButtonTheme"
                     android:background="@drawable/orangerred_selector"
                     android:layout_weight="1"
                     android:text="二煎"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"
                     android:id="@+id/extract_extract2_button"/>
             <Button style="@style/CustomButtonTheme"
                     android:background="@drawable/darkgray_selector"
+                    android:visibility="gone"
+                    android:layout_marginLeft="5dp"
                     android:layout_weight="1"
                     android:text="包装"
-                    android:layout_marginRight="5dp"
                     android:id="@+id/extract_pack_button"/>
             <Button style="@style/CustomButtonTheme"
                     android:background="@drawable/darkgray_selector"
                     android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
                     android:visibility="gone"
-                    android:text="制膏"
+                    android:text="待制膏"
                     android:layout_marginRight="5dp"
-                    android:id="@+id/extract_stew_button"/>
-        </LinearLayout>
-
+                    android:id="@+id/extract_waitStew_button"/>
         <!--<Button style="@style/CustomButtonTheme"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:background="#4f4f4f"-->
                 <!--android:text="包装"-->
                 <!--android:id="@+id/extract_pack_button"/>-->
         </LinearLayout>
+        <Button style="@style/CustomButtonTheme"
+                android:layout_width="match_parent"
+                android:background="@drawable/darkgray_selector"
+                android:visibility="gone"
+                android:text="制膏"
+                android:id="@+id/extract_stew_button"/>
+        <Button style="@style/CustomButtonTheme"
+                android:background="@drawable/darkgray_selector"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:text="完成"
+                android:id="@+id/extract_finish_button"/>
     </LinearLayout>
 </RelativeLayout>

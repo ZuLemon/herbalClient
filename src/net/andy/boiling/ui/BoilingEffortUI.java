@@ -43,10 +43,10 @@ public class BoilingEffortUI extends Activity {
     private Button boilingeffort_month_button;
     @ViewInject(R.id.boilingeffort_preMonth_button)
     private Button boilingeffort_preMonth_button;
-    @ViewInject(R.id.boilingeffort_sockTotal_textView)
-    private TextView boilingeffort_sockTotal_textView;
-    @ViewInject(R.id.boilingeffort_sockPresNumTotal_textView)
-    private TextView boilingeffort_sockPresNumTotal_textView;
+    @ViewInject(R.id.boilingeffort_soakTotal_textView)
+    private TextView boilingeffort_soakTotal_textView;
+    @ViewInject(R.id.boilingeffort_soakPresNumTotal_textView)
+    private TextView boilingeffort_soakPresNumTotal_textView;
     @ViewInject(R.id.boilingeffort_extractTotal_textView)
     private TextView boilingeffort_extractTotal_textView;
     @ViewInject(R.id.boilingeffort_extractPresNumTotal_textView)
@@ -163,8 +163,8 @@ public class BoilingEffortUI extends Activity {
         }
     }
     private void setView() {
-        boilingeffort_sockTotal_textView.setText(String.valueOf(effortMap.get("sockct")));
-        boilingeffort_sockPresNumTotal_textView.setText(String.valueOf(effortMap.get("sockpt")));
+        boilingeffort_soakTotal_textView.setText(String.valueOf(effortMap.get("soakct")));
+        boilingeffort_soakPresNumTotal_textView.setText(String.valueOf(effortMap.get("soakpt")));
         boilingeffort_extractTotal_textView.setText(String.valueOf(effortMap.get("extractct")));
         boilingeffort_extractPresNumTotal_textView.setText(String.valueOf(effortMap.get("extractpt")));
         boilingeffort_pasteTotal_textView.setText(String.valueOf(effortMap.get("pastect")));

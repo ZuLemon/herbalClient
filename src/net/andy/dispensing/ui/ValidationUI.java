@@ -237,7 +237,7 @@ public class ValidationUI extends Activity {
             private TextView validationItem_cnt;
         }
     }
-    public class AlreadyAdapter extends BaseAdapter {
+    private class AlreadyAdapter extends BaseAdapter {
         private LayoutInflater inflater;
 
         public AlreadyAdapter(Context context) {
@@ -292,5 +292,59 @@ public class ValidationUI extends Activity {
             private TextView validationItem_already_diser;
         }
     }
+    private class FinishAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
 
+        public FinishAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return i;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final Val val;
+            if (view == null) {
+                view = inflater.inflate(R.layout.validationitem_already, viewGroup, false);
+                val = new Val();
+                val.validationItem_already_id = (TextView) view.findViewById(R.id.validationItem_already_id);
+                val.validationItem_already_count = (TextView) view.findViewById(R.id.validationItem_already_count);
+                val.validationItem_already_diser = (TextView) view.findViewById(R.id.validationItem_already_diser);
+                val.validationItem_already_time = (TextView) view.findViewById(R.id.validationItem_already_time);
+                view.setTag(val);
+            } else {
+                val = (Val) view.getTag();
+            }
+            Map map = (Map) list.get(i);
+            Log.e("map", map.toString());
+            val.validationItem_already_id .setText(String.valueOf(map.get("id")));
+            val.validationItem_already_diser .setText((CharSequence) map.get("dName"));
+            val.validationItem_already_count.setText(i+1+"");
+            try {
+                val.validationItem_already_time .setText("选中时间：" +format2.format(format1.parse(String.valueOf(map.get("requestTime")))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return view;
+        }
+        private class Val {
+            private TextView validationItem_already_id;
+            private TextView validationItem_already_count;
+            private TextView validationItem_already_time;
+            private TextView validationItem_already_diser;
+        }
+    }
 }
