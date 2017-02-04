@@ -32,5 +32,11 @@
       <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:jtds:sqlserver://192.168.1.18:1433/hisys65;instance=his</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="hisys65@192.168.1.18" uuid="3de1a6d9-e5d1-40b3-9756-219e3d7fc27d">
+      <driver-ref>sqlserver.jtds</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>net.sourceforge.jtds.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:jtds:sqlserver://192.168.1.18:1433/hisys65;instance=his</jdbc-url>
+    </data-source>
   </component>
 </project>

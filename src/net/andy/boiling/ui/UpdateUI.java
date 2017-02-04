@@ -149,7 +149,7 @@ public class UpdateUI {
         if (null != updateMap) {
             int serviceCode = Integer.valueOf(updateMap.get("version"));
             // 版本判断
-            if (serviceCode != versionCode) {
+            if (serviceCode > versionCode) {
                 Log.e("serviceCode",serviceCode+"");
                 return true;
             }
