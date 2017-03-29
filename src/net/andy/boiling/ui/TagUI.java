@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.*;
 import com.alibaba.fastjson.JSON;
@@ -63,8 +62,6 @@ public class TagUI extends NFCActivity {
     private RadioButton tag_type4_radioButton;
     @ViewInject(R.id.tag_type5_radioButton)
     private RadioButton tag_type5_radioButton;
-    @ViewInject(R.id.tag_ok_button)
-    private Button tag_ok_button;
     private List<ColorItem> colorItemList = new ArrayList<>();
     private Spinner spinner;
     private ArrayAdapter<ColorItem> adapter;
@@ -274,7 +271,9 @@ public class TagUI extends NFCActivity {
         }
     }
 
-        @Event(value ={R.id.tag_ok_button,R.id.tag_code_button},type = View.OnClickListener.class)
+        @Event(value ={R.id.tag_ok_button,
+                R.id.tag_code_button,
+            R.id.tag_reset_button},type = View.OnClickListener.class)
         private void OKClick(View v) {
             switch (v.getId()){
                 case R.id.tag_ok_button:
@@ -282,6 +281,10 @@ public class TagUI extends NFCActivity {
                     break;
                 case R.id.tag_code_button:
                     jump();
+                    break;
+                case R.id.tag_reset_button:
+                    tag_bindId_editText.setText("");
+                    tag_status1_radioButton.setChecked(true);
                     break;
             }
 

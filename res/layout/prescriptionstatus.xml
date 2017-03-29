@@ -89,6 +89,13 @@
                     android:layout_margin="2dp"
                     android:visibility="gone"
                     android:text="查看图片"/>
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/orangerred_selector"
+                    style="@style/AdjustThreeButtonTheme"
+                    android:id="@+id/prescriptionStatus_detail_button"
+                    android:layout_margin="2dp"
+                    android:text="处方明细"/>
         </LinearLayout>
 
         </LinearLayout>

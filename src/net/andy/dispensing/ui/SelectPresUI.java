@@ -16,7 +16,6 @@ import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.DatePickDialogUtil;
 import net.andy.dispensing.util.SelectPresUtil;
-import net.andy.dispensing.util.UrgentDelPresUtil;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -114,7 +113,8 @@ public class SelectPresUI extends Activity{
     private void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Map map = (Map) urgList.get(position);
             Intent in=new Intent(SelectPresUI.this,PrescriptionStatusUI.class);
-            in.putExtra("id",Integer.parseInt(String.valueOf(map.get("id"))));
+             in.putExtra("id",Integer.parseInt(String.valueOf(map.get("id"))));
+            in.putExtra("presId",String.valueOf(map.get("presId")));
             startActivity(in);
     }
     public void setListView(List presList) {

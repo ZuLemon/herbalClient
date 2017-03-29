@@ -12,22 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import net.andy.boiling.R;
-import net.andy.boiling.domain.PrescriptionDomain;
 import net.andy.boiling.util.PrescriptionUtil;
 import net.andy.boiling.util.UserUtil;
-import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.CoolToast;
 import net.andy.dispensing.util.UrgentDelPresUtil;
-import org.w3c.dom.Text;
 import org.xutils.view.annotation.Event;
-import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
-import java.util.List;
 
 /**
  * 置顶、删除、修改处方属性
@@ -64,11 +56,11 @@ public class UrgDelPresUI extends Activity{
                     break;
                 case R.id.urgdelpres_noProcess_textView:
                     process="自煎";
-                    urgentPresThread(3);
+                    ackDio();
                     break;
                 case R.id.urgdelpres_process_textView:
                     process="代煎";
-                    urgentPresThread(3);
+                    ackDio();
                     break;
                 case R.id.urgdelpres_delpres_textView:
                     LayoutInflater inflater = getLayoutInflater();
@@ -92,6 +84,23 @@ public class UrgDelPresUI extends Activity{
                     urgentPresThread(4);
                     break;
         }
+    }
+    private void ackDio(){
+        new AlertDialog.Builder(this).setTitle("确认修改吗？")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 点击“确认”后的操作
+                        urgentPresThread(3);
+                    }
+                })
+                .setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 点击“返回”后的操作,这里不设置没有任何操作
+                    }
+                }).show();
     }
     private void urgentPresThread(int what) {
         final Message message = new Message ();

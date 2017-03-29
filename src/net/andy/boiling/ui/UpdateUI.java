@@ -18,7 +18,6 @@ import android.widget.ProgressBar;
 import com.alibaba.fastjson.JSON;
 import net.andy.boiling.Login;
 import net.andy.boiling.R;
-import net.andy.com.AppOption;
 import net.andy.com.Application;
 import net.andy.com.Http;
 import net.andy.dispensing.util.FileUtil;
@@ -298,9 +297,7 @@ public class UpdateUI {
             // 取消下载对话框显示
             mDownloadDialog.dismiss();
         }
-    }
-
-    ;
+    };
 
     /**
      * 安装APK文件
